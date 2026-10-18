@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>风物市集 · AIGC文创周边 — 元乡·江西</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --navy:#16324c;--blue:#2f80ed;--sky:#6cc4f2;--yellow:#f5b301;
+  --ink:#20304a;--muted:#5b7286;
+  --glass:rgba(255,255,255,.62);--stroke:rgba(255,255,255,.75);
+  --shadow:0 20px 40px -18px rgba(21,52,90,.28);
+  --font-display:"Noto Serif SC","Songti SC","STSong","SimSun",Georgia,serif;
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+  color:var(--ink);line-height:1.85;min-height:100vh;overflow-x:hidden;
+  background:linear-gradient(160deg,#eaf4fb 0%,#f7fbff 45%,#eef3fa 100%);
+}
+.blobs{position:fixed;inset:0;z-index:-1;pointer-events:none}
+.blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:.5}
+.b1{width:520px;height:520px;background:radial-gradient(circle,#9ec9f6,transparent 65%);top:-140px;left:-120px;animation:drift 22s ease-in-out infinite alternate}
+.b2{width:460px;height:460px;background:radial-gradient(circle,#ffe6a6,transparent 65%);bottom:-160px;right:-120px;animation:drift 26s ease-in-out infinite alternate-reverse}
+.b3{width:340px;height:340px;background:radial-gradient(circle,#c9b6f0,transparent 65%);top:38%;left:60%;animation:drift 30s ease-in-out infinite alternate}
+@keyframes drift{to{transform:translate(60px,40px) scale(1.08)}}
+
+.topbar{
+  position:sticky;top:14px;z-index:60;width:min(1160px,94%);margin:14px auto 0;
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+  padding:12px 24px;border-radius:50px;
+  background:var(--glass);border:1px solid var(--stroke);
+  backdrop-filter:blur(18px) saturate(170%);-webkit-backdrop-filter:blur(18px) saturate(170%);
+  box-shadow:0 14px 30px -14px rgba(21,52,90,.25);
+}
+.brand{display:inline-flex;align-items:center;gap:9px;text-decoration:none;font-family:var(--font-display);font-weight:700;font-size:1.18rem;color:var(--navy)}
+.brand svg{width:22px;height:22px}
+.crumb{font-size:.82rem;color:var(--muted);letter-spacing:2px}
+@media(max-width:640px){.crumb{display:none}}
+
+/* 市集 Hero */
+.market-hero{text-align:center;padding:64px 20px 10px}
+.mh-badge{
+  display:inline-block;padding:7px 20px;border-radius:30px;margin-bottom:16px;
+  font-size:.82rem;font-weight:700;letter-spacing:3px;color:#20315a;
+  background:var(--yellow);box-shadow:0 10px 24px -8px rgba(245,179,1,.7);
+}
+.market-hero h1{font-family:var(--font-display);font-size:clamp(2rem,4.6vw,3rem);color:var(--navy);letter-spacing:5px}
+.market-hero h1 small{display:block;font-family:Georgia,serif;font-size:.85rem;letter-spacing:6px;color:var(--sky);margin-top:8px;font-weight:400}
+.market-hero p{max-width:640px;margin:16px auto 0;color:var(--muted);font-size:.98rem}
+
+/* 筛选 */
+.filter{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:34px 0 42px}
+.filter button{
+  cursor:pointer;border:1px solid rgba(21,52,90,.12);background:rgba(255,255,255,.65);
+  padding:10px 22px;border-radius:40px;font-size:.9rem;font-weight:600;color:var(--muted);
+  font-family:inherit;backdrop-filter:blur(10px);transition:.3s;
+}
+.filter button:hover{color:var(--navy);transform:translateY(-2px)}
+.filter button.on{
+  color:#20315a;background:linear-gradient(135deg,#ffd76e,var(--yellow));
+  border-color:transparent;box-shadow:0 10px 22px -8px rgba(245,179,1,.6);
+}
+
+/* 商品网格 */
+.container{width:min(1160px,92%);margin:0 auto}
+.pgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;padding-bottom:30px}
+.pcard{
+  border-radius:22px;overflow:hidden;position:relative;
+  background:var(--glass);border:1px solid var(--stroke);
+  backdrop-filter:blur(14px) saturate(160%);-webkit-backdrop-filter:blur(14px) saturate(160%);
+  box-shadow:var(--shadow);display:flex;flex-direction:column;
+  transition:transform .4s ease,box-shadow .4s ease,opacity .4s ease;
+}
+.pcard.hide{opacity:0;transform:scale(.92);pointer-events:none;position:absolute;visibility:hidden}
+.pcard:hover{transform:translateY(-8px);box-shadow:0 30px 56px -20px rgba(21,52,90,.42)}
+.pimg{position:relative;overflow:hidden;aspect-ratio:4/3.4}
+.pimg img{width:100%;height:100%;object-fit:cover;transition:transform .6s cubic-bezier(.2,.8,.3,1)}
+.pcard:hover .pimg img{transform:scale(1.08)}
+.ptag{
+  position:absolute;top:12px;left:12px;z-index:2;padding:4px 12px;border-radius:20px;
+  font-size:.7rem;font-weight:700;letter-spacing:1px;color:#fff;
+  background:rgba(21,52,90,.55);backdrop-filter:blur(8px);
+}
+.pbody{padding:16px 18px 18px;display:flex;flex-direction:column;gap:6px;flex:1}
+.pbody h3{font-size:1.02rem;font-weight:700;color:var(--navy);line-height:1.5}
+.pbody .pdesc{font-size:.82rem;color:var(--muted);line-height:1.7;flex:1}
+.prow{display:flex;align-items:center;justify-content:space-between;margin-top:8px}
+.price{font-family:Georgia,var(--font-display);font-weight:700;font-size:1.18rem;color:var(--blue)}
+.price small{font-size:.75rem;font-weight:400}
+.addbtn{
+  cursor:pointer;border:0;display:inline-flex;align-items:center;gap:6px;
+  padding:9px 16px;border-radius:30px;font-size:.82rem;font-weight:700;color:#20315a;
+  background:linear-gradient(135deg,#ffd76e,var(--yellow));
+  box-shadow:0 8px 18px -6px rgba(245,179,1,.55);font-family:inherit;transition:.25s;
+}
+.addbtn:hover{transform:translateY(-2px);box-shadow:0 12px 22px -6px rgba(245,179,1,.7)}
+.addbtn:active{transform:scale(.95)}
+.addbtn svg{width:15px;height:15px}
+@media(max-width:1020px){.pgrid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.pgrid{grid-template-columns:1fr}}
+
+/* 空状态 */
+.empty{display:none;text-align:center;padding:50px 0;color:var(--muted)}
+
+/* 购物车按钮 */
+.cartbtn{
+  position:fixed;right:26px;bottom:26px;z-index:70;cursor:pointer;border:0;
+  width:58px;height:58px;border-radius:50%;display:grid;place-items:center;color:#fff;
+  background:linear-gradient(135deg,#3f92f2,#2f80ed);
+  box-shadow:0 16px 32px -10px rgba(47,128,237,.65);transition:transform .3s;
+}
+.cartbtn:hover{transform:translateY(-3px)}
+.cartbtn svg{width:24px;height:24px}
+.cartn{
+  position:absolute;top:-4px;right:-4px;min-width:22px;height:22px;padding:0 6px;
+  border-radius:20px;display:grid;place-items:center;font-size:.72rem;font-weight:800;
+  color:#20315a;background:var(--yellow);box-shadow:0 6px 14px -4px rgba(245,179,1,.7);
+  transform:scale(0);transition:transform .35s cubic-bezier(.3,1.6,.5,1);
+}
+.cartn.show{transform:scale(1)}
+.cartn.pop{animation:pop .4s ease}
+@keyframes pop{40%{transform:scale(1.45)}100%{transform:scale(1)}}
+
+/* 轻提示 */
+#toast{
+  position:fixed;left:50%;bottom:34px;transform:translate(-50%,16px);z-index:90;
+  padding:12px 26px;border-radius:40px;font-size:.9rem;color:#fff;letter-spacing:1px;
+  background:rgba(21,52,90,.88);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  box-shadow:0 16px 32px -12px rgba(4,26,44,.5);
+  opacity:0;pointer-events:none;transition:opacity .3s ease,transform .3s ease;
+}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+
+footer{padding:30px 0 34px;text-align:center;color:var(--muted);font-size:.82rem;letter-spacing:1px;border-top:1px solid rgba(21,52,90,.08);margin-top:26px}
+
+img.gen{opacity:0;filter:blur(8px);transform:scale(1.03);transition:opacity .9s ease,filter .9s ease,transform .9s ease;background:linear-gradient(100deg,#dfe9f2 30%,#f2f7fb 50%,#dfe9f2 70%);background-size:200% 100%;animation:shimmer 1.6s linear infinite}
+img.gen.loaded{opacity:1;filter:blur(0);transform:scale(1)}
+@keyframes shimmer{to{background-position:-200% 0}}
+img.gen.failed{opacity:.35;animation:none;filter:none}
+
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
+.reveal.in{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<div class="blobs"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
+
+<header class="topbar">
+  <a class="brand" href="马尔代夫旅游网站.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#2f80ed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.1-7-11a7 7 0 0 1 14 0c0 4.9-7 11-7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>
+    元乡<em>·江西</em>
+  </a>
+  <span class="crumb">风物市集 · AIGC 文创周边</span>
+</header>
+
+<section class="market-hero">
+  <span class="mh-badge">风物市集</span>
+  <h1>AIGC 文创周边<small>AI-POWERED CULTURAL CREATIVE STORE</small></h1>
+  <p>以 AIGC 数字科技重新演绎江西老区的红色记忆、山水风物与非遗技艺——每一件周边，都由 AI 生成设计并与在地工坊共同打磨，把老区故事带回家。</p>
+</section>
+
+<main class="container">
+  <div class="filter" id="filter" role="tablist" aria-label="商品分类筛选">
+    <button class="on" data-cat="all">全部</button>
+    <button data-cat="数字藏品">数字藏品</button>
+    <button data-cat="印刷文创">印刷文创</button>
+    <button data-cat="非遗联名">非遗联名</button>
+    <button data-cat="IP周边">IP 周边</button>
+  </div>
+
+  <div class="pgrid" id="pgrid"></div>
+  <p class="empty" id="empty">该分类暂无商品，敬请期待上新～</p>
+</main>
+
+<footer>© 2026 元乡·江西 — 保留所有权利</footer>
+
+<button class="cartbtn" id="cartBtn" aria-label="购物车">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.6"/><circle cx="17.5" cy="20" r="1.6"/><path d="M3 3.5h2.2l2.5 12h10.6l2-8.2H6.1"/></svg>
+  <span class="cartn" id="cartN">0</span>
+</button>
+
+<div id="toast" role="status"></div>
+
+<script>
+/* ============ 商品数据（AIGC 文创周边） ============ */
+const PRODUCTS = [
+  { name: '《红色星火》AI 重绘明信片套装', cat: '印刷文创', price: 39,
+    desc: '井冈山、瑞金、八一起义纪念馆等老区地标经 AIGC 重新绘制，一组 9 张，附赠火漆封缄。',
+    prompt: 'AIGC illustrated postcard set of Jiangxi red revolutionary landmarks Jinggangshan mountains Ruijin Nanchang, vibrant digital art prints arranged on wooden table, product photography' },
+  { name: '元乡数字徽章 · 老区风景', cat: '数字藏品', price: 19.9,
+    desc: 'AI 生成动态风景徽章，区块链确权，收藏老区的四季云海与星火山川。',
+    prompt: 'glowing holographic digital badge collectible with Jiangxi green mountain landscape inside, futuristic emblem floating on deep blue background, digital art' },
+  { name: '客家竹编纹样帆布袋', cat: '非遗联名', price: 59,
+    desc: 'AIGC 生成客家竹编几何纹样，与非遗竹编工坊联名印制，耐磨厚款帆布。',
+    prompt: 'canvas tote bag with AI generated bamboo weaving geometric pattern in Hakka craft style, beige natural tones, product photography on clean background' },
+  { name: '红井水墨真丝方巾', cat: '非遗联名', price: 129,
+    desc: '以"红井"故事为题的 AI 水墨生成纹样，真丝印染，红灰两色可选。',
+    prompt: 'silk scarf with AI generated Chinese ink wash painting pattern of a well and rural Jiangxi scenery, elegant vermilion and grey, product photography' },
+  { name: '八一红星金属书签', cat: '印刷文创', price: 29,
+    desc: '激光雕刻 AIGC 生成的红星纹样，黄铜镀金，附赠同款纹样收纳卡。',
+    prompt: 'gold metal bookmark with red star emblem laser engraved, lying on an open book, close-up product photography' },
+  { name: '《少年家国梦》IP 盲盒手办', cat: 'IP周边', price: 69,
+    desc: '瑞金《少年家国梦》IP 形象 × AIGC 造型设计，全套 6 款，隐藏款"星火少年"。',
+    prompt: 'cute designer blind box figurine of a young dreamer character in red scarf, pastel colors, collectible toy, product photography' },
+  { name: '老区方言语音挂件', cat: 'IP周边', price: 45,
+    desc: '内置语音芯片的 AIGC 形象挂件，轻触即播放瑞金话、南昌话方言彩蛋。',
+    prompt: 'cute voice badge keychain with built-in speaker chip, red and gold cartoon design, product photography on soft background' },
+  { name: '赣鄱四季 · AI 生成日历', cat: '数字藏品', price: 49,
+    desc: '365 天每天一张 AIGC 生成老区风景，扫码可解锁对应数字藏品版本。',
+    prompt: 'desk calendar with AI generated four seasons landscape cards of Jiangxi mountains lakes and villages, minimal elegant design, product photography' }
+];
+
+/* ============ 渲染商品 ============ */
+document.getElementById('pgrid').innerHTML = PRODUCTS.map((p, i) => `
+  <article class="pcard reveal" data-cat="${p.cat}" style="transition-delay:${i % 4 * 0.07}s">
+    <div class="pimg">
+      <span class="ptag">${p.cat}</span>
+      <img class="gen" alt="${p.name}" data-prompt="${p.prompt}" data-size="portrait_4_3">
+    </div>
+    <div class="pbody">
+      <h3>${p.name}</h3>
+      <p class="pdesc">${p.desc}</p>
+      <div class="prow">
+        <span class="price"><small>¥</small>${p.price}</span>
+        <button class="addbtn" data-name="${p.name}">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>加入购物车
+        </button>
+      </div>
+    </div>
+  </article>`).join('');
+
+/* ============ AI 生图加载 ============ */
+function imgUrl(prompt, size) {
+  return 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=' + encodeURIComponent(prompt) + '&image_size=' + (size || 'portrait_4_3');
+}
+/* 占位图检测：生成排队时返回固定占位图（1832x1832），需换参重试 */
+const isPh = img => img.naturalWidth === 1832 && img.naturalHeight === 1832;
+let genSeq = 0;
+function setupImg(img) {
+  if (!img || !img.dataset.prompt) return;
+  let tries = 0, timer = null;
+  const attempt = bust => {
+    img.classList.remove('loaded', 'failed');
+    img.src = imgUrl(img.dataset.prompt, img.dataset.size) + (bust ? '&r=' + (++genSeq) : '');
+  };
+  img.addEventListener('load', () => {
+    if (isPh(img)) {
+      if (tries < 5) { tries++; timer = setTimeout(() => attempt(true), 3000 * tries); }
+      else img.classList.add('failed');
+    } else {
+      clearTimeout(timer);
+      img.classList.add('loaded');
+    }
+  });
+  img.addEventListener('error', () => {
+    if (tries < 3) { tries++; timer = setTimeout(() => attempt(tries > 1), 1500 * tries); }
+    else img.classList.add('failed');
+  });
+  setTimeout(() => attempt(false), Math.min((++genSeq) * 320, 4000));  // 错峰请求
+}
+document.querySelectorAll('img.gen').forEach(setupImg);
+
+/* ============ 分类筛选 ============ */
+const filterBtns = [...document.querySelectorAll('#filter button')];
+const pcards = [...document.querySelectorAll('#pgrid .pcard')];
+const emptyEl = document.getElementById('empty');
+filterBtns.forEach(btn => btn.addEventListener('click', () => {
+  filterBtns.forEach(b => b.classList.toggle('on', b === btn));
+  const cat = btn.dataset.cat;
+  let shown = 0;
+  pcards.forEach(c => {
+    const ok = cat === 'all' || c.dataset.cat === cat;
+    c.classList.toggle('hide', !ok);
+    if (ok) shown++;
+  });
+  emptyEl.style.display = shown ? 'none' : 'block';
+  toast(cat === 'all' ? `已为您呈现全部 ${shown} 件 AIGC 文创` : `已为您筛选「${cat}」${shown} 件好物`);
+}));
+
+/* ============ 购物车（前端演示） ============ */
+let cartCount = 0;
+const cartN = document.getElementById('cartN');
+document.querySelectorAll('.addbtn').forEach(btn => btn.addEventListener('click', () => {
+  cartCount++;
+  cartN.textContent = cartCount;
+  cartN.classList.add('show');
+  cartN.classList.remove('pop'); void cartN.offsetWidth; cartN.classList.add('pop');
+  toast(`已加入购物车：${btn.dataset.name}`);
+}));
+document.getElementById('cartBtn').addEventListener('click', () => {
+  toast(cartCount ? `购物车共 ${cartCount} 件文创（前端演示，下单即将开放）` : '购物车空空如也，先去挑一件 AIGC 文创吧～');
+});
+
+/* ============ 轻提示 ============ */
+const toastEl = document.getElementById('toast');
+let toastTimer;
+function toast(msg) {
+  toastEl.textContent = msg;
+  toastEl.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toastEl.classList.remove('show'), 2600);
+}
+
+/* ============ 滚动显现 ============ */
+const io = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+}), { threshold: .1 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>

@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>元乡引擎 · AIGC 共创 — 元乡·江西</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --navy:#16324c;--blue:#2f80ed;--sky:#6cc4f2;--yellow:#f5b301;
+  --ink:#20304a;--muted:#5b7286;--font-display:"Noto Serif SC","Songti SC","STSong","SimSun",Georgia,serif;
+  --tbg1:#0a1a33;--tbg2:#122a52;--tbg3:#1d1140;
+  --line:rgba(108,196,242,.28);--glow:rgba(108,196,242,.45);
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+  color:#dce9f7;line-height:1.85;min-height:100vh;overflow-x:hidden;
+  background:linear-gradient(160deg,#07142a 0%,#0c2246 48%,#170f38 100%);
+}
+/* 背景光斑 + 网格 */
+.blobs{position:fixed;inset:0;z-index:-1;pointer-events:none}
+.blob{position:absolute;border-radius:50%;filter:blur(100px);opacity:.55}
+.b1{width:560px;height:560px;background:radial-gradient(circle,#1c5da8,transparent 65%);top:-160px;left:-140px;animation:drift 24s ease-in-out infinite alternate}
+.b2{width:480px;height:480px;background:radial-gradient(circle,#4a2a8f,transparent 65%);bottom:-180px;right:-140px;animation:drift 28s ease-in-out infinite alternate-reverse}
+.b3{width:360px;height:360px;background:radial-gradient(circle,#0f6f8f,transparent 65%);top:42%;left:56%;animation:drift 32s ease-in-out infinite alternate}
+.grid-bg{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.35;
+  background-image:linear-gradient(rgba(108,196,242,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(108,196,242,.05) 1px,transparent 1px);
+  background-size:44px 44px;
+  mask-image:radial-gradient(70% 60% at 50% 30%,#000 40%,transparent 100%);
+  -webkit-mask-image:radial-gradient(70% 60% at 50% 30%,#000 40%,transparent 100%);}
+@keyframes drift{to{transform:translate(70px,50px) scale(1.1)}}
+
+/* 顶栏 */
+.topbar{
+  position:sticky;top:14px;z-index:60;width:min(1160px,94%);margin:14px auto 0;
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+  padding:12px 24px;border-radius:50px;
+  background:rgba(10,24,44,.6);border:1px solid var(--line);
+  backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);
+  box-shadow:0 14px 30px -14px rgba(0,10,25,.6);
+}
+.brand{display:inline-flex;align-items:center;gap:9px;text-decoration:none;font-family:var(--font-display);font-weight:700;font-size:1.18rem;color:#fff}
+.brand em{font-style:normal;color:var(--yellow)}
+.crumb{font-size:.82rem;color:rgba(220,233,247,.7);letter-spacing:2px}
+@media(max-width:640px){.crumb{display:none}}
+
+/* Hero */
+.hero{position:relative;text-align:center;padding:96px 24px 40px;max-width:900px;margin:0 auto}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:10px;font-size:.78rem;letter-spacing:5px;
+  color:#9ecbff;font-weight:700;text-transform:uppercase;
+  padding:7px 20px;border-radius:30px;border:1px solid var(--line);background:rgba(108,196,242,.08);
+}
+.eyebrow::before{content:"✦";color:var(--yellow)}
+.hero h1{
+  font-family:var(--font-display);font-size:clamp(2.3rem,5.6vw,3.8rem);
+  color:#fff;letter-spacing:6px;margin-top:22px;line-height:1.3;
+  text-shadow:0 0 44px rgba(108,196,242,.4);
+}
+.hero .slogan{
+  margin-top:16px;font-size:clamp(1rem,2.2vw,1.2rem);color:#cfe4f7;
+  font-family:var(--font-display);letter-spacing:2px;
+}
+.hero p.intro{margin:22px auto 0;max-width:640px;color:rgba(220,233,247,.72);font-size:.98rem}
+.hl{color:#ffd76e;font-weight:700}
+.hl-b{color:#9ecbff;font-weight:700}
+
+/* 通用 */
+.container{width:min(1160px,92%);margin:0 auto}
+.sec-head{text-align:center;margin:90px 0 50px}
+.sec-head .eyebrow{margin-bottom:16px}
+.sec-head h2{font-family:var(--font-display);font-size:clamp(1.7rem,3.4vw,2.4rem);color:#fff;letter-spacing:3px;margin-top:14px;text-shadow:0 0 30px rgba(108,196,242,.35)}
+.sec-head p{color:rgba(220,233,247,.65);max-width:640px;margin:12px auto 0;font-size:.95rem}
+.panel{
+  position:relative;border-radius:24px;padding:30px 34px;
+  background:linear-gradient(135deg,rgba(18,42,82,.55),rgba(29,17,64,.45));
+  border:1px solid var(--line);
+  backdrop-filter:blur(16px) saturate(150%);-webkit-backdrop-filter:blur(16px) saturate(150%);
+  box-shadow:0 30px 60px -24px rgba(0,8,20,.7);
+}
+.rv{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
+.rv.in{opacity:1;transform:none}
+
+/* ============ 模块一：定制引擎 ============ */
+.engine-grid{display:grid;grid-template-columns:1fr 1.15fr;gap:26px;align-items:stretch}
+@media(max-width:920px){.engine-grid{grid-template-columns:1fr}}
+.pane-title{display:flex;align-items:center;gap:12px;margin-bottom:22px}
+.pane-title .dot{width:10px;height:10px;border-radius:50%;background:var(--yellow);box-shadow:0 0 12px var(--yellow)}
+.pane-title h3{font-family:var(--font-display);font-size:1.22rem;color:#fff;letter-spacing:1px}
+.pane-title small{color:rgba(220,233,247,.55);font-size:.78rem;letter-spacing:2px;margin-left:4px}
+.field-label{font-size:.8rem;letter-spacing:2px;color:#9ecbff;font-weight:700;margin:18px 0 10px}
+.dest-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media(max-width:520px){.dest-grid{grid-template-columns:1fr}}
+.dest-opt{
+  position:relative;border-radius:16px;padding:14px 12px;text-align:center;cursor:pointer;transition:.3s;
+  background:rgba(108,196,242,.06);border:1px solid var(--line);user-select:none;
+}
+.dest-opt:hover{transform:translateY(-4px);border-color:var(--glow);background:rgba(108,196,242,.13);box-shadow:0 14px 28px -12px rgba(20,90,180,.55)}
+.dest-opt.on{background:linear-gradient(135deg,rgba(47,128,237,.35),rgba(108,196,242,.18));border-color:var(--sky);box-shadow:0 0 22px -4px var(--glow)}
+.dest-opt .dico{font-size:1.5rem;display:block;line-height:1.3}
+.dest-opt b{display:block;color:#fff;font-size:.98rem;letter-spacing:1px;margin-top:4px}
+.dest-opt i{font-style:normal;font-size:.72rem;color:rgba(220,233,247,.6);letter-spacing:1px}
+.pref-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:520px){.pref-grid{grid-template-columns:1fr}}
+.pref-opt{
+  display:flex;align-items:center;gap:10px;border-radius:14px;padding:12px 16px;cursor:pointer;transition:.3s;
+  background:rgba(108,196,242,.05);border:1px solid var(--line);user-select:none;
+}
+.pref-opt:hover{transform:translateY(-3px);border-color:var(--glow);background:rgba(108,196,242,.12)}
+.pref-opt.on{background:linear-gradient(135deg,rgba(245,179,1,.22),rgba(245,179,1,.08));border-color:var(--yellow);box-shadow:0 0 18px -4px rgba(245,179,1,.5)}
+.pref-opt .pico{font-size:1.25rem}
+.pref-opt b{color:#fff;font-size:.9rem;letter-spacing:1px}
+.pref-opt i{display:block;font-style:normal;font-size:.72rem;color:rgba(220,233,247,.55);line-height:1.5}
+.gen-btn{
+  width:100%;margin-top:24px;padding:15px 20px;border-radius:16px;border:none;cursor:pointer;
+  font-family:inherit;font-size:1.05rem;font-weight:800;letter-spacing:3px;color:#1a2440;
+  background:linear-gradient(135deg,#ffd76e,var(--yellow));
+  box-shadow:0 16px 36px -10px rgba(245,179,1,.55);transition:.3s;
+}
+.gen-btn:hover{transform:translateY(-3px);box-shadow:0 22px 44px -10px rgba(245,179,1,.75);filter:brightness(1.06)}
+.gen-btn:disabled{opacity:.6;cursor:wait;transform:none}
+/* 结果面板 */
+.result-pane{display:flex;flex-direction:column}
+.result-empty{
+  flex:1;display:grid;place-items:center;text-align:center;border-radius:18px;
+  border:1px dashed rgba(108,196,242,.3);color:rgba(220,233,247,.5);padding:40px 24px;
+}
+.result-empty .big{font-size:2.6rem;display:block;margin-bottom:12px;filter:grayscale(.4);opacity:.8}
+.result-body{display:none;flex:1;flex-direction:column}
+.result-body.show{display:flex}
+.result-body.generating{position:relative;overflow:hidden;border-radius:18px}
+.result-body.generating::after{
+  content:"";position:absolute;inset:0;z-index:3;
+  background:linear-gradient(115deg,transparent 30%,rgba(108,196,242,.28) 50%,rgba(255,215,110,.22) 56%,transparent 72%);
+  background-size:260% 100%;animation:sweep 1.15s linear infinite;pointer-events:none;
+  border-radius:18px;
+}
+@keyframes sweep{from{background-position:130% 0}to{background-position:-130% 0}}
+.route-title{
+  font-family:var(--font-display);font-size:1.3rem;color:#ffd76e;letter-spacing:1px;margin-bottom:14px;
+  text-shadow:0 0 24px rgba(245,179,1,.35);
+}
+.route-list{list-style:none;display:grid;gap:10px;margin-bottom:18px}
+.route-list li{
+  display:flex;gap:12px;align-items:flex-start;font-size:.92rem;color:rgba(220,233,247,.88);
+  background:rgba(108,196,242,.07);border:1px solid rgba(108,196,242,.2);
+  border-radius:12px;padding:11px 16px;transition:.3s;
+}
+.route-list li:hover{transform:translateX(5px);border-color:var(--glow);background:rgba(108,196,242,.13)}
+.route-list b{flex:none;color:#9ecbff;font-family:Georgia,serif;letter-spacing:1px}
+.album-cover{position:relative;border-radius:16px;overflow:hidden;border:1px solid var(--line);min-height:230px;box-shadow:0 24px 44px -18px rgba(0,10,25,.75)}
+.album-cover img{width:100%;height:100%;object-fit:cover;display:block;min-height:230px}
+.album-cover figcaption{
+  position:absolute;left:0;right:0;bottom:0;padding:36px 16px 12px;font-size:.82rem;letter-spacing:2px;color:#fff;
+  background:linear-gradient(180deg,transparent,rgba(4,14,28,.85));
+}
+img.gen{opacity:0;filter:blur(8px);transform:scale(1.03);transition:opacity .9s ease,filter .9s ease,transform .9s ease;background:linear-gradient(100deg,#122a48 30%,#1a3a63 50%,#122a48 70%);background-size:200% 100%;animation:shimmer 1.6s linear infinite}
+img.gen.loaded{opacity:1;filter:blur(0);transform:scale(1)}
+@keyframes shimmer{to{background-position:-200% 0}}
+img.gen.failed{opacity:.35;animation:none;filter:none}
+
+/* ============ 模块二：Behind the AI ============ */
+.bt-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-bottom:26px}
+@media(max-width:920px){.bt-grid{grid-template-columns:1fr}}
+.bt-card{transition:transform .35s ease,box-shadow .35s ease,border-color .35s ease}
+.bt-card:hover{transform:translateY(-5px);border-color:var(--glow);box-shadow:0 34px 64px -24px rgba(0,10,25,.8)}
+.prompt-io{display:grid;gap:14px}
+.io-label{font-size:.74rem;letter-spacing:2px;color:#9ecbff;font-weight:700;display:flex;align-items:center;gap:8px}
+.io-label::before{content:"▸";color:var(--yellow)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.pchip{
+  padding:4px 14px;border-radius:20px;font-size:.78rem;font-weight:600;color:#9ecbff;
+  background:rgba(108,196,242,.12);border:1px solid rgba(108,196,242,.35);transition:.3s;cursor:default;
+}
+.pchip:hover{background:rgba(108,196,242,.24);transform:translateY(-2px)}
+.prompt-out{
+  font-family:Consolas,Menlo,monospace;font-size:.8rem;line-height:1.8;color:#8fd3ff;
+  background:rgba(4,14,28,.72);border:1px solid rgba(108,196,242,.3);border-radius:12px;
+  padding:14px 18px;word-break:break-all;transition:border-color .3s;
+}
+.prompt-out:hover{border-color:var(--sky)}
+.flow-steps{display:grid;gap:14px}
+.flow-step{
+  display:flex;gap:16px;align-items:flex-start;border-radius:14px;padding:14px 18px;transition:.3s;
+  background:rgba(108,196,242,.05);border:1px solid rgba(108,196,242,.2);
+}
+.flow-step:hover{transform:translateX(6px);border-color:var(--glow);background:rgba(108,196,242,.12)}
+.flow-step .fno{
+  flex:none;width:40px;height:40px;border-radius:12px;display:grid;place-items:center;
+  font-family:Georgia,serif;font-weight:700;color:#fff;font-size:1rem;
+  background:linear-gradient(135deg,#2f80ed,#6cc4f6);box-shadow:0 8px 18px -6px rgba(47,128,237,.6);
+}
+.flow-step b{color:#fff;font-size:.94rem;letter-spacing:.5px;display:block}
+.flow-step p{font-size:.82rem;color:rgba(220,233,247,.68)}
+/* 参数控制台 */
+.console{
+  font-family:Consolas,Menlo,monospace;font-size:.8rem;line-height:2;
+  background:rgba(3,10,22,.85);border:1px solid rgba(108,196,242,.3);border-radius:14px;
+  padding:18px 24px;transition:.3s;
+}
+.console:hover{border-color:var(--sky);box-shadow:0 0 30px -8px var(--glow)}
+.console .chead{display:flex;gap:8px;margin-bottom:10px}
+.console .chead i{width:11px;height:11px;border-radius:50%;display:block}
+.console .k{color:#6f87a8}.console .v{color:#8fd3ff}.console .y{color:#ffd76e}
+.console .row{display:flex;justify-content:space-between;gap:16px;border-bottom:1px dashed rgba(108,196,242,.14);padding:2px 0}
+.console .row:last-child{border-bottom:none}
+
+/* ============ 模块三：纪念册 ============ */
+.album-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+@media(max-width:920px){.album-grid{grid-template-columns:1fr;max-width:460px;margin:0 auto}}
+.album-card{
+  border-radius:20px;overflow:hidden;background:rgba(18,42,82,.5);border:1px solid var(--line);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  box-shadow:0 24px 48px -20px rgba(0,10,25,.7);transition:transform .4s cubic-bezier(.2,.8,.25,1),box-shadow .4s,border-color .4s;
+}
+.album-card:hover{transform:translateY(-10px);border-color:var(--glow);box-shadow:0 40px 70px -22px rgba(0,10,25,.85)}
+.album-card .aim{position:relative;height:230px;overflow:hidden}
+.album-card .aim img{transition:transform .8s}
+.album-card:hover .aim img{transform:scale(1.09)}
+.album-card .aim::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(4,14,28,.55));opacity:0;transition:.45s}
+.album-card:hover .aim::after{opacity:1}
+.album-card .abody{padding:18px 22px 22px}
+.album-card h4{font-family:var(--font-display);color:#fff;font-size:1.06rem;letter-spacing:1px}
+.album-card p{font-size:.84rem;color:rgba(220,233,247,.65);margin-top:6px}
+.album-card .quote{
+  display:inline-block;margin-top:12px;padding:5px 16px;border-radius:20px;font-size:.8rem;
+  color:#ffd76e;background:rgba(245,179,1,.12);border:1px solid rgba(245,179,1,.4);transition:.3s;
+}
+.album-card:hover .quote{background:rgba(245,179,1,.25);transform:translateY(-2px)}
+.dl-row{display:flex;justify-content:center;gap:18px;flex-wrap:wrap;margin-top:40px}
+.dl-btn{
+  display:inline-flex;align-items:center;gap:10px;padding:14px 32px;border-radius:30px;border:none;cursor:pointer;
+  font-family:inherit;font-size:.95rem;font-weight:700;letter-spacing:1px;text-decoration:none;transition:.3s;
+}
+.dl-btn.solid{color:#1a2440;background:linear-gradient(135deg,#ffd76e,var(--yellow));box-shadow:0 16px 34px -10px rgba(245,179,1,.55)}
+.dl-btn.ghosty{color:#9ecbff;background:rgba(108,196,242,.1);border:1px solid var(--line)}
+.dl-btn:hover{transform:translateY(-3px)}
+.dl-btn.solid:hover{box-shadow:0 22px 44px -10px rgba(245,179,1,.75)}
+.dl-btn.ghosty:hover{background:rgba(108,196,242,.22);border-color:var(--sky)}
+
+/* 页脚 & Toast */
+footer{padding:80px 0 34px;text-align:center;color:rgba(220,233,247,.55);font-size:.82rem;letter-spacing:1px}
+.toast{
+  position:fixed;left:50%;bottom:34px;z-index:90;transform:translateX(-50%) translateY(16px);
+  padding:12px 26px;border-radius:30px;font-size:.88rem;letter-spacing:1px;
+  color:#eaf4ff;background:rgba(12,30,54,.92);border:1px solid rgba(245,179,1,.55);
+  box-shadow:0 18px 36px -12px rgba(0,8,20,.6);opacity:0;pointer-events:none;transition:.35s;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+
+<div class="blobs"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
+<div class="grid-bg"></div>
+
+<header class="topbar">
+  <a class="brand" href="马尔代夫旅游网站.html">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6cc4f2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.1-7-11a7 7 0 0 1 14 0c0 4.9-7 11-7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>
+    元乡<em>·江西</em>
+  </a>
+  <span class="crumb">AI共创 · 元乡引擎</span>
+</header>
+
+<section class="hero">
+  <span class="eyebrow">YUANXIANG AIGC ENGINE</span>
+  <h1>元乡引擎</h1>
+  <p class="slogan">把你的旅行偏好，训练成一张<span class="hl">专属数字名片</span>。</p>
+  <p class="intro">不只提供固定的路线——我们通过 <span class="hl-b">AIGC 技术</span>，根据你的个性化需求，实时生成<span class="hl-b">文旅路线</span>与<span class="hl-b">数字纪念品</span>，让每一次抵达都独一无二。</p>
+</section>
+
+<main class="container">
+
+  <!-- 模块一：AI 路线定制引擎 -->
+  <div class="sec-head rv">
+    <span class="eyebrow">Module 01 · Interactive</span>
+    <h2>AI 路线定制引擎</h2>
+    <p>选择目的地与偏好，元乡引擎将实时为你生成专属行程与数字纪念册封面。</p>
+  </div>
+  <div class="panel rv">
+    <div class="engine-grid">
+      <div>
+        <div class="pane-title"><span class="dot"></span><h3>参数面板</h3><small>PARAMETERS</small></div>
+        <div class="field-label">① 选择目的地（单选）</div>
+        <div class="dest-grid" id="destGrid"></div>
+        <div class="field-label">② 选择偏好标签（多选）</div>
+        <div class="pref-grid" id="prefGrid"></div>
+        <button class="gen-btn" id="genBtn">🪄 启动 AIGC 生成</button>
+      </div>
+      <div class="result-pane">
+        <div class="pane-title"><span class="dot"></span><h3>生成结果</h3><small>OUTPUT</small></div>
+        <div class="result-empty" id="resultEmpty"><div><span class="big">🪄</span>完成左侧选择，点击「启动 AIGC 生成」<br>你的专属行程与纪念册封面将在这里浮现</div></div>
+        <div class="result-body" id="resultBody">
+          <div class="route-title" id="routeTitle"></div>
+          <ul class="route-list" id="routeList"></ul>
+          <figure class="album-cover"><img class="gen" id="coverImg" alt="数字纪念册封面"><figcaption id="coverCap"></figcaption></figure>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 模块二：AIGC 工作流展示 -->
+  <div class="sec-head rv">
+    <span class="eyebrow">Module 02 · Behind the AI</span>
+    <h2>元乡引擎是如何工作的？</h2>
+    <p>向每一位体验者透明展示创作过程——AIGC 过程留痕，人机协同共创。</p>
+  </div>
+  <div class="bt-grid">
+    <div class="panel bt-card rv">
+      <div class="pane-title"><span class="dot"></span><h3>Prompt 拆解</h3><small>提示词工程</small></div>
+      <div class="prompt-io">
+        <span class="io-label">原始输入</span>
+        <div class="chips" id="rawChips"></div>
+        <span class="io-label">AI 解析后的 Prompt（随上方选择实时更新）</span>
+        <div class="prompt-out" id="promptOut"></div>
+      </div>
+    </div>
+    <div class="panel bt-card rv">
+      <div class="pane-title"><span class="dot"></span><h3>人机协同策略</h3><small>工作流说明</small></div>
+      <div class="flow-steps">
+        <div class="flow-step"><span class="fno">01</span><div><b>大语言模型（DeepSeek）</b><p>处理游客需求，生成逻辑清晰的行程文本。</p></div></div>
+        <div class="flow-step"><span class="fno">02</span><div><b>图像大模型（Stable Diffusion）</b><p>根据行程文本，生成纪念册底图。</p></div></div>
+        <div class="flow-step"><span class="fno">03</span><div><b>ControlNet 构图控制</b><p>确保生成的老街建筑符合赣派风格。</p></div></div>
+        <div class="flow-step"><span class="fno">04</span><div><b>人工精修</b><p>设计师在 Photoshop 中修整 AI 错乱细节并排版文字，形成最终纪念册。</p></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="panel bt-card rv">
+    <div class="pane-title"><span class="dot"></span><h3>参数记录</h3><small>本次生成的过程留痕</small></div>
+    <div class="console">
+      <div class="chead"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i></div>
+      <div class="row"><span class="k">Seed（随机种子）</span><span class="y" id="pSeed">—</span></div>
+      <div class="row"><span class="k">Sampler / Steps</span><span class="v">DPM++ 2M Karras · 30 步</span></div>
+      <div class="row"><span class="k">CFG Scale</span><span class="v">7.5</span></div>
+      <div class="row"><span class="k">LoRA 模型</span><span class="v">自制「江西客家建筑」v2</span></div>
+      <div class="row"><span class="k">LoRA 权重</span><span class="y">0.6</span></div>
+    </div>
+  </div>
+
+  <!-- 模块三：成果展示与下载 -->
+  <div class="sec-head rv">
+    <span class="eyebrow">Module 03 · Take It Home</span>
+    <h2>成果展示与下载</h2>
+    <p>一本属于你的「打卡纪念册」：景点手绘地图、AIGC 风物插画与真实的美食推荐。</p>
+  </div>
+  <div class="album-grid" id="albumGrid"></div>
+  <div class="dl-row rv">
+    <button class="dl-btn solid" onclick="toast('「元乡纪念册」打包下载（PDF / 高清 JPG）即将开放，敬请期待')">⬇️ 下载我的元乡纪念册（PDF / 高清 JPG）</button>
+    <button class="dl-btn ghosty" onclick="toast('分享链接已复制（模拟）——欢迎来到 AIGC 共创社区')">分享至 AIGC 共创社区</button>
+  </div>
+
+</main>
+
+<footer>© 2026 元乡·江西 — 元乡引擎 · AIGC 共创实验室</footer>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============ 数据 ============ */
+const DESTS = {
+  nanchang: { label: '南昌·市井', ico: '🏙️', short: '南昌',
+    scene: 'Nanchang old town streetscape with Wanshou Palace grey brick houses',
+    subject: { taste: 'local noodle breakfast stall', craft: 'intangible heritage craft shops', nature: 'riverside promenade and city park', photo: 'night lanterns and city lights' },
+    imgScene: 'Wanshou Palace historic block Nanchang with grey brick houses and upturned eaves',
+    routes: {
+      taste: [['上午','大士院街“过早”：拌粉 + 瓦罐汤，人均约 5 元'],['午后','珠宝街与羊子巷小吃巡礼，边走边尝'],['入夜','万寿宫街区夜色，配一杯瓦罐奶茶']],
+      craft: [['上午','江西省美术馆（免费预约）：苏式穹顶与旋转楼梯'],['午后','万寿宫历史文化街区非遗手作店铺'],['入夜','赣派青砖黛瓦夜拍，感受“新国潮”']],
+      nature: [['上午','豫章线环行公交慢逛（5 元/人），串起核心点位'],['午后','滕王阁江畔风光带漫步'],['入夜','秋水广场与赣江夜风收尾']],
+      photo: [['上午','八一广场与纪念塔晨光'],['午后','江西省美术馆旋转楼梯出片'],['入夜','万寿宫灯笼夜景大片，蓝调时刻最佳']]
+    } },
+  ruijin: { label: '瑞金·古韵', ico: '🏮', short: '瑞金',
+    scene: 'Ruijin ancient street with Hakka grey brick buildings',
+    subject: { taste: 'beef soup and hakka street food stalls', craft: 'bamboo weaving craftsman working', nature: 'countryside fields and riverside', photo: 'lantern-lit old street at blue hour' },
+    imgScene: 'Xianghuli old street Ruijin with Hakka grey brick buildings and warm lanterns',
+    routes: {
+      taste: [['上午','擂茶牛市：瑞金牛肉汤 + 黄元米果'],['午后','擂茶传承人摊位，现擂花生与茶叶'],['入夜','23 个档口客家小吃一站式吃遍']],
+      craft: [['上午','竹编铺：看一根毛竹如何破篾成丝'],['午后','瑞墨铺古法制墨 + 上阳书院书法时光'],['入夜','五坊七铺非遗夜色，手作灯光温暖']],
+      nature: [['上午','红井景区田园漫步，尝一口井水清冽'],['午后','绵江江畔风光带'],['入夜','象湖里青石板路与晚风']],
+      photo: [['上午','象湖里老宅立面晨光'],['午后','灯笼与竹编店铺人文扫街'],['入夜','蓝调时刻的古街大片']]
+    } },
+  yongxin: { label: '永新·山水', ico: '⛰️', short: '永新',
+    scene: 'Sanwan mountain village landscape with terraced fields',
+    subject: { taste: 'braised duck and local soup feast', craft: 'traditional printing and bamboo hat DIY', nature: 'morning mist over terraced fields and lake', photo: 'misty mountains and wooden guesthouse' },
+    imgScene: 'Sanwan Yongxin terraced fields and red maple lake in morning mist',
+    routes: {
+      taste: [['上午','三湾人家民宿早餐'],['午后','“永新味道”：永新血鸭 + 酱萝卜老鸭汤'],['入夜','和子四珍甜咸口收尾']],
+      craft: [['上午','贺页朵誓词广场拓印“宣誓书”'],['午后','红色拾光民宿斗笠 DIY'],['入夜','贺子珍纪念馆红军挎包手作展示']],
+      nature: [['上午','挑粮小道徒步（量力走一段即可）'],['午后','红枫湖竹筏泛舟（约 50 元/小时）'],['入夜','民宿露台观星与山风']],
+      photo: [['上午','红枫湖晨雾倒影'],['午后','梯田与竹斗笠屋檐取景'],['入夜','星空下的木质老屋剪影']]
+    } }
+};
+const PREFS = {
+  taste:  { label: '味蕾探索', ico: '🍜', desc: '偏爱地道小吃 / 非遗美食', theme: '寻味', imgStyle: 'steaming local street food close up, appetizing warm tones' },
+  craft:  { label: '人文手作', ico: '🧶', desc: '偏爱非遗体验 / 博物馆', theme: '非遗', imgStyle: 'craftsman hands weaving bamboo in a workshop, warm detail' },
+  nature: { label: '自然放空', ico: '🌄', desc: '偏爱徒步 / 山水慢游', theme: '山水', imgStyle: 'misty green mountains and lake reflection, serene wide view' },
+  photo:  { label: '出片打卡', ico: '📸', desc: '偏爱建筑美学 / 夜景', theme: '光影', imgStyle: 'night scene with glowing lanterns, cinematic blue hour' }
+};
+const ORDER_D = ['nanchang', 'ruijin', 'yongxin'];
+const ORDER_P = ['taste', 'craft', 'nature', 'photo'];
+const state = { dest: 'ruijin', prefs: new Set(['craft']) };
+
+/* ============ 渲染参数面板 ============ */
+document.getElementById('destGrid').innerHTML = ORDER_D.map(k => {
+  const d = DESTS[k];
+  return `<div class="dest-opt${k === state.dest ? ' on' : ''}" data-k="${k}" role="radio" aria-checked="${k === state.dest}" tabindex="0">
+    <span class="dico">${d.ico}</span><b>${d.label}</b><i>${d.short} · ${k === 'nanchang' ? 'CITY WALK' : k === 'ruijin' ? 'ANCIENT' : 'NATURE'}</i></div>`;
+}).join('');
+document.getElementById('prefGrid').innerHTML = ORDER_P.map(k => {
+  const p = PREFS[k];
+  return `<div class="pref-opt${state.prefs.has(k) ? ' on' : ''}" data-k="${k}" role="checkbox" aria-checked="${state.prefs.has(k)}" tabindex="0">
+    <span class="pico">${p.ico}</span><span><b>${p.label}</b><i>${p.desc}</i></span></div>`;
+}).join('');
+
+document.querySelectorAll('.dest-opt').forEach(el => el.addEventListener('click', () => {
+  state.dest = el.dataset.k;
+  document.querySelectorAll('.dest-opt').forEach(o => { o.classList.toggle('on', o === el); o.setAttribute('aria-checked', o === el); });
+  syncPrompt();
+}));
+document.querySelectorAll('.pref-opt').forEach(el => el.addEventListener('click', () => {
+  const k = el.dataset.k;
+  state.prefs.has(k) ? state.prefs.delete(k) : state.prefs.add(k);
+  el.classList.toggle('on', state.prefs.has(k));
+  el.setAttribute('aria-checked', state.prefs.has(k));
+  syncPrompt();
+}));
+
+/* ============ Prompt 实时拆解 ============ */
+function syncPrompt() {
+  const d = DESTS[state.dest];
+  const ps = [...state.prefs].map(k => PREFS[k].label + '（' + PREFS[k].desc + '）');
+  document.getElementById('rawChips').innerHTML =
+    `<span class="pchip">目的地：${d.label}</span>` +
+    ps.map(x => `<span class="pchip">偏好：${x}</span>`).join('') +
+    `<span class="pchip">季节：秋季</span>`;
+  const first = state.prefs.size ? [...state.prefs][0] : 'craft';
+  document.getElementById('promptOut').textContent =
+    `A digital illustration of ${d.scene}, autumn leaves, ${d.subject[first]}, warm lighting, isometric style, tech-blue accents, masterpiece, high quality.`;
+}
+syncPrompt();
+
+/* ============ AI 生图加载（含占位图检测与重试） ============ */
+function imgUrl(prompt, size) {
+  return 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=' + encodeURIComponent(prompt) + '&image_size=' + (size || 'landscape_16_9');
+}
+const isPh = img => img.naturalWidth === 1832 && img.naturalHeight === 1832;
+let genSeq = 0;
+function setupImg(img) {
+  if (!img || !img.dataset.prompt) return;
+  let tries = 0, timer = null;
+  const attempt = bust => {
+    img.classList.remove('loaded', 'failed');
+    img.src = imgUrl(img.dataset.prompt, img.dataset.size) + (bust ? '&r=' + (++genSeq) : '');
+  };
+  img.addEventListener('load', () => {
+    if (isPh(img)) {
+      if (tries < 5) { tries++; timer = setTimeout(() => attempt(true), 3000 * tries); }
+      else img.classList.add('failed');
+    } else { clearTimeout(timer); img.classList.add('loaded'); }
+  });
+  img.addEventListener('error', () => {
+    if (tries < 3) { tries++; timer = setTimeout(() => attempt(tries > 1), 1500 * tries); }
+    else img.classList.add('failed');
+  });
+  setTimeout(() => attempt(false), Math.min((++genSeq) * 320, 4000));
+}
+document.querySelectorAll('img.gen').forEach(setupImg);
+
+/* ============ 生成逻辑 ============ */
+const genBtn = document.getElementById('genBtn');
+genBtn.addEventListener('click', () => {
+  if (!state.prefs.size) { toast('请至少选择一个偏好标签'); return; }
+  const d = DESTS[state.dest];
+  const firstPref = [...state.prefs][0];
+  const p = PREFS[firstPref];
+
+  genBtn.disabled = true;
+  genBtn.textContent = '⏳ 元乡引擎生成中…';
+  const body = document.getElementById('resultBody');
+  const empty = document.getElementById('resultEmpty');
+  empty.style.display = 'none';
+  body.classList.remove('show');
+  body.classList.add('generating');
+  body.style.display = 'flex';
+
+  /* Prompt 拆解与参数留痕同步更新 */
+  syncPrompt();
+  document.getElementById('pSeed').textContent = String(Math.floor(100000 + Math.random() * 8999999));
+
+  setTimeout(() => {
+    body.classList.remove('generating');
+    body.classList.add('show');
+    document.getElementById('routeTitle').textContent =
+      `为你定制的『${d.short}${p.theme}之旅』`;
+    document.getElementById('routeList').innerHTML = d.routes[firstPref]
+      .map(r => `<li><b>${r[0]}</b><span>${r[1]}</span></li>`).join('');
+    const cover = document.getElementById('coverImg');
+    cover.classList.remove('loaded', 'failed');
+    cover.dataset.prompt = `A digital illustration poster of ${d.imgScene}, ${p.imgStyle}, isometric style, tech-blue accents, masterpiece, high quality, no political symbols`;
+    cover.dataset.size = 'landscape_16_9';
+    document.getElementById('coverCap').textContent = `AIGC 实时生成 · ${d.label} × ${p.label} · 数字纪念册封面`;
+    setupImg(cover);
+    genBtn.disabled = false;
+    genBtn.textContent = '🪄 再次生成，换一种灵感';
+    toast(`元乡引擎已完成『${d.short}${p.theme}之旅』的生成`);
+  }, 1800);
+});
+
+/* ============ 模块三：纪念册内页 ============ */
+const ALBUM = [
+  { t: '内页 01 · 风物对比页', prompt: 'Split layout food magazine page, left half realistic photography of Nanchang mixed rice noodles bowl, right half Chinese ink painting style of the same noodles, creative contrast, high quality',
+    q: '在南昌，万物皆可拌', d: '写实摄影 × AI 水墨转绘，同一条街的两种记忆。' },
+  { t: '内页 02 · 手绘地图页', prompt: 'Hand-drawn illustrated tourist map of an ancient Chinese street with landmarks and food stalls, isometric cute style, blue and warm yellow palette, map poster, high quality',
+    q: '一图在手，老巷任走', d: '景点手绘地图，AIGC 生成的逛吃路线一目了然。' },
+  { t: '内页 03 · 风物插画页', prompt: 'Chinese ink and watercolor illustration of hakka lei tea bowl with bamboo whisk and old courtyard, warm autumn tones, poster design, high quality',
+    q: '把瑞金的烟火气，装进背包', d: '非遗风物插画 + 真实美食推荐，可分享可收藏。' }
+];
+document.getElementById('albumGrid').innerHTML = ALBUM.map((a, i) => `
+  <div class="album-card rv" data-d="${i + 1}">
+    <div class="aim"><img class="gen" loading="lazy" alt="${a.t}" data-prompt="${a.prompt}" data-size="landscape_4_3"></div>
+    <div class="abody"><h4>${a.t}</h4><p>${a.d}</p><span class="quote">“${a.q}”</span></div>
+  </div>`).join('');
+document.querySelectorAll('img.gen').forEach(img => { if (!img.src && !img.dataset.done) { img.dataset.done = 1; setupImg(img); } });
+
+/* ============ 滚动显现 ============ */
+const io = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+}), { threshold: .12 });
+document.querySelectorAll('.rv').forEach(el => io.observe(el));
+
+/* ============ Toast ============ */
+let toastTimer = null;
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2600);
+}
+</script>
+</body>
+</html>

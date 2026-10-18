@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>寻迹路线详情 · 元乡·江西</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --navy:#16324c;--blue:#2f80ed;--sky:#6cc4f2;--yellow:#f5b301;
+  --ink:#20304a;--muted:#5b7286;
+  --glass:rgba(255,255,255,.62);--stroke:rgba(255,255,255,.75);
+  --shadow:0 20px 40px -18px rgba(21,52,90,.28);
+  --font-display:"Noto Serif SC","Songti SC","STSong","SimSun",Georgia,serif;
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+  color:var(--ink);line-height:1.85;min-height:100vh;overflow-x:hidden;
+  background:linear-gradient(160deg,#eaf4fb 0%,#f7fbff 45%,#eef3fa 100%);
+}
+/* 背景光斑 */
+.blobs{position:fixed;inset:0;z-index:-1;pointer-events:none}
+.blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:.5}
+.b1{width:520px;height:520px;background:radial-gradient(circle,#9ec9f6,transparent 65%);top:-140px;left:-120px;animation:drift 22s ease-in-out infinite alternate}
+.b2{width:460px;height:460px;background:radial-gradient(circle,#ffe6a6,transparent 65%);bottom:-160px;right:-120px;animation:drift 26s ease-in-out infinite alternate-reverse}
+.b3{width:340px;height:340px;background:radial-gradient(circle,#c9b6f0,transparent 65%);top:38%;left:60%;animation:drift 30s ease-in-out infinite alternate}
+@keyframes drift{to{transform:translate(60px,40px) scale(1.08)}}
+
+/* 顶栏 */
+.topbar{
+  position:sticky;top:14px;z-index:60;width:min(1160px,94%);margin:14px auto 0;
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+  padding:12px 24px;border-radius:50px;
+  background:var(--glass);border:1px solid var(--stroke);
+  backdrop-filter:blur(18px) saturate(170%);-webkit-backdrop-filter:blur(18px) saturate(170%);
+  box-shadow:0 14px 30px -14px rgba(21,52,90,.25);
+}
+.brand{display:inline-flex;align-items:center;gap:9px;text-decoration:none;font-family:var(--font-display);font-weight:700;font-size:1.18rem;color:var(--navy)}
+.brand svg{width:22px;height:22px}
+.crumb{font-size:.82rem;color:var(--muted);letter-spacing:2px}
+@media(max-width:640px){.crumb{display:none}}
+
+/* 路线 Hero */
+.hero-route{position:relative;min-height:58vh;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;margin-top:-72px;padding-top:72px}
+.hero-route .hero-bg{position:absolute;inset:0;z-index:0}
+.hero-route .hero-bg img{width:100%;height:100%;object-fit:cover;transform:scale(1.06);animation:slowzoom 18s ease-in-out infinite alternate}
+@keyframes slowzoom{to{transform:scale(1.14)}}
+.hero-route .hero-bg::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(9,25,44,.5) 0%,rgba(9,25,44,.62) 55%,#f4f9fd 100%);
+}
+.hero-inner{position:relative;z-index:2;padding:110px 24px 90px;max-width:860px}
+.no-badge{
+  display:inline-block;padding:7px 20px;border-radius:30px;margin-bottom:18px;
+  font-size:.85rem;font-weight:700;letter-spacing:3px;color:#20315a;
+  background:var(--yellow);box-shadow:0 10px 24px -8px rgba(245,179,1,.7);
+}
+.hero-inner h1{
+  font-family:var(--font-display);font-size:clamp(2.2rem,5.4vw,3.6rem);
+  color:#fff;letter-spacing:4px;text-shadow:0 4px 26px rgba(6,24,42,.55);line-height:1.3;
+}
+.hero-inner .theme-en{display:block;margin-top:8px;font-size:.85rem;letter-spacing:6px;color:rgba(255,255,255,.82);font-family:Georgia,serif}
+.hero-inner .intro{
+  margin:26px auto 0;max-width:620px;padding:16px 26px;border-radius:18px;
+  color:#fff;font-size:1.02rem;
+  background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.32);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  text-shadow:0 1px 8px rgba(6,24,42,.4);
+}
+
+/* 通用容器 */
+.container{width:min(1160px,92%);margin:0 auto}
+.sec-head{text-align:center;margin:76px 0 54px}
+.sec-head .eyebrow{
+  display:inline-flex;align-items:center;gap:10px;font-size:.8rem;letter-spacing:4px;
+  color:var(--blue);font-weight:700;text-transform:uppercase;
+}
+.sec-head .eyebrow::before,.sec-head .eyebrow::after{content:"";width:36px;height:1px;background:linear-gradient(90deg,transparent,var(--sky))}
+.sec-head .eyebrow::after{background:linear-gradient(90deg,var(--sky),transparent)}
+.sec-head h2{font-family:var(--font-display);font-size:clamp(1.7rem,3.4vw,2.4rem);color:var(--navy);letter-spacing:3px;margin-top:10px}
+
+/* 行程时间轴 */
+.timeline{position:relative;max-width:820px;margin:0 auto;padding-bottom:10px}
+.tl-item{position:relative;padding:0 0 36px 92px;opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
+.tl-item.in{opacity:1;transform:none}
+.tl-item::before{content:"";position:absolute;left:27px;top:64px;bottom:2px;width:2px;background:linear-gradient(180deg,#8dbef0,rgba(141,190,240,.1))}
+.tl-item:last-child::before{display:none}
+.tl-dot{
+  position:absolute;left:0;top:0;width:56px;height:56px;border-radius:50%;
+  display:grid;place-items:center;font-family:var(--font-display);font-weight:800;
+  font-size:1.05rem;color:#fff;background:linear-gradient(135deg,#3f92f2,#6cc4f6);
+  box-shadow:0 14px 26px -10px rgba(47,128,237,.6);
+}
+.tl-card{
+  background:var(--glass);border:1px solid var(--stroke);border-radius:20px;
+  padding:24px 28px;backdrop-filter:blur(14px) saturate(160%);-webkit-backdrop-filter:blur(14px) saturate(160%);
+  box-shadow:var(--shadow);transition:transform .35s ease,box-shadow .35s ease;
+}
+.tl-card:hover{transform:translateY(-5px);box-shadow:0 28px 50px -20px rgba(21,52,90,.4)}
+.tl-card h3{font-family:var(--font-display);font-size:1.3rem;color:var(--navy);letter-spacing:1px;margin-bottom:8px}
+.tl-card h3 small{font-family:Georgia,serif;font-size:.72rem;color:var(--sky);letter-spacing:2px;margin-left:10px;font-weight:400}
+.tl-card p{color:var(--muted);font-size:.96rem}
+.tl-tip{
+  display:inline-flex;align-items:flex-start;gap:8px;margin-top:14px;
+  padding:7px 16px;border-radius:30px;font-size:.82rem;line-height:1.6;
+  color:#8a6a10;background:rgba(255,201,77,.28);border:1px solid rgba(245,179,1,.45);
+}
+.tl-tip::before{content:"✦";flex:none;line-height:1.6}
+
+/* 扩展板块：核心地标 / 美食街区 / 漫步节奏 */
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 4px}
+.schip{
+  padding:4px 14px;border-radius:20px;font-size:.78rem;font-weight:600;
+  color:#8a6a10;background:rgba(255,201,77,.3);border:1px solid rgba(245,179,1,.45);
+}
+.xsec{max-width:920px;margin:64px auto 0}
+.xhead{display:flex;align-items:center;gap:14px;margin-bottom:22px}
+.xicon{
+  width:46px;height:46px;border-radius:14px;display:grid;place-items:center;flex:none;
+  font-family:var(--font-display);font-weight:800;font-size:1.15rem;color:#fff;
+  background:linear-gradient(135deg,#3f92f2,#6cc4f6);
+  box-shadow:0 12px 24px -10px rgba(47,128,237,.55);
+}
+.xhead h3{font-family:var(--font-display);font-size:1.5rem;color:var(--navy);letter-spacing:2px}
+.xdesc{max-width:920px;margin:-6px 0 20px;color:var(--muted);font-size:.95rem;line-height:1.8}
+@media(max-width:980px){.xdesc{margin-left:0;margin-right:0}}
+.xcard{
+  background:var(--glass);border:1px solid var(--stroke);border-radius:18px;
+  padding:20px 24px;margin-bottom:16px;backdrop-filter:blur(14px) saturate(160%);
+  -webkit-backdrop-filter:blur(14px) saturate(160%);box-shadow:0 16px 32px -18px rgba(21,52,90,.3);
+  transition:transform .35s ease,box-shadow .35s ease;
+}
+.xcard:hover{transform:translateY(-4px);box-shadow:0 26px 46px -18px rgba(21,52,90,.4)}
+.xcard h4{font-family:var(--font-display);color:var(--navy);font-size:1.12rem;margin-bottom:4px}
+.xcard h4 .xno{color:var(--blue);margin-right:8px;font-family:Georgia,serif}
+.xcard p{color:var(--muted);font-size:.93rem}
+.rhythm{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.rcard{
+  background:var(--glass);border:1px solid var(--stroke);border-radius:18px;
+  padding:20px 22px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  box-shadow:0 16px 32px -18px rgba(21,52,90,.3);transition:transform .35s ease;
+}
+.rcard:hover{transform:translateY(-4px)}
+.rcard h4{font-family:var(--font-display);color:var(--navy);font-size:1.08rem;margin-bottom:10px;padding-bottom:10px;border-bottom:1px dashed rgba(47,128,237,.3)}
+.rcard ol{list-style:none;counter-reset:step}
+.rcard li{
+  counter-increment:step;position:relative;padding:5px 0 5px 30px;
+  color:var(--muted);font-size:.9rem;line-height:1.7;
+}
+.rcard li::before{
+  content:counter(step,decimal-leading-zero);position:absolute;left:0;top:7px;
+  width:22px;height:22px;border-radius:50%;display:grid;place-items:center;
+  font-size:.62rem;font-weight:800;color:#fff;background:linear-gradient(135deg,#3f92f2,#6cc4f6);
+}
+@media(max-width:820px){.rhythm{grid-template-columns:1fr}}
+.rv{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
+.rv.in{opacity:1;transform:none}
+
+/* 其他路线 */
+.others{max-width:820px;margin:44px auto 90px;display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.ocard{
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+  padding:20px 24px;border-radius:18px;text-decoration:none;
+  background:var(--glass);border:1px solid var(--stroke);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  box-shadow:0 16px 30px -18px rgba(21,52,90,.3);
+  transition:transform .35s ease,box-shadow .35s ease;
+}
+.ocard:hover{transform:translateY(-5px);box-shadow:0 26px 46px -18px rgba(21,52,90,.42)}
+.ocard .oname{font-family:var(--font-display);font-weight:700;font-size:1.08rem;color:var(--navy)}
+.ocard .otheme{display:block;font-size:.8rem;color:var(--muted);letter-spacing:1px;margin-top:2px}
+.ocard .oarr{
+  flex:none;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;
+  color:var(--blue);background:rgba(47,128,237,.1);transition:.3s;
+}
+.ocard:hover .oarr{background:var(--yellow);color:#20315a;transform:rotate(-45deg)}
+.ocard .oarr svg{width:18px;height:18px}
+@media(max-width:680px){.others{grid-template-columns:1fr}.tl-item{padding-left:78px}}
+
+/* 页脚 */
+footer{padding:30px 0 34px;text-align:center;color:var(--muted);font-size:.82rem;letter-spacing:1px;border-top:1px solid rgba(21,52,90,.08)}
+
+/* 图片骨架微光 */
+img.gen{opacity:0;filter:blur(8px);transform:scale(1.03);transition:opacity .9s ease,filter .9s ease,transform .9s ease;background:linear-gradient(100deg,#dfe9f2 30%,#f2f7fb 50%,#dfe9f2 70%);background-size:200% 100%;animation:shimmer 1.6s linear infinite}
+img.gen.loaded{opacity:1;filter:blur(0);transform:scale(1)}
+@keyframes shimmer{to{background-position:-200% 0}}
+img.gen.failed{opacity:.35;animation:none;filter:none}
+</style>
+</head>
+<body>
+
+<div class="blobs"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
+
+<header class="topbar">
+  <a class="brand" href="马尔代夫旅游网站.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#2f80ed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.1-7-11a7 7 0 0 1 14 0c0 4.9-7 11-7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>
+    元乡<em>·江西</em>
+  </a>
+  <span class="crumb" id="crumb">寻迹路线 · 路线详情</span>
+</header>
+
+<section class="hero-route">
+  <div class="hero-bg"><img class="gen" id="heroImg" alt="路线风景"></div>
+  <div class="hero-inner">
+    <span class="no-badge" id="noBadge"></span>
+    <h1 id="rTitle"></h1>
+    <span class="theme-en" id="themeEn"></span>
+    <p class="intro" id="rIntro"></p>
+  </div>
+</section>
+
+<main class="container">
+  <div class="sec-head">
+    <span class="eyebrow">逐站打卡</span>
+    <h2>这条线路这样玩</h2>
+  </div>
+  <div class="timeline" id="timeline"></div>
+
+  <div id="extraWrap"></div>
+
+  <div class="sec-head" style="margin-top:26px">
+    <span class="eyebrow">继续探索</span>
+    <h2>其他寻迹路线</h2>
+  </div>
+  <div class="others" id="others"></div>
+</main>
+
+<footer>© 2026 元乡·江西 — 保留所有权利</footer>
+
+<script>
+/* ============ 路线数据 ============ */
+const ROUTES = {
+  nanchang: {
+    no: '第一站', theme: '城市漫步线', en: 'NANCHANG · CITY WALK',
+    title: '南昌 · 八一广场周边',
+    prompt: 'Nanchang Bayi Square city skyline at dusk Jiangxi China, modern city square with monument, warm city lights reflection, wide view travel photography',
+    intro: '这一站的重点不是单一纪念馆，而是纪念馆串联起的南昌当代市井生活圈。',
+    stops: [
+      { name: '八一广场 & 江西省美术馆', en: 'BAYI SQUARE',
+        desc: '广场是南昌的城市原点，适合拍开阔的城市天际线。旁边的江西省美术馆建筑本身就很出片。',
+        tip: '江西省美术馆记得提前预约' },
+      { name: '大士院街早市', en: 'DASHIYUAN MARKET',
+        desc: '南昌本地人的早餐聚集地，推荐打卡小罗子汤店、老南昌白糖糕、无矾鸡蛋油条。这里可以拍到“南昌灰瓦大字”和“大士院花墙”，很有老城生活气息。',
+        tip: '建议清晨前往，烟火气最足' },
+      { name: '万寿宫历史文化街区', en: 'WANSHOUGONG BLOCK',
+        desc: '保留了清末赣派民居的“三街五巷”肌理。重点逛仙丹市集（汇集文创零售和吹糖人、捏泥人等民俗）和匠心非遗馆（可以看到皮影主题和红色油纸伞等江右好物）。',
+        tip: '瓦罐奶茶是爆款，搭配南昌拌粉、白糖糕一起体验' },
+      { name: '珠宝街美食街', en: 'ZHOUBAO STREET',
+        desc: '从八一广场步行可达，是南昌人私藏的美食街，藏着最地道的南昌味道。',
+        tip: '适合傍晚边逛边吃' }
+    ],
+    extra: {
+      landmarks: {
+        title: '核心游玩地标', icon: '标',
+        items: [
+          { n: '01', t: '八一广场与八一起义纪念塔', chips: ['免费开放 · 全天可进入', '地铁 1/2 号线交汇'],
+            d: '广场始建于 1952 年，是南昌的城市原点与市民活动中心。中央矗立着 53.6 米高的八一南昌起义纪念塔，塔身庄重，广场开阔。适合清晨或傍晚来散步拍照，周边地铁 1/2 号线交汇，交通极为便利。' },
+          { n: '02', t: '江西省美术馆（八一广场西侧）', chips: ['免费 · 公众号提前预约', '周一闭馆 · 建议预留 1.5 小时'],
+            d: '从广场地下通道或步行几分钟即达，建筑带有鲜明的苏式风格，旋转楼梯与穹顶空间很适合拍照。馆内常设江西本土美术与主题书画展。' },
+          { n: '03', t: '八一起义纪念馆', chips: ['免费 · 官方公众号预约', '周一闭馆 · 约 1.5—2.5 小时'],
+            d: '从广场步行或地铁一站可达（八一馆站 5 号口出）。馆内包含新馆展厅与江西大旅社总指挥部旧址，通过文物与场景复原呈现历史脉络。' },
+          { n: '04', t: '万寿宫历史文化街区', chips: ['傍晚亮灯后氛围最好', '建议安排在行程后半段'],
+            d: '从纪念馆步行约 5 分钟即达。街区保留了“三街五巷”的赣派民居肌理，青砖黛瓦、青石板路。核心体验包括铁柱万寿宫古建筑群、非遗匠心馆（可看豫章刻瓷、赣发绣等现场展示），以及仙丹市集的文创摊位与民俗演绎（吹糖人、捏泥人等）。' }
+        ]
+      },
+      food: {
+        title: '周边美食街区', icon: '味',
+        items: [
+          { t: '大士院街 · 早餐与市井烟火', chips: ['人均十几元吃到饱', '建议作为一天行程的起点'],
+            d: '南昌本地人真正的早餐根据地，清晨六点整条街就已热气升腾。核心组合是小罗子汤店的拌粉+皮蛋肉饼汤——米粉裹满辣油，萝卜干、花生米增加脆感，瓦罐汤用炭火煨足数小时，鲜醇解辣。街口现炸白糖糕外酥内糯，裹一层绵白糖；油条包麻糍咸甜交织。街区改造后保留了八九十年代的复古墙绘与赣派牌楼，边走边拍也很出片。吃完早餐步行或短途前往广场。' },
+          { t: '珠宝街 · 全天候小吃集合', chips: ['人均二十元以内', '部分老店只收现金，建议备零钱'],
+            d: '紧邻八一广场与万寿宫，不过四百余米的老街聚集了大量经营数十年的本土小店。油条包麻糍是人气最高的单品，现炸油条裹手打麻糍，铺肉松、芝麻、花生碎；小邓臭豆腐下午三点开卖，淋上南昌特色腐乳甜辣酱；陈记手工绿豆饼现烤现卖，饼皮薄酥、馅料绵密。熊氏手工麻糍、章记夫妻煎饼、刘记白糖糕也都是排队常客，适合逛完广场和美术馆后顺路吃一轮。' },
+          { t: '羊子巷 · 赣菜小炒与夜宵', chips: ['步行约 10 分钟', '适合晚餐或夜宵收尾'],
+            d: '从八一广场步行约 10 分钟可达，700 米长的街巷以水煮、赣菜小炒和夜宵见长。小吴水煮的麻辣鲜香是本地人常推的选择，黄记瓦罐汤的皮蛋肉饼汤+拌粉组合性价比很高。想吃正经赣菜，李师傅家常菜馆（金盘路）的烧菜口碑很好，人均约 45 元；辣小鲜·南昌大排档（八一广场地标店）主打大排档氛围，黄豆烧鸡脚、蟹脚捞粉是招牌。店铺闭店时间较晚。' }
+        ]
+      },
+      rhythm: {
+        title: '建议漫步节奏', icon: '程',
+        items: [
+          { t: '上午 · 从早餐开始', steps: ['大士院街吃拌粉 + 瓦罐汤 + 白糖糕', '步行或短途前往八一广场，看纪念塔与广场空间', '进入江西省美术馆（约 1.5 小时）'] },
+          { t: '午后 · 文博与老街交错', steps: ['八一起义纪念馆（约 1.5—2 小时）', '步行至珠宝街', '边逛边吃油条包麻糍、臭豆腐、绿豆饼'] },
+          { t: '傍晚 · 赣派街区的亮灯时刻', steps: ['万寿宫历史文化街区，逛非遗馆与市集', '看古建筑群在灯光下的氛围', '晚餐选羊子巷的赣菜小炒或水煮，收尾一天的市井漫步'] }
+        ]
+      }
+    }
+  },
+  ruijin: {
+    no: '第二站', theme: '古街新韵线', en: 'RUIJIN · OLD STREET RENEWED',
+    title: '瑞金 · 象湖里文创街区',
+    prompt: 'Xianghuli cultural creative street Ruijin Jiangxi China at dusk, Hakka style old street with red lanterns and warm lights, travel photography',
+    intro: '这里是“红色旧址 + 非遗技艺”活化的典型样本，核心体验是在手作与美食中感受老街的新生。',
+    stops: [
+      { name: '非遗手作店铺', en: 'HERITAGE CRAFTS',
+        desc: '街区聚集了竹编、瑞墨等十余家非遗店铺。在竹编店可以看省级传承人将毛竹破篾、梳丝，制作小红军、红井等题材的竹编工艺品；瑞墨店则能看到将红军标语、红井元素融入墨锭设计的创新作品。',
+        tip: '竹编 · 瑞墨等十余家非遗店铺' },
+      { name: '“苏晓”主题文创集合店 &《少年家国梦》IP体验馆', en: 'IP STORE',
+        desc: '适合挑选兼具日常使用和收藏价值的文创产品，是街区里最年轻化的消费空间。',
+        tip: '日常可用、值得收藏的文创好物' },
+      { name: '擂茶牛市 & 客家小吃', en: 'LEICHA TEA',
+        desc: '必体验手打擂茶，街区里还有黄元米果、梅菜扣肉饼等客家风味。',
+        tip: '手打擂茶必体验' },
+      { name: '红色主题咖啡店', en: 'RED CAFE',
+        desc: '由返乡青年开设，自带老街小院天台，搭配特色文创，是年轻游客集中的打卡点。',
+        tip: '小院天台出片率高' },
+      { name: '瑞金方言墙', en: 'DIALECT WALL',
+        desc: '适合拍带有在地符号的打卡照，趣味性强。',
+        tip: '在地符号 · 趣味打卡' }
+    ],
+    extra: {
+      landmarks: {
+        title: '核心游玩体验 · 五坊七铺非遗', icon: '艺',
+        desc: '象湖里通过“一馆五坊七铺九店”的业态规划，将非遗从展柜里请出来，变成可以围观、可以上手、可以带走的日常。街区聚集了竹编、瑞墨等十余家非遗店铺，以及苏区版画、紫砂、制香、酱油、水酒等 25 个传统非遗项目。',
+        items: [
+          { n: '01', t: '竹编铺 · 看一根毛竹如何“成器”', chips: ['省级非遗 · 传承人杨荣仿', '30 多道工序现场可见', '节假日可亲子体验竹编'],
+            d: '瑞金传统竹编省级非遗传承人杨荣仿的店铺，是街区最值得停留的地方之一。毛竹经过破篾、劈条、分层、梳丝等 30 多道工序，变成精致的日用品和工艺品。传承人将瑞金的故事融入创作，打造出小红军、红井、八角楼等题材的竹编作品，既保留了手艺的温度，也让传统竹编有了当代的叙事入口。节假日不少家长会带孩子来体验竹编，亲手编一件小物，比单纯拍照更有记忆点。' },
+          { n: '02', t: '瑞墨铺 · 在千年墨香里“写”一点什么', chips: ['市级非遗 · 传承人杨永洪', '“六朝贡墨”之誉', '可观摩制墨 · 可执笔试墨'],
+            d: '瑞墨有“六朝贡墨”之誉，市级非遗传承人杨永洪在坚守古法制作的同时，将红军标语、红井等元素融入墨锭设计，让传统瑞墨贴合现代审美与市场需求。在“五坊七铺”的古韵空间里，可以观摩制墨流程，也可以拿起毛笔，用一方瑞墨在宣纸上落笔，体验墨香与书法交融的片刻安静。' },
+          { n: '03', t: '上阳书院 · 藏在宗祠里的公益课堂', chips: ['杨氏宗祠 · 原红军学校旧址', '常设书法公益课堂', '免费开放参观'],
+            d: '街区内的上阳书院时常有书法公益活动，孩子们围坐长桌，由书法协会的老师指导执笔运笔。授课场地所在的杨氏宗祠，曾是原中国工农红军学校旧址，本身就是一处有历史层叠感的空间。即使不参与活动，走进去看一看老建筑与书卷气共存的场景，也能感受到这条街“修旧如旧”的用心。' }
+        ]
+      },
+      food: {
+        title: '必吃美食 · 擂茶牛市', icon: '味',
+        desc: '「擂茶牛市」是象湖里美食体验的核心场景：中间集中设置共享桌椅，两边共 23 个档口，集齐瑞金所有乡镇最具特色的客家美食和小吃，真正可以“一站式吃遍瑞金”。',
+        items: [
+          { t: '瑞金牛肉汤 · 街区的“C位”招牌', chips: ['改造后仍占“C位”', '现场制作过程可见'],
+            d: '牛肉汤是陪伴一代代瑞金人成长的招牌味道，象湖里改造升级后，牛肉汤门店依然占据着“C位”。在擂茶牛市可以看到师傅现场制作的过程，热气翻涌中端出一碗鲜醇，是抵达瑞金后最直接的风味入口。' },
+          { t: '客家擂茶 · 从奶奶的灶台到网红打卡点', chips: ['传承人陈丽华擂茶馆', '现擂花生与茶叶', '专程排队的网红店'],
+            d: '擂茶牛市里的陈丽华是瑞金擂茶制作技艺的传承人，从小喝着擂茶长大，如今把这份传统做成了事业。她的擂茶馆已经成为街区里的网红打卡点，现擂的花生与茶叶在钵中散发出朴实的香气，不少游客专程排队来喝一碗。这里还有二十多岁的退伍青年曾鑫经营的手打擂茶店，一碗擂茶背后连着的是老区日常的人情故事。' },
+          { t: '黄元米果与客家小吃矩阵', chips: ['黄栀子水染色 · 金黄软糯', '街区 60 余种客家小吃活化传承'],
+            d: '黄元米果是不能错过的客家符号：糯米泡在黄栀子水中染色，蒸制后色泽金黄、口感软糯，是瑞金节庆餐桌上永远少不了的一道。在擂茶牛市，黄元米果的香味和牛肉汤的热气混在一起，构成了街区最具体的烟火气。街区共有 60 余种客家小吃在活化传承，饭包肉丸、酸菜包等也都值得边逛边尝。' },
+          { t: '红色主题咖啡 · 年轻人的歇脚处', chips: ['返乡青年陈彩霞开设', '老街小院天台出片'],
+            d: '走累了想坐下来，可以找那间由返乡青年陈彩霞开设的红色主题咖啡店。店铺自带老街小院天台，搭配特色文创，是年轻游客集中的打卡点。在一众传统小吃的包围中，一杯咖啡提供的是另一种节奏——坐在天台上看老街的屋顶与灯火，刚好是漫步中途的缓冲。' }
+        ]
+      },
+      rhythm: {
+        title: '与红色旧址的联动节奏', icon: '程',
+        desc: '象湖里最适合作为瑞金一日行程的晚间收尾：白天走“叶坪 → 红井 → 二苏大 → 纪念园”的红色主线，晚上把时间留给象湖里，用非遗手作和客家小吃完成从“历史现场”到“当下生活”的过渡。',
+        items: [
+          { t: '午后 · 从旧址群转向老街', steps: ['红井景区（门票约 30 元，可打井水、看列宁小学）', '顺路看一眼二苏大景区的“八角帽”大礼堂', '傍晚前后抵达象湖里'] },
+          { t: '傍晚 · 非遗手作与古街漫步', steps: ['趁天色还亮，先逛竹编铺和瑞墨铺，看手艺人的手上功夫', '有兴趣可以体验竹编或试墨', '青石板路两侧保留 55 栋历史建筑，修缮后的老宅立面本身就是散步的风景'] },
+          { t: '入夜 · 擂茶牛市与街区烟火', steps: ['钻进擂茶牛市，牛肉汤、黄元米果、手打擂茶一路吃过去', '节假日夜晚有无人机光影秀、非遗展演轮番上演', '灯笼高挂、老建筑轮廓与现代灯光交叠，收尾“古街新韵”的一天'] }
+        ]
+      }
+    }
+  },
+  yongxin: {
+    no: '第三站', theme: '山水慢游线', en: 'YONGXIN · SLOW TRAVEL',
+    title: '吉安 · 永新县',
+    prompt: 'Yongxin county Ji an Jiangxi China, green mountains with mirror-like lake and wooden boardwalk, quiet revolutionary village in morning mist, aerial travel photography',
+    intro: '这一站的关键词是“沉浸”：在真实的山水与村落里，通过互动体验感受老区的日常。',
+    stops: [
+      { name: '三湾改编景区（沉浸式互动）', en: 'SANWAN SCENIC AREA',
+        desc: '纪念馆内有互动展厅，可以体验“红军挑粮小道”。景区内的红枫湖亲水栈道适合秋季漫步，湖面如镜，可以租竹筏泛舟。如果带娃，红色拾光民宿的树屋和斗笠 DIY 体验很受欢迎。',
+        tip: '竹筏约 50 元/小时；亲子推荐树屋与斗笠 DIY' },
+      { name: '龙源口大捷景区', en: 'LONGYUANKOU BRIDGE',
+        desc: '核心打卡点是龙源口桥（单孔石拱桥），桥下水清见底，旁边有纪念塔和纪念馆，氛围原汁原味。这里不定期有非遗进景区活动，可以看到永新三角班、红军斗笠、油纸伞等项目的展演和手作体验。',
+        tip: '留意非遗进景区活动排期' },
+      { name: '贺页朵誓词广场', en: 'OATH SQUARE',
+        desc: '在才丰乡北田村，复原了榨油坊和宣誓场景，旁边有纪念馆。这里可以体验拓印“宣誓书”文创，用动手的方式带走一份记忆。',
+        tip: '拓印“宣誓书”文创体验' },
+      { name: '美食与非遗', en: 'LOCAL FLAVORS',
+        desc: '永新血鸭、酱萝卜老鸭汤是本地风味代表，和子四珍（酱姜、酱萝卜、橙皮、蜜茄）是省级非遗，可以在景区周边的民宿或非遗工坊品尝到。',
+        tip: '和子四珍为省级非遗' }
+    ],
+    extra: {
+      landmarks: {
+        title: '核心游玩体验 · 山水与手作沉浸', icon: '游',
+        desc: '永新的游玩重心集中在三湾与龙源口两处，核心逻辑是“沉浸”而非“参观”。纪念馆互动展厅、徒步栈道与非遗手作串联成一条“动手线”，适合用身体去丈量老区的山水与历史。',
+        items: [
+          { n: '01', t: '三湾改编景区 · 用身体丈量一段山路', chips: ['沉浸式互动展厅 · VR/全息影像', '竹筏约 50 元/小时', '红色拾光民宿 · 斗笠 DIY'],
+            d: '三湾改编纪念馆设有沉浸式互动展厅，可以体验“红军挑粮小道”徒步，沿途山路狭窄，走上一段就能真切感受到“扁担在肩”的分量。红色三湾沉浸式体验馆还运用 VR、全息影像等技术还原历史场景，“走完纪念馆再进体验馆”成为连贯的身体记忆。走出展厅，红枫湖亲水栈道是另一重节奏：秋季湖面如镜，枫叶倒映水中，可租竹筏泛舟，50 元/小时，穿行在湖光山色之间。景区内的红色拾光民宿提供斗笠 DIY 体验，亲手编一顶竹斗笠，比任何纪念品都更有“来过”的实感。' },
+          { n: '02', t: '龙源口大捷景区 · 在古桥上停一停', chips: ['单孔石拱桥 · 桥下水清见底', '沙盘推演 · 战地救护模拟', '望月亭 ·《十送红军》原唱地'],
+            d: '龙源口的核心打卡点是那座单孔石拱桥（龙源口桥），桥下水清见底，周边保留着纪念碑与古街肌理。景区内设置了战术沙盘推演和战地救护模拟等互动项目，把“历史现场”转化为可以动手参与的轻体验。望月亭是歌曲《十送红军》的原唱地，站在亭中听风过林梢，是这条线上难得的安静时刻。' },
+          { n: '03', t: '贺页朵誓词广场 · 带走一张自己拓的“宣誓书”', chips: ['才丰乡北田村', '榨油坊场景复原', '贺子珍纪念馆 · 红军挎包手作'],
+            d: '位于才丰乡北田村，复原了榨油坊场景。这里的特色体验是拓印“宣誓书”文创，用传统拓印的方式把一份记忆亲手带回家。如果对巾帼故事感兴趣，贺子珍纪念馆还有红军挎包手作项目，适合与前面的手作体验串联成一条“动手线”。' }
+        ]
+      },
+      food: {
+        title: '必吃风味 · 永新味道', icon: '味',
+        desc: '永新的美食在 2025 年完成了一次重要的品牌化转身：原本散落在乡间喜宴上的“十大罗碗”，被正式提升命名为“永新味道”，从祠堂走上品牌餐桌。',
+        items: [
+          { t: '酱萝卜老鸭汤 · 一碗不放盐的汤', chips: ['酱萝卜“三蒸三晒”历时一年', '瓦罐微火煨足三小时 · 无需加盐', '省级非遗“和子四珍”技艺延伸'],
+            d: '这是永新风味中最有“说服力”的一道。汤色澄澈如琥珀，入口咸鲜醇厚，回甘悠长——关键秘密在于酱萝卜。永新地处北纬 27 度食材带，酱萝卜需经“三蒸三晒”、历时一年方成，自带时间的咸鲜。与三年以上的散养麻鸭在瓦罐中微火煨足三小时，无需额外加盐，全靠酱萝卜与鸭肉本身交出味道。这道汤也是省级非遗“和子四珍”制作技艺的延伸应用。' },
+          { t: '永新血鸭 · 辣得停不下筷子的招牌', chips: ['2025 江西省休闲乡土特色菜金奖', '嫩水鸭配鲜红椒与永新水酒'],
+            d: '选用 2—3 个月的嫩水鸭，配鲜红椒、生姜、大蒜与永新水酒，鸭肉斩得细碎，裹着黑红酱汁，连皮带肉夹一筷，辣意直冲又舍不得放筷。永新血鸭曾代表吉安参赛，获 2025 年江西省休闲乡土特色菜金奖，是“永新味道”里最具辨识度的一张味觉名片。' },
+          { t: '南乡扣肉 · “十大罗碗”的头号大菜', chips: ['猛火焖蒸七八个小时', '垫底梅干菜比肉还抢手'],
+            d: '肥肉颤巍巍亮晶晶，筷子一戳就化在舌尖，底下垫的梅干菜吸饱了猪油香，在永新本地甚至比肉还抢手。经过七八个小时的猛火焖蒸，才得这一口酥烂。' },
+          { t: '和子四珍 · 可以带走的“永新甜”', chips: ['省级非遗 · 上千年历史', '酱姜配茶 · 蜜茄甜脆', '“香遇永新”礼盒一次带走'],
+            d: '即酱姜、酱萝卜、橙皮、蜜茄，以嫩生姜、白萝卜、橙子、茄子为主料，经酱制晒制而成，距今已有上千年历史，被列入江西省第二批非物质文化遗产代表性项目名录。其中蜜茄甜脆，是孩子和嗜甜者最容易入口的一款；酱姜则甘芳微咸，适合配茶。在永新的“香遇永新”礼盒中，可以一次性带走酱萝卜、白茶与黄酒的品鉴装，是把“永新味道”实体化的便捷选择。' }
+        ]
+      },
+      rhythm: {
+        title: '建议节奏 · 动手走完，坐下来吃', icon: '程',
+        desc: '永新适合作为一整天“身体参与 + 味觉收尾”的行程，与南昌、瑞金的“城市漫步 + 古街烟火”形成节奏上的差异。',
+        items: [
+          { t: '上午 · 三湾的徒步与手作', steps: ['三湾改编纪念馆沉浸式展厅', '挑粮小道徒步（量力走一段即可）', '红枫湖栈道漫步或租竹筏泛舟', '红色拾光民宿斗笠 DIY（如果开放体验）'] },
+          { t: '午后 · 龙源口的桥与风', steps: ['龙源口桥漫步，桥下水清见底', '望月亭小坐，听风过林梢', '根据景区当日安排，参与沙盘推演或战地救护模拟等轻体验'] },
+          { t: '傍晚 · 用“永新味道”收尾', steps: ['县城“永新味道”品牌店或三湾人家民宿村落', '酱萝卜老鸭汤 + 永新血鸭 + 南乡扣肉', '最后以蜜茄或酱姜清口，收尾“动手走完、坐下来吃”的一天'] }
+        ]
+      }
+    }
+  }
+};
+const ORDER = ['nanchang', 'ruijin', 'yongxin'];
+
+/* ============ 渲染 ============ */
+const key = new URLSearchParams(location.search).get('stop');
+const r = ROUTES[key] || ROUTES.nanchang;
+
+document.title = r.title + ' · 寻迹路线 — 元乡·江西';
+document.getElementById('crumb').textContent = '寻迹路线 · ' + r.no + ' ' + r.theme;
+const hero = document.getElementById('heroImg');
+hero.alt = r.title;
+hero.dataset.prompt = r.prompt;
+hero.dataset.size = 'landscape_16_9';
+document.getElementById('noBadge').textContent = r.no + ' · ' + r.theme;
+document.getElementById('rTitle').textContent = r.title;
+document.getElementById('themeEn').textContent = r.en;
+document.getElementById('rIntro').textContent = r.intro;
+
+document.getElementById('timeline').innerHTML = r.stops.map((s, i) => `
+  <div class="tl-item" style="transition-delay:${i * 0.08}s">
+    <div class="tl-dot">${String(i + 1).padStart(2, '0')}</div>
+    <div class="tl-card">
+      <h3>${s.name}<small>${s.en}</small></h3>
+      <p>${s.desc}</p>
+      <span class="tl-tip">${s.tip}</span>
+    </div>
+  </div>`).join('');
+
+document.getElementById('others').innerHTML = ORDER.filter(k => k !== key).map(k => {
+  const o = ROUTES[k];
+  return `<a class="ocard" href="路线详情.html?stop=${k}">
+    <span><span class="oname">${o.no}：${o.title}</span><span class="otheme">${o.theme} · ${o.stops.length} 个打卡点</span></span>
+    <span class="oarr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+  </a>`;
+}).join('');
+
+/* ============ AI 生图加载 ============ */
+function imgUrl(prompt, size) {
+  return 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=' + encodeURIComponent(prompt) + '&image_size=' + (size || 'landscape_16_9');
+}
+/* 占位图检测：生成排队时返回固定占位图（1832x1832），需换参重试 */
+const isPh = img => img.naturalWidth === 1832 && img.naturalHeight === 1832;
+let genSeq = 0;
+function setupImg(img) {
+  if (!img || !img.dataset.prompt) return;
+  let tries = 0, timer = null;
+  const attempt = bust => {
+    img.classList.remove('loaded', 'failed');
+    img.src = imgUrl(img.dataset.prompt, img.dataset.size) + (bust ? '&r=' + (++genSeq) : '');
+  };
+  img.addEventListener('load', () => {
+    if (isPh(img)) {
+      if (tries < 5) { tries++; timer = setTimeout(() => attempt(true), 3000 * tries); }
+      else img.classList.add('failed');
+    } else {
+      clearTimeout(timer);
+      img.classList.add('loaded');
+    }
+  });
+  img.addEventListener('error', () => {
+    if (tries < 3) { tries++; timer = setTimeout(() => attempt(tries > 1), 1500 * tries); }
+    else img.classList.add('failed');
+  });
+  setTimeout(() => attempt(false), Math.min((++genSeq) * 320, 4000));  // 错峰请求
+}
+document.querySelectorAll('img.gen').forEach(setupImg);
+
+/* ============ 滚动显现 ============ */
+const io = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+}), { threshold: .12 });
+document.querySelectorAll('.tl-item').forEach(el => io.observe(el));
+
+/* ============ 扩展板块：核心地标 / 美食街区 / 漫步节奏 ============ */
+const ex = r.extra;
+if (ex) {
+  const xhead = x => `<div class="xhead"><span class="xicon">${x.icon}</span><h3>${x.title}</h3></div>${x.desc ? `<p class="xdesc">${x.desc}</p>` : ''}`;
+  let html = '';
+  html += `<div class="xsec">${xhead(ex.landmarks)}${ex.landmarks.items.map(i => `
+    <div class="xcard rv">
+      <h4><span class="xno">${i.n}</span>${i.t}</h4>
+      <div class="chips">${i.chips.map(c => `<span class="schip">${c}</span>`).join('')}</div>
+      <p>${i.d}</p>
+    </div>`).join('')}</div>`;
+  html += `<div class="xsec">${xhead(ex.food)}${ex.food.items.map(i => `
+    <div class="xcard rv">
+      <h4>${i.t}</h4>
+      <div class="chips">${i.chips.map(c => `<span class="schip">${c}</span>`).join('')}</div>
+      <p>${i.d}</p>
+    </div>`).join('')}</div>`;
+  html += `<div class="xsec">${xhead(ex.rhythm)}<div class="rhythm">${ex.rhythm.items.map(i => `
+    <div class="rcard rv">
+      <h4>${i.t}</h4>
+      <ol>${i.steps.map(s => `<li>${s}</li>`).join('')}</ol>
+    </div>`).join('')}</div></div>`;
+  document.getElementById('extraWrap').innerHTML = html;
+  document.querySelectorAll('.rv').forEach(el => io.observe(el));
+}
+</script>
+</body>
+</html>

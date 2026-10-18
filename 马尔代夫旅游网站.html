@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>马尔代夫 · 旅行 — 记忆之地</title>
+<meta name="description" content="元乡·江西：用AIGC数字科技重构革命老区文旅体验——寻迹路线、风物市集、在地栖居与数字共创。">
+<style>
+/* ========== 基础与变量 ========== */
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --navy:#0d2b45;
+  --ink:#16324a;
+  --muted:#5b7690;
+  --blue:#2f80ed;
+  --sky:#56ccf2;
+  --yellow:#ffc94d;
+  --yellow-deep:#f5b301;
+  --glass:rgba(255,255,255,.58);
+  --glass-strong:rgba(255,255,255,.78);
+  --stroke:rgba(255,255,255,.75);
+  --ring:rgba(47,128,237,.16);
+  --radius:22px;
+  --shadow:0 24px 50px -22px rgba(13,43,69,.28);
+  --neu:10px 10px 26px rgba(13,43,69,.10),-10px -10px 26px rgba(255,255,255,.95);
+  --font-display:Georgia,"Times New Roman","Songti SC","STSong","SimSun",serif;
+  --font-body:"PingFang SC","Microsoft YaHei","Segoe UI",system-ui,sans-serif;
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font-body);
+  color:var(--ink);
+  background:#eef6fc;
+  overflow-x:hidden;
+  line-height:1.7;
+}
+::selection{background:var(--yellow);color:var(--navy)}
+section{scroll-margin-top:96px}
+img{display:block;max-width:100%}
+a{text-decoration:none;color:inherit}
+.container{width:min(1160px,92%);margin:0 auto}
+
+/* 滚动条 */
+::-webkit-scrollbar{width:10px}
+::-webkit-scrollbar-track{background:#e4eef7}
+::-webkit-scrollbar-thumb{background:linear-gradient(var(--blue),var(--sky));border-radius:8px}
+
+/* ========== 背景光斑 ========== */
+.blobs{position:fixed;inset:0;z-index:-2;overflow:hidden;pointer-events:none}
+.blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:.55;animation:drift 22s ease-in-out infinite alternate}
+.blob.b1{width:520px;height:520px;left:-140px;top:-120px;background:radial-gradient(circle,#9bd7ff,transparent 65%)}
+.blob.b2{width:460px;height:460px;right:-120px;top:22%;background:radial-gradient(circle,#ffe9a8,transparent 65%);animation-delay:-6s}
+.blob.b3{width:560px;height:560px;left:22%;bottom:-220px;background:radial-gradient(circle,#a8c8ff,transparent 65%);animation-delay:-12s}
+.blob.b4{width:380px;height:380px;right:16%;bottom:6%;background:radial-gradient(circle,#b5f0e3,transparent 65%);animation-delay:-3s}
+@keyframes drift{from{transform:translate(0,0) scale(1)}to{transform:translate(60px,40px) scale(1.12)}}
+
+/* AI 生成图片：骨架微光 + 模糊淡入 */
+img.gen{
+  width:100%;height:100%;object-fit:cover;
+  opacity:0;transform:scale(1.06);filter:blur(16px);
+  background:linear-gradient(110deg,#d8ecfa 30%,#f2f9ff 46%,#d8ecfa 62%);
+  background-size:220% 100%;
+  animation:shimmer 1.6s linear infinite;
+  transition:opacity .9s ease,transform .9s ease,filter .9s ease;
+}
+img.gen.loaded{opacity:1;transform:scale(1);filter:blur(0);animation:none}
+@keyframes shimmer{from{background-position:120% 0}to{background-position:-120% 0}}
+
+/* ========== 滚动进度条 ========== */
+#progress{position:fixed;top:0;left:0;height:3px;width:0;z-index:120;
+  background:linear-gradient(90deg,var(--blue),var(--sky),var(--yellow));border-radius:0 3px 3px 0;
+  box-shadow:0 0 12px rgba(86,204,242,.8)}
+
+/* ========== 导航栏（毛玻璃胶囊） ========== */
+.nav-wrap{position:fixed;top:16px;left:0;right:0;z-index:100;display:flex;justify-content:center;padding:0 16px}
+.nav{
+  width:min(1160px,100%);
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding:12px 22px;border-radius:60px;
+  background:var(--glass);border:1px solid var(--stroke);
+  backdrop-filter:blur(20px) saturate(170%);-webkit-backdrop-filter:blur(20px) saturate(170%);
+  box-shadow:0 12px 34px -14px rgba(13,43,69,.25);
+  transition:padding .35s ease,box-shadow .35s ease,background .35s ease;
+}
+.nav.scrolled{padding:8px 22px;background:var(--glass-strong);box-shadow:0 16px 40px -16px rgba(13,43,69,.4)}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-size:1.25rem;color:var(--navy);font-weight:700;letter-spacing:.5px}
+.brand svg{width:26px;height:26px}
+.brand em{font-style:normal;color:var(--blue)}
+.nav-links{display:flex;gap:6px;list-style:none}
+.nav-links a{
+  position:relative;padding:9px 16px;border-radius:40px;font-size:.95rem;color:var(--ink);
+  transition:color .25s,background .25s,transform .25s;
+}
+.nav-links a::after{
+  content:"";position:absolute;left:50%;bottom:5px;width:0;height:2px;border-radius:2px;
+  background:var(--yellow-deep);transition:width .3s ease,left .3s ease;
+}
+.nav-links a:hover{color:var(--blue);transform:translateY(-1px)}
+.nav-links a:hover::after{width:45%;left:27%}
+.nav-links a.active{background:rgba(47,128,237,.12);color:var(--blue);font-weight:600}
+.nav-links a.active::after{width:45%;left:27%}
+.burger{display:none;background:none;border:0;cursor:pointer;padding:6px}
+.burger span{display:block;width:24px;height:2.5px;background:var(--navy);margin:5px 0;border-radius:2px;transition:.35s}
+.nav.open .burger span:nth-child(1){transform:translateY(7.5px) rotate(45deg)}
+.nav.open .burger span:nth-child(2){opacity:0}
+.nav.open .burger span:nth-child(3){transform:translateY(-7.5px) rotate(-45deg)}
+
+/* ========== Hero ========== */
+.hero{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden}
+.hero-bg{position:absolute;left:0;top:0;right:0;height:120%;z-index:-1;will-change:transform}
+.hero-bg .slide{position:absolute;inset:0;opacity:0;transition:opacity 1.5s ease}
+.hero-bg .slide.active{opacity:1}
+.hero-bg .slide img{width:100%;height:100%;object-fit:cover}
+.hero-bg .slide.active img{animation:kenburns 7s ease-out forwards}
+@keyframes kenburns{from{transform:scale(1.09)}to{transform:scale(1)}}
+.hero::after{content:"";position:absolute;inset:0;z-index:-1;
+  background:linear-gradient(180deg,rgba(6,34,56,.42) 0%,rgba(6,34,56,.10) 40%,rgba(238,246,252,.02) 72%,#eef6fc 100%)}
+.hero-inner{position:relative;padding:150px 20px 200px;color:#fff}
+.eyebrow-hero{
+  display:inline-flex;align-items:center;gap:12px;font-size:.8rem;letter-spacing:5px;text-transform:uppercase;
+  padding:10px 22px;border-radius:40px;margin-bottom:22px;
+  background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  animation:fadeDown 1s .1s both;
+}
+.eyebrow-hero i{width:26px;height:1px;background:rgba(255,255,255,.7)}
+.hero h1{
+  font-family:var(--font-display);font-weight:700;color:#fff;
+  font-size:clamp(3.4rem,9vw,6.8rem);line-height:1.08;letter-spacing:2px;
+  text-shadow:0 18px 50px rgba(4,26,44,.45);
+  animation:fadeDown 1s .25s both;
+}
+.hero h1 small{display:block;font-size:clamp(.9rem,2vw,1.15rem);letter-spacing:14px;font-family:var(--font-body);font-weight:400;opacity:.9;margin-top:10px}
+.hero-desc{
+  max-width:680px;margin:22px auto 34px;font-size:.98rem;line-height:1.95;color:#f2f8fd;
+  padding:14px 28px;border-radius:18px;
+  background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.28);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  text-shadow:0 2px 10px rgba(4,26,44,.45);
+  animation:fadeDown 1s .4s both;
+}
+.hero-dots{display:flex;justify-content:center;gap:10px;margin-top:30px;animation:fadeDown 1s .75s both}
+.hero-dots .dot{
+  width:10px;height:10px;border-radius:10px;border:0;cursor:pointer;padding:0;
+  background:rgba(255,255,255,.45);backdrop-filter:blur(6px);
+  box-shadow:0 2px 8px rgba(4,26,44,.35);transition:.4s cubic-bezier(.2,.8,.3,1);
+}
+.hero-dots .dot:hover{background:rgba(255,255,255,.8)}
+.hero-dots .dot.active{width:36px;background:var(--yellow)}
+.slide-label{
+  display:inline-flex;margin-top:18px;padding:8px 22px;border-radius:30px;
+  font-size:.82rem;letter-spacing:3px;color:#fff;
+  background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  transition:opacity .3s ease;animation:fadeDown 1s .8s both;
+}
+
+/* 按钮 */
+.btn{
+  position:relative;overflow:hidden;cursor:pointer;border:0;
+  padding:14px 34px;border-radius:50px;font-size:1rem;font-weight:700;font-family:var(--font-body);
+  color:#20315a;background:linear-gradient(135deg,#ffd76e,var(--yellow));
+  box-shadow:0 12px 26px -8px rgba(245,179,1,.65);
+  transition:transform .25s,box-shadow .25s,filter .25s;
+}
+.btn:hover{transform:translateY(-2px);box-shadow:0 18px 34px -8px rgba(245,179,1,.75);filter:brightness(1.03)}
+.btn:active{transform:translateY(0) scale(.97)}
+.ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.65);transform:scale(0);animation:rip .6s ease-out forwards;pointer-events:none}
+@keyframes rip{to{transform:scale(3.2);opacity:0}}
+@keyframes fadeDown{from{opacity:0;transform:translateY(-26px)}to{opacity:1;transform:none}}
+
+/* Hero 悬浮玻璃徽章 */
+.chip{
+  position:absolute;z-index:2;display:flex;align-items:center;gap:10px;
+  padding:12px 18px;border-radius:18px;font-size:.85rem;color:var(--navy);font-weight:600;
+  background:rgba(255,255,255,.55);border:1px solid var(--stroke);
+  backdrop-filter:blur(16px) saturate(160%);-webkit-backdrop-filter:blur(16px) saturate(160%);
+  box-shadow:var(--shadow);animation:float 6s ease-in-out infinite;
+}
+.chip b{font-family:var(--font-display);font-size:1.25rem;color:var(--blue)}
+.chip.c1{left:8%;top:34%}
+.chip.c2{right:7%;top:58%;animation-delay:-3s}
+.chip svg{width:26px;height:26px}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+
+/* ========== 三大目的地卡片（叠压 Hero） ========== */
+.top-cards{position:relative;z-index:6;margin-top:-130px}
+.top-cards .container{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+.tcard{
+  position:relative;height:320px;border-radius:var(--radius);overflow:hidden;cursor:pointer;
+  border:1px solid rgba(255,255,255,.7);box-shadow:var(--shadow);
+  transition:transform .45s cubic-bezier(.2,.8,.25,1),box-shadow .45s;
+}
+.tcard:hover{transform:translateY(-12px) scale(1.02);box-shadow:0 40px 70px -24px rgba(13,43,69,.45)}
+.tcard img{position:absolute;inset:0;transition:transform .8s ease}
+.tcard:hover img{transform:scale(1.1)}
+.tcard::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,30,50,.05) 30%,rgba(6,30,50,.72));transition:opacity .4s}
+.tcard .tinfo{position:absolute;left:22px;bottom:20px;z-index:2;color:#fff}
+.tcard .tinfo span{font-size:.78rem;letter-spacing:3px;text-transform:uppercase;opacity:.85}
+.tcard .tinfo h3{font-family:var(--font-display);font-size:1.9rem;line-height:1.2}
+.tcard .go{
+  position:absolute;right:18px;bottom:18px;z-index:2;width:44px;height:44px;border-radius:50%;
+  display:grid;place-items:center;color:#fff;background:rgba(255,255,255,.2);
+  border:1px solid rgba(255,255,255,.5);backdrop-filter:blur(8px);
+  transition:background .3s,transform .3s;
+}
+.tcard:hover .go{background:var(--yellow);color:#20315a;transform:rotate(-45deg)}
+.tcard .go svg{width:20px;height:20px}
+
+/* 路线卡片：悬停展示行程亮点 */
+.tinfo{transition:opacity .35s ease,transform .35s ease}
+.tcard .route-overlay{
+  position:absolute;left:0;right:0;bottom:0;z-index:3;text-align:left;
+  padding:70px 22px 18px;color:#fff;
+  background:linear-gradient(180deg,rgba(6,30,50,0) 0%,rgba(6,30,50,.92) 62%);
+  opacity:0;transform:translateY(28px);pointer-events:none;
+  transition:opacity .45s cubic-bezier(.2,.8,.3,1),transform .45s cubic-bezier(.2,.8,.3,1);
+}
+.tcard:hover .route-overlay{opacity:1;transform:none}
+.tcard:hover .tinfo{opacity:0;transform:translateY(12px)}
+.tcard:hover .go{opacity:0}
+.tcard .go{transition:background .3s,transform .3s,opacity .3s}
+.route-overlay .line-tag{
+  display:inline-block;padding:5px 14px;border-radius:30px;margin-bottom:10px;
+  font-size:.74rem;font-weight:700;letter-spacing:1px;color:#20315a;
+  background:var(--yellow);box-shadow:0 6px 14px -4px rgba(245,179,1,.6);
+}
+.route-overlay ul{list-style:none;display:grid;gap:5px}
+.route-overlay li{font-size:.86rem;opacity:.96;padding-left:17px;position:relative}
+.route-overlay li::before{
+  content:"";position:absolute;left:0;top:.6em;width:7px;height:7px;
+  border-radius:2px;background:var(--yellow);transform:rotate(45deg);
+}
+.route-overlay .more{
+  display:inline-flex;align-items:center;gap:6px;margin-top:12px;
+  font-size:.84rem;font-weight:700;color:var(--yellow);letter-spacing:1px;
+}
+
+/* ========== 通用板块头部 ========== */
+.sec-head{text-align:center;margin-bottom:52px}
+.sec-head .eyebrow{
+  display:inline-block;font-size:.78rem;letter-spacing:4px;text-transform:uppercase;color:var(--yellow-deep);
+  font-weight:700;margin-bottom:10px;position:relative;padding:0 46px;
+}
+.sec-head .eyebrow::before,.sec-head .eyebrow::after{content:"";position:absolute;top:50%;width:32px;height:1px;background:rgba(245,179,1,.55)}
+.sec-head .eyebrow::before{left:0}.sec-head .eyebrow::after{right:0}
+.sec-head h2{font-family:var(--font-display);font-size:clamp(1.9rem,4vw,2.7rem);color:var(--navy);letter-spacing:1px}
+.sec-head p{max-width:600px;margin:12px auto 0;color:var(--muted)}
+
+/* ========== 滚动显现动画 ========== */
+.reveal{opacity:0;transform:translateY(42px);transition:opacity .9s cubic-bezier(.2,.7,.3,1),transform .9s cubic-bezier(.2,.7,.3,1)}
+.reveal.in{opacity:1;transform:none}
+.reveal[data-d="1"]{transition-delay:.1s}.reveal[data-d="2"]{transition-delay:.2s}
+.reveal[data-d="3"]{transition-delay:.3s}.reveal[data-d="4"]{transition-delay:.4s}
+.reveal[data-d="5"]{transition-delay:.5s}.reveal[data-d="6"]{transition-delay:.6s}
+.reveal[data-d="7"]{transition-delay:.7s}
+
+/* ========== 精选目的地 ========== */
+.destinations{padding:110px 0 60px}
+.filter{
+  display:flex;justify-content:center;gap:6px;flex-wrap:wrap;margin:0 auto 46px;
+  width:max-content;max-width:100%;padding:7px;border-radius:50px;
+  background:var(--glass);border:1px solid var(--stroke);
+  backdrop-filter:blur(16px) saturate(160%);-webkit-backdrop-filter:blur(16px) saturate(160%);
+  box-shadow:var(--neu);
+}
+.filter button{
+  border:0;background:none;cursor:pointer;font-family:var(--font-body);font-size:.95rem;color:var(--muted);
+  padding:10px 26px;border-radius:50px;transition:.3s;position:relative;
+}
+.filter button:hover{color:var(--blue)}
+.filter button.active{
+  color:#20315a;font-weight:700;background:linear-gradient(135deg,#ffd76e,var(--yellow));
+  box-shadow:0 8px 18px -6px rgba(245,179,1,.6);
+}
+.dgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.dcard{
+  border-radius:var(--radius);overflow:hidden;background:var(--glass);border:1px solid var(--stroke);
+  backdrop-filter:blur(14px) saturate(150%);-webkit-backdrop-filter:blur(14px) saturate(150%);
+  box-shadow:var(--shadow);cursor:pointer;
+  transition:transform .45s cubic-bezier(.2,.8,.25,1),box-shadow .45s,opacity .4s,filter .4s;
+}
+.dcard .ph{position:relative;height:190px;overflow:hidden}
+.dcard .ph img{transition:transform .8s ease}
+.dcard:hover .ph img{transform:scale(1.12)}
+.dcard .tag{
+  position:absolute;top:14px;left:14px;padding:5px 14px;border-radius:30px;font-size:.72rem;font-weight:700;
+  color:#20315a;background:rgba(255,255,255,.75);backdrop-filter:blur(8px);letter-spacing:1px;
+  transition:background .35s,box-shadow .35s;
+}
+.dcard:hover .tag{background:linear-gradient(135deg,#ffd76e,var(--yellow));box-shadow:0 6px 16px -6px rgba(245,179,1,.7)}
+.dcard .meta{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:16px 18px}
+.dcard .mtx{flex:1;min-width:0}
+.dcard .meta h4{font-family:var(--font-display);font-size:1.18rem;color:var(--navy);transition:color .35s}
+.dcard .meta small{display:block;font-size:.74rem;color:var(--muted);letter-spacing:1.5px;margin-top:2px}
+.dcard .dsub{font-size:.8rem;color:var(--muted);line-height:1.6;margin-top:6px}
+.dcard:hover .meta h4{color:var(--blue)}
+.dcard .meta .arr{
+  width:36px;height:36px;flex:none;border-radius:50%;display:grid;place-items:center;
+  background:rgba(47,128,237,.1);color:var(--blue);transition:.35s;
+}
+.dcard:hover{transform:translateY(-10px);box-shadow:0 34px 60px -22px rgba(13,43,69,.4)}
+.dcard:hover .arr{background:var(--blue);color:#fff;transform:translateX(4px)}
+.dcard.hide{opacity:0;transform:scale(.86);pointer-events:none;position:absolute;visibility:hidden}
+.dcard{animation:pop .5s cubic-bezier(.2,.8,.3,1.2)}
+@keyframes pop{from{opacity:0;transform:scale(.86)}to{opacity:1;transform:scale(1)}}
+.arr svg{width:16px;height:16px}
+
+/* ========== 01/02/03 特色板块 ========== */
+.features{padding:80px 0 30px}
+.feature{display:grid;grid-template-columns:1.05fr 1fr;gap:70px;align-items:center;padding:60px 0}
+.feature .visual{position:relative}
+.feature .visual::before{
+  content:"";position:absolute;z-index:0;border-radius:26px;
+  width:62%;height:62%;left:-30px;bottom:-30px;
+  background:linear-gradient(135deg,#3f92f2,#63b8f5);
+  box-shadow:0 30px 60px -20px rgba(47,128,237,.55);
+}
+.feature.rev .visual::before{left:auto;right:-30px}
+.feature .visual .imgbox{
+  position:relative;z-index:1;height:380px;border-radius:var(--radius);overflow:hidden;
+  border:6px solid #fff;box-shadow:var(--shadow);
+}
+.feature.rev{grid-template-columns:1fr 1.05fr}
+.fnum{
+  font-family:var(--font-display);font-weight:800;color:var(--blue);line-height:1;
+  font-size:clamp(3.6rem,6vw,5.4rem);letter-spacing:2px;margin-bottom:6px;
+  display:inline-block;background:linear-gradient(180deg,#3f92f2,#7cc4f8);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+}
+.feature h3{font-family:var(--font-display);font-size:clamp(1.5rem,3vw,2.1rem);color:var(--navy);margin-bottom:16px;line-height:1.35}
+.feature h3 em{font-style:italic;color:var(--blue)}
+.feature p{color:var(--muted);margin-bottom:28px;max-width:480px}
+/* 民宿推荐：悬停交互 */
+.feature{cursor:pointer}
+.feature .imgbox img{transition:transform .7s cubic-bezier(.2,.8,.3,1)}
+.feature:hover .imgbox img{transform:scale(1.07)}
+.feature:hover .btn-ghost{background:var(--blue);color:#fff}
+.stay-overlay{
+  position:absolute;left:0;right:0;bottom:0;z-index:2;text-align:left;color:#fff;
+  padding:58px 24px 20px;
+  background:linear-gradient(180deg,rgba(6,30,50,0) 0%,rgba(6,30,50,.9) 62%);
+  opacity:0;transform:translateY(26px);pointer-events:none;
+  transition:opacity .45s cubic-bezier(.2,.8,.3,1),transform .45s cubic-bezier(.2,.8,.3,1);
+}
+.feature:hover .stay-overlay{opacity:1;transform:none}
+.stay-overlay .so-title{display:inline-block;padding:4px 13px;border-radius:20px;margin-bottom:9px;font-size:.72rem;font-weight:700;letter-spacing:2px;color:#20315a;background:var(--yellow)}
+.stay-overlay ul{list-style:none;display:grid;gap:4px}
+.stay-overlay li{font-size:.88rem;padding-left:16px;position:relative;text-shadow:0 1px 6px rgba(6,24,42,.5)}
+.stay-overlay li::before{content:"";position:absolute;left:0;top:.65em;width:6px;height:6px;border-radius:1.5px;background:var(--yellow);transform:rotate(45deg)}
+.stay-overlay .so-more{display:inline-flex;margin-top:9px;font-size:.83rem;font-weight:700;color:var(--yellow);letter-spacing:1px}
+.btn-ghost{
+  position:relative;overflow:hidden;cursor:pointer;font-family:var(--font-body);font-weight:700;font-size:.95rem;
+  padding:13px 32px;border-radius:50px;border:2px solid var(--blue);color:var(--blue);background:none;
+  transition:.3s;display:inline-flex;align-items:center;gap:8px;
+}
+.btn-ghost svg{width:16px;height:16px;transition:transform .3s}
+.btn-ghost:hover{background:var(--blue);color:#fff;box-shadow:0 14px 30px -10px rgba(47,128,237,.6)}
+.btn-ghost:hover svg{transform:translateX(4px)}
+
+/* ========== 我们的服务 ========== */
+.offer{padding:100px 0}
+.ogrid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.ocard{
+  position:relative;cursor:pointer;text-align:center;padding:40px 26px 34px;border-radius:26px;
+  background:var(--glass);border:1px solid var(--stroke);
+  backdrop-filter:blur(16px) saturate(160%);-webkit-backdrop-filter:blur(16px) saturate(160%);
+  box-shadow:var(--neu);transition:transform .45s cubic-bezier(.2,.8,.25,1),box-shadow .45s,border-color .45s;
+}
+.ocard::after{
+  content:"";position:absolute;inset:0;border-radius:26px;pointer-events:none;
+  opacity:0;transition:opacity .45s;
+}
+.ocard:nth-child(odd)::after{background:radial-gradient(130% 90% at 50% 0%,rgba(47,128,237,.16),transparent 62%)}
+.ocard:nth-child(even)::after{background:radial-gradient(130% 90% at 50% 0%,rgba(245,169,44,.2),transparent 62%)}
+.ocard:hover{transform:translateY(-12px);box-shadow:0 34px 60px -20px rgba(13,43,69,.3)}
+.ocard:nth-child(odd):hover{border-color:rgba(47,128,237,.42)}
+.ocard:nth-child(even):hover{border-color:rgba(245,169,44,.5)}
+.ocard:hover::after{opacity:1}
+.ocard .icon{
+  width:76px;height:76px;margin:0 auto 20px;border-radius:24px;display:grid;place-items:center;color:#fff;
+  background:linear-gradient(135deg,#3f92f2,#6cc4f6);
+  box-shadow:0 16px 30px -10px rgba(47,128,237,.55);
+  transition:transform .45s,border-radius .45s,box-shadow .45s;
+}
+.ocard:nth-child(even) .icon{background:linear-gradient(135deg,#ffd76e,#f5a92c);box-shadow:0 16px 30px -10px rgba(245,169,44,.55)}
+.ocard:hover .icon{transform:rotate(-8deg) scale(1.08);border-radius:50%}
+.ocard:nth-child(odd):hover .icon{box-shadow:0 18px 38px -8px rgba(47,128,237,.8)}
+.ocard:nth-child(even):hover .icon{box-shadow:0 18px 38px -8px rgba(245,169,44,.85)}
+.ocard .icon svg{width:34px;height:34px}
+.ocard h4{font-size:1.12rem;color:var(--navy);margin-bottom:10px;font-weight:700}
+.ocard h4::after{
+  content:"";display:block;width:0;height:2px;border-radius:2px;margin:8px auto 0;
+  transition:width .45s cubic-bezier(.2,.8,.25,1) .05s;
+}
+.ocard:nth-child(odd) h4::after{background:linear-gradient(90deg,transparent,#3f92f2,#6cc4f6,transparent)}
+.ocard:nth-child(even) h4::after{background:linear-gradient(90deg,transparent,#f5a92c,#ffd76e,transparent)}
+.ocard:hover h4::after{width:64px}
+.ocard p{font-size:.88rem;color:var(--muted);transition:color .45s}
+.ocard:hover p{color:#3f5a75}
+
+/* ========== 最新文章 ========== */
+.articles{padding:20px 0 110px}
+.agrid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:1160px;margin:0 auto}
+@media(max-width:980px){.agrid{grid-template-columns:1fr;max-width:520px}}
+.acard{
+  cursor:pointer;border-radius:26px;overflow:hidden;background:var(--glass);border:1px solid var(--stroke);
+  backdrop-filter:blur(16px) saturate(160%);-webkit-backdrop-filter:blur(16px) saturate(160%);
+  box-shadow:var(--shadow);transition:transform .45s cubic-bezier(.2,.8,.25,1),box-shadow .45s,border-color .45s;
+}
+.acard:hover{transform:translateY(-10px);box-shadow:0 36px 64px -24px rgba(13,43,69,.4);border-color:rgba(47,128,237,.35)}
+.acard .aph{position:relative;height:210px;overflow:hidden}
+.acard .aph img{transition:transform .8s}
+.acard:hover .aph img{transform:scale(1.09)}
+.acard .aph::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(21,52,90,.4));opacity:0;transition:opacity .45s}
+.acard:hover .aph::after{opacity:1}
+.acard .abody{padding:24px 26px 28px}
+.atag{
+  display:inline-block;font-size:.74rem;font-weight:700;letter-spacing:1px;color:var(--blue);
+  background:rgba(47,128,237,.1);border:1px solid rgba(47,128,237,.28);
+  padding:3px 13px;border-radius:30px;margin-bottom:12px;transition:.35s;
+}
+.acard:hover .atag{background:var(--yellow);color:#20315a;border-color:var(--yellow)}
+.acard time{
+  display:inline-block;font-size:.74rem;font-weight:700;letter-spacing:1px;color:#8a6a10;
+  background:rgba(255,201,77,.35);border:1px solid rgba(245,179,1,.4);padding:4px 14px;border-radius:30px;margin-bottom:12px;transition:.35s;
+}
+.acard h4{font-family:var(--font-display);font-size:1.24rem;color:var(--navy);line-height:1.5;margin-bottom:10px;transition:color .35s}
+.acard:hover h4{color:var(--blue)}
+.acard p{font-size:.9rem;color:var(--muted);margin-bottom:16px}
+.alink{display:inline-flex;align-items:center;gap:8px;color:var(--blue);font-weight:700;font-size:.92rem}
+.alink svg{width:15px;height:15px;transition:transform .3s}
+.alink:hover svg{transform:translateX(5px)}
+/* ========== 页脚 ========== */
+footer{
+  margin-top:20px;padding:64px 0 0;color:#dcebf7;
+  background:linear-gradient(160deg,rgba(13,43,69,.94),rgba(9,30,50,.97));
+  backdrop-filter:blur(10px);position:relative;overflow:hidden;
+}
+footer::before{content:"";position:absolute;top:-140px;left:50%;transform:translateX(-50%);width:700px;height:280px;border-radius:50%;
+  background:radial-gradient(ellipse,rgba(86,204,242,.28),transparent 70%)}
+.fgrid{position:relative;display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:44px;padding-bottom:44px}
+.fbrand{font-family:var(--font-display);font-size:1.5rem;color:#fff;margin-bottom:12px}
+.fbrand em{font-style:normal;color:var(--yellow)}
+footer p{font-size:.9rem;opacity:.75;max-width:320px}
+footer h5{font-size:.95rem;letter-spacing:2px;color:#fff;margin-bottom:18px;position:relative;padding-bottom:10px}
+footer h5::after{content:"";position:absolute;left:0;bottom:0;width:34px;height:2px;background:var(--yellow);border-radius:2px}
+.flinks{list-style:none;display:grid;gap:10px}
+.flinks a{opacity:.78;font-size:.92rem;transition:.3s;display:inline-flex;align-items:center;gap:8px}
+.flinks a::before{content:"›";color:var(--yellow);font-weight:700}
+.flinks a:hover{opacity:1;color:var(--yellow);transform:translateX(4px)}
+.socials{display:flex;gap:12px;margin-top:6px}
+.socials a{
+  width:42px;height:42px;border-radius:50%;display:grid;place-items:center;
+  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);transition:.3s;
+}
+.socials a:hover{background:var(--yellow);color:#20315a;transform:translateY(-4px)}
+.socials svg{width:18px;height:18px}
+.fbottom{position:relative;border-top:1px solid rgba(255,255,255,.12);padding:20px 0;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:.82rem;opacity:.65}
+
+/* ========== 返回顶部 / 提示 ========== */
+#toTop{
+  position:fixed;right:26px;bottom:26px;z-index:90;width:52px;height:52px;border-radius:50%;border:1px solid var(--stroke);
+  background:var(--glass);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  box-shadow:var(--shadow);color:var(--blue);font-size:1.2rem;cursor:pointer;display:grid;place-items:center;
+  opacity:0;pointer-events:none;transform:translateY(16px);transition:.4s;
+}
+#toTop.show{opacity:1;pointer-events:auto;transform:none}
+#toTop:hover{background:var(--yellow);color:#20315a}
+#toast{
+  position:fixed;left:50%;bottom:34px;z-index:210;transform:translate(-50%,24px);opacity:0;pointer-events:none;
+  padding:13px 26px;border-radius:50px;font-size:.92rem;font-weight:600;color:var(--navy);
+  background:rgba(255,255,255,.85);border:1px solid var(--stroke);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:var(--shadow);
+  transition:.45s cubic-bezier(.2,.8,.3,1);
+}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* ========== 响应式 ========== */
+@media (max-width:1024px){
+  .dgrid{grid-template-columns:repeat(2,1fr)}
+  .ogrid{grid-template-columns:repeat(2,1fr)}
+  .feature,.feature.rev{grid-template-columns:1fr;gap:40px}
+  .feature.rev .visual{order:-1}
+  .fgrid{grid-template-columns:1fr 1fr}
+}
+@media (max-width:760px){
+  .burger{display:block}
+  .nav-links{
+    position:absolute;top:calc(100% + 10px);right:0;left:0;flex-direction:column;padding:14px;
+    background:var(--glass-strong);border:1px solid var(--stroke);border-radius:24px;
+    backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);box-shadow:var(--shadow);
+    opacity:0;pointer-events:none;transform:translateY(-12px);transition:.35s;
+  }
+  .nav.open .nav-links{opacity:1;pointer-events:auto;transform:none}
+  .top-cards .container{grid-template-columns:1fr}
+  .tcard{height:240px}
+  .chip{display:none}
+  .agrid{grid-template-columns:1fr}
+  .dgrid{grid-template-columns:1fr}
+  .ogrid{grid-template-columns:1fr}
+  .hero-inner{padding:130px 16px 170px}
+  .fgrid{grid-template-columns:1fr}
+  .filter button{padding:9px 18px;font-size:.88rem}
+}
+</style>
+</head>
+<body>
+
+<!-- 背景光斑 -->
+<div class="blobs" aria-hidden="true">
+  <div class="blob b1"></div><div class="blob b2"></div>
+  <div class="blob b3"></div><div class="blob b4"></div>
+</div>
+
+<div id="progress" aria-hidden="true"></div>
+
+<!-- 导航栏 -->
+<div class="nav-wrap">
+  <nav class="nav" id="nav">
+    <a class="brand" href="#home" aria-label="返回顶部">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#2f80ed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg>
+      元乡<em>·江西</em>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#home" class="active">元乡首页</a></li>
+      <li><a href="#destinations">寻迹路线</a></li>
+      <li><a href="风物市集.html">风物市集</a></li>
+      <li><a href="#articles">新语故事</a></li>
+      <li><a href="#offer">AI共创</a></li>
+    </ul>
+    <button class="burger" id="burger" aria-label="打开菜单"><span></span><span></span><span></span></button>
+  </nav>
+</div>
+
+<!-- Hero -->
+<header class="hero" id="home">
+  <div class="hero-bg" id="heroBg">
+    <div class="slide active" data-label="庐山 · 云海仙境"><img class="gen" alt="庐山云海" data-prompt="Lushan mountain Jiangxi China, dramatic sea of clouds flowing around green peaks at sunrise, misty valleys, majestic Chinese mountain landscape photography" data-size="landscape_16_9"></div>
+    <div class="slide" data-label="婺源 · 徽韵田园"><img class="gen" alt="婺源油菜花田与徽派村落" data-prompt="Wuyuan Jiangxi China in spring, golden rapeseed flower fields surrounding white-walled black-tiled Hui style villages, rolling green hills, morning mist, aerial view" data-size="landscape_16_9"></div>
+    <div class="slide" data-label="三清山 · 奇峰云涛"><img class="gen" alt="三清山花岗岩奇峰" data-prompt="Sanqingshan mountain Jiangxi China, towering granite peaks rising above sea of clouds with pine trees, Taoist sacred mountain, golden sunlight, aerial view" data-size="landscape_16_9"></div>
+    <div class="slide" data-label="井冈山 · 革命摇篮"><img class="gen" alt="井冈山绿色山谷" data-prompt="Jinggangshan Jiangxi China, lush green mountain valley with terraced rice fields and floating morning mist, red revolutionary old area scenery, warm sunrise light" data-size="landscape_16_9"></div>
+    <div class="slide" data-label="鄱阳湖 · 候鸟天堂"><img class="gen" alt="鄱阳湖湿地日落" data-prompt="Poyang lake Jiangxi China at sunset, vast golden wetland with flocks of white migratory birds flying, shimmering water reflections, wide panoramic view" data-size="landscape_16_9"></div>
+    <div class="slide" data-label="滕王阁 · 落霞秋水"><img class="gen" alt="滕王阁黄昏景色" data-prompt="Tengwang Pavilion Nanchang Jiangxi China at dusk, magnificent ancient Chinese tower by Ganjiang river, glowing city lights, dramatic orange sunset sky" data-size="landscape_16_9"></div>
+  </div>
+
+  <div class="chip c1" aria-hidden="true">
+    <svg viewBox="0 0 24 24" fill="#f5b301" stroke="#f5b301" stroke-width="1"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.2 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z"/></svg>
+    <span><b>4.9</b> / 5.0 旅行者评分</span>
+  </div>
+  <div class="chip c2" aria-hidden="true">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#2f80ed" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20z"/></svg>
+    <span><b>100+</b> 老区景点 · 数字焕新</span>
+  </div>
+
+  <div class="hero-inner">
+    <div class="eyebrow-hero"><i></i>TRAVELLING · PLACE TO MEMORIES<i></i></div>
+    <h1>元乡·江西<small>Y U A N &nbsp;X I A N G · J I A N G X I</small></h1>
+    <p class="hero-desc">“元”，代表数字元宇宙、AIGC 新技术与老区精神的本源；“乡”，代表江西老区真实的乡村风貌与生活气息。旨在用数字科技 AIGC，重构老区的文旅消费新体验。</p>
+    <div class="slide-label" id="slideLabel">庐山 · 云海仙境</div>
+    <div class="hero-dots" id="heroDots" role="tablist" aria-label="背景轮播控制"></div>
+  </div>
+</header>
+
+<!-- 三大目的地卡片 -->
+<section class="top-cards">
+  <div class="container">
+    <article class="tcard reveal" data-d="1" onclick="location.href='路线详情.html?stop=nanchang'">
+      <img class="gen" alt="南昌八一起义纪念馆" data-prompt="Nanchang August 1st Uprising Memorial Hall in Jiangxi China, grand modern museum architecture with the iconic red flag and rifle monument, blue sky with white clouds, architectural travel photography" data-size="portrait_4_3">
+      <div class="tinfo"><span>军旗升起的地方 · NANCHANG</span><h3>南昌八一起义纪念馆</h3></div>
+      <div class="route-overlay">
+        <span class="line-tag">第一站 · 城市漫步线</span>
+        <ul>
+          <li>八一广场 &amp; 江西省美术馆</li>
+          <li>大士院街早市 · 老城烟火</li>
+          <li>万寿宫历史文化街区</li>
+          <li>珠宝街美食街</li>
+        </ul>
+        <span class="more">查看完整路线 →</span>
+      </div>
+      <div class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+    </article>
+    <article class="tcard reveal" data-d="2" onclick="location.href='路线详情.html?stop=ruijin'">
+      <img class="gen" alt="瑞金象湖里" data-prompt="Xianghuli historic cultural street in Ruijin Jiangxi China, traditional Gannan Hakka style buildings with white walls and grey tiles, red lanterns, stone-paved lanes, warm dusk light, travel photography" data-size="portrait_4_3">
+      <div class="tinfo"><span>红色故都 · RUIJIN</span><h3>瑞金象湖里</h3></div>
+      <div class="route-overlay">
+        <span class="line-tag">第二站 · 古街新韵线</span>
+        <ul>
+          <li>非遗手作：竹编 · 瑞墨</li>
+          <li>“苏晓”文创 ·《少年家国梦》IP馆</li>
+          <li>擂茶牛市 · 客家小吃</li>
+          <li>红色咖啡店 · 瑞金方言墙</li>
+        </ul>
+        <span class="more">查看完整路线 →</span>
+      </div>
+      <div class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+    </article>
+    <article class="tcard reveal" data-d="3" onclick="location.href='路线详情.html?stop=yongxin'">
+      <img class="gen" alt="吉安永新县" data-prompt="Yongxin county in Ji'an Jiangxi China, lush green mountains embracing a quiet revolutionary old village, winding river, terraced rice fields in morning mist, aerial travel photography" data-size="portrait_4_3">
+      <div class="tinfo"><span>三湾改编发生地 · JI'AN</span><h3>吉安永新县</h3></div>
+      <div class="route-overlay">
+        <span class="line-tag">第三站 · 山水慢游线</span>
+        <ul>
+          <li>三湾改编景区 · 挑粮小道</li>
+          <li>龙源口大捷景区 · 龙源口桥</li>
+          <li>贺页朵誓词广场 · 拓印体验</li>
+          <li>永新血鸭 · 和子四珍</li>
+        </ul>
+        <span class="more">查看完整路线 →</span>
+      </div>
+      <div class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+    </article>
+  </div>
+</section>
+
+<!-- 寻迹路线 -->
+<section class="destinations" id="destinations">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Yuanxiang Routes</span>
+      <h2>寻迹路线</h2>
+      <p>从城市的市井烟火到古街的非遗新韵，再到山水间的沉浸慢游，为您甄选江西老区最具生命力的当代表达。</p>
+    </div>
+    <div class="filter reveal" id="filter" role="tablist">
+      <button class="active" data-cat="all">全部路线</button>
+      <button data-cat="city">城市烟火</button>
+      <button data-cat="ancient">古街新韵</button>
+      <button data-cat="nature">山水慢游</button>
+    </div>
+    <div class="dgrid" id="dgrid">
+      <article class="dcard reveal" data-d="1" data-cat="city" onclick="location.href='体验详情.html?stop=nanchang'" role="link" tabindex="0" aria-label="查看南昌寻迹路线详情">
+        <div class="ph"><span class="tag">城市烟火</span><img class="gen" loading="lazy" alt="英雄城的新市井" data-prompt="A steaming bowl of Nanchang mixed rice noodles with clay pot soup on an old wooden table, grey brick houses with upturned tiled eaves of Wanshou Palace historic block and warm yellow lanterns in the background, soft morning light, lively street food atmosphere, documentary photography, high quality, no political symbols" data-size="landscape_4_3"></div>
+        <div class="meta"><div class="mtx"><h4>英雄城的新市井</h4><small>CITY WALK · 南昌</small><p class="dsub">大士院拌粉与万寿宫街区的漫步路线</p></div><span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
+      </article>
+      <article class="dcard reveal" data-d="2" data-cat="ancient" onclick="location.href='体验详情.html?stop=ruijin'" role="link" tabindex="0" aria-label="查看瑞金寻迹路线详情">
+        <div class="ph"><span class="tag">古街新韵</span><img class="gen" loading="lazy" alt="象湖里的非遗韵" data-prompt="Evening at Xianghuli old street in Ruijin Jiangxi, bluestone slab road, Hakka traditional wooden buildings, a bamboo weaving shop with delicate lanterns and bamboo crafts hanging, warm light glowing out, a traveler holding a bowl of hand-pounded lei tea, blue hour, cinematic composition, no political symbols" data-size="landscape_4_3"></div>
+        <div class="meta"><div class="mtx"><h4>象湖里的非遗韵</h4><small>ANCIENT STREET · 瑞金</small><p class="dsub">在“五坊七铺”体验手作，尝一碗地道牛肉汤</p></div><span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
+      </article>
+      <article class="dcard reveal" data-d="3" data-cat="nature" onclick="location.href='体验详情.html?stop=yongxin'" role="link" tabindex="0" aria-label="查看吉安永新寻迹路线详情">
+        <div class="ph"><span class="tag">山水慢游</span><img class="gen" loading="lazy" alt="三湾畔的慢时光" data-prompt="Early morning in Sanwan Yongxin Jiangxi, terraced fields and distant mountains shrouded in thin mist, close-up of bamboo hats hanging under the wooden eaves of a guesthouse, fresh crisp air, watercolor and photography blended style, healing serene mood, no political symbols" data-size="landscape_4_3"></div>
+        <div class="meta"><div class="mtx"><h4>三湾畔的慢时光</h4><small>NATURE &amp; CULTURE · 吉安</small><p class="dsub">走一段挑粮小道，用酱萝卜老鸭汤收尾的一日游</p></div><span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
+      </article>
+      <article class="dcard reveal" data-d="4" data-cat="aigc" onclick="location.href='元乡引擎.html'" role="link" tabindex="0" aria-label="了解云端定制路线">
+        <div class="ph"><span class="tag">元乡共创</span><img class="gen" loading="lazy" alt="云端定制路线" data-prompt="Futuristic digital technology concept art, a glowing virtual hand holding up a miniature Jiangxi village with green mountains and rivers, floating luminous data nodes interwoven with red azalea petals, minimalist sci-fi aesthetic, blue and orange red color palette, no political symbols" data-size="landscape_4_3"></div>
+        <div class="meta"><div class="mtx"><h4>云端定制路线</h4><small>AIGC CREATION · 元乡</small><p class="dsub">输入你的偏好，AI为你生成专属的打卡纪念册</p></div><span class="arr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- 01/02/03 民宿推荐板块 -->
+<section class="features" id="experiences">
+  <div class="container">
+
+    <div class="sec-head reveal">
+      <span class="eyebrow">民宿推荐</span>
+      <h2>住进老区的风景里</h2>
+      <p>三站三种住宿哲学：城市观景、古街轻奢、山水隐居——点击板块查看完整住宿推荐。</p>
+    </div>
+
+    <div class="feature reveal" onclick="location.href='民宿详情.html?stop=nanchang'" role="link" tabindex="0" aria-label="查看南昌住宿推荐详情">
+      <div class="text">
+        <span class="fnum">01.</span>
+        <h3>南昌 · <em>城市观景民宿</em></h3>
+        <p>住在城市原点，用设计感民宿衔接早市、夜市与老城漫步。八一广场周边高层观景民宿林立，核心卖点是可以直接俯瞰广场或纪念碑的夜景，同时步行可达大士院街、珠宝街和万寿宫街区。</p>
+        <span class="btn-ghost">查看住宿推荐 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </div>
+      <div class="visual">
+        <div class="imgbox">
+          <img class="gen" loading="lazy" alt="南昌城市观景民宿" data-prompt="modern design hotel room with floor to ceiling windows overlooking Nanchang city skyline and monument at night, warm lights, cozy interior photography" data-size="landscape_4_3">
+          <div class="stay-overlay">
+            <span class="so-title">本期住宿推荐</span>
+            <ul>
+              <li>一束·Aisher 美学设计民宿（武商mall店）</li>
+              <li>玖月半糖民宿（八一广场店）</li>
+              <li>小暖·Warm Home·设计风民宿（万寿宫店）</li>
+            </ul>
+            <span class="so-more">查看完整民宿推荐 →</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="feature rev reveal" onclick="location.href='民宿详情.html?stop=ruijin'" role="link" tabindex="0" aria-label="查看瑞金住宿推荐详情">
+      <div class="text">
+        <span class="fnum">02.</span>
+        <h3>瑞金 · <em>古街轻奢与街区烟火</em></h3>
+        <p>住宿紧邻象湖里文化创意街区，步行即可进入非遗店铺、擂茶牛市和小吃街，同时酒店本身的设施标准较高，适合在“古街漫步”之后获得舒适的休整。</p>
+        <span class="btn-ghost">查看住宿推荐 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </div>
+      <div class="visual">
+        <div class="imgbox">
+          <img class="gen" loading="lazy" alt="瑞金古街轻奢酒店" data-prompt="boutique hotel lobby blending light luxury and Hakka cultural elements, warm wood tones and elegant furniture, Ruijin Jiangxi China, interior photography" data-size="landscape_4_3">
+          <div class="stay-overlay">
+            <span class="so-title">本期住宿推荐</span>
+            <ul>
+              <li>星悦国际酒店（9.1/10 · 四星级）</li>
+              <li>瑞金沃尔顿国际酒店（9.5/10 · 四星级）</li>
+            </ul>
+            <span class="so-more">查看完整民宿推荐 →</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="feature reveal" onclick="location.href='民宿详情.html?stop=yongxin'" role="link" tabindex="0" aria-label="查看吉安永新住宿推荐详情">
+      <div class="text">
+        <span class="fnum">03.</span>
+        <h3>吉安永新 · <em>山水间的隐居与民宿</em></h3>
+        <p>三湾景区周边的乡村民宿开在景区步行范围内，窗外即风景，适合沉浸式慢游；县城的高性价比酒店则满足标准化服务需求——共同构成这一站“山水慢游”定位的核心承载。</p>
+        <span class="btn-ghost">查看住宿推荐 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </div>
+      <div class="visual">
+        <div class="imgbox">
+          <img class="gen" loading="lazy" alt="永新山水民宿" data-prompt="rural guesthouse in Sanwan village Jiangxi China surrounded by lush green mountains, large window with mountain view, wooden warm interior, morning light" data-size="landscape_4_3">
+          <div class="stay-overlay">
+            <span class="so-title">本期住宿推荐</span>
+            <ul>
+              <li>三湾民宿（距景区 0.1 公里）</li>
+              <li>三湾拾光民宿（心型别墅套房）</li>
+              <li>永新枫树坪大酒店（8.8/10）</li>
+            </ul>
+            <span class="so-more">查看完整民宿推荐 →</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- 元乡体验 -->
+<section class="offer" id="offer">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Yuanxiang Experience</span>
+      <h2>元乡体验</h2>
+      <p>不止于观光与打卡——我们用AIGC技术与当代设计，把老区的在地风物，打磨成值得带走的回忆。</p>
+    </div>
+    <div class="ogrid">
+      <div class="ocard reveal" data-d="1" onclick="location.href='元乡引擎.html'" role="link" tabindex="0" aria-label="了解 AIGC 数字共创">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4.5l1.6 4.9 4.9 1.6-4.9 1.6L11 17.5l-1.6-4.9L4.5 11l4.9-1.6z"/><path d="M18.5 14.5l.9 2.4 2.4.9-2.4.9-.9 2.4-.9-2.4-2.4-.9 2.4-.9z"/></svg></div>
+        <h4>AIGC数字共创</h4>
+        <p>输入你的灵感，让AI为你生成专属的老区风景明信片与数字纪念品，带走属于你的“元乡”记忆。</p>
+      </div>
+      <div class="ocard reveal" data-d="2" onclick="location.href='#routes'" role="link" tabindex="0" aria-label="查看寻迹老区路线">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20l5.5-10 4.5 8 3-5.2L21 20"/><path d="M8.5 10V4.2"/><path d="M8.5 4.2h3.6l-1.3 1.5 1.3 1.5H8.5"/></svg></div>
+        <h4>寻迹老区路线</h4>
+        <p>从南昌的城市烟火到瑞金的古街新韵，再到永新的山水慢游。沉浸式打卡，感受老区当下的生态与生机。</p>
+      </div>
+      <div class="ocard reveal" data-d="3" onclick="location.href='风物市集.html'" role="link" tabindex="0" aria-label="进入风物文创市集">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="8" width="17" height="4" rx="1"/><path d="M12 8v13M5.5 12v7a2 2 0 0 0 2 2h9a2 2 0 0 0 2-2v-7"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5C9.8 3 11.2 5 12 8c.8-3 2.2-5 4.5-5a2.5 2.5 0 0 1 0 5"/></svg></div>
+        <h4>风物文创市集</h4>
+        <p>精选非遗焕新好物与在地农特产品。买一份极简包装的伴手礼，将江西的“红土绿意”与现代美学带回家。</p>
+      </div>
+      <div class="ocard reveal" data-d="4" onclick="location.href='#experiences'" role="link" tabindex="0" aria-label="查看在地美学栖居民宿推荐">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11.5 12 4.5l8 7V19a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 19z"/><path d="M9.8 20.5v-5a1.6 1.6 0 0 1 1.6-1.6h1.2a1.6 1.6 0 0 1 1.6 1.6v5"/></svg></div>
+        <h4>在地美学栖居</h4>
+        <p>严选城市景观民宿与山水隐居民宿。在这里住下来，在原生态的村落中，品味老区生活的新诗意。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- 最新文章 -->
+<section class="articles" id="articles">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Latest Articles</span>
+      <h2>最新文章</h2>
+      <p>来自旅行编辑与旅友的一手笔记，为你的下一段旅程提供灵感。</p>
+    </div>
+    <div class="agrid">
+      <article class="acard reveal" data-d="1" onclick="location.href='文章详情.html?id=nanchang'" role="link" tabindex="0" aria-label="阅读南昌文章全文">
+        <div class="aph"><img class="gen" loading="lazy" alt="大士院早餐摊" data-prompt="Morning breakfast scene at Dashiyuan old street in Nanchang, steaming mixed rice noodles and clay pot soup on a wooden stall, warm morning light through rising steam, retro wall paintings in old alley, documentary photography, no political symbols" data-size="landscape_4_3"></div>
+        <div class="abody">
+          <span class="atag">英雄城的新市井 · 南昌</span>
+          <time datetime="2026-10-17">2026 年 10 月 17 日</time>
+          <h4>从一碗拌粉开始，走进八一广场旁的老城新节奏</h4>
+          <p>美术馆免费预约、万寿宫夜色最浓，5 元豫章线公交串起滕王阁与老巷——一碗拌粉开启老城新节奏。</p>
+          <a class="alink" href="文章详情.html?id=nanchang" onclick="event.stopPropagation()">阅读全文 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </article>
+      <article class="acard reveal" data-d="2" onclick="location.href='文章详情.html?id=ruijin'" role="link" tabindex="0" aria-label="阅读瑞金文章全文">
+        <div class="aph"><img class="gen" loading="lazy" alt="象湖里古街" data-prompt="Xianghuli cultural street Ruijin at dusk, Hakka grey brick historic buildings, bamboo weaving shop with warm lanterns, bluestone road glowing with warm light, cinematic, no political symbols" data-size="landscape_4_3"></div>
+        <div class="abody">
+          <span class="atag">象湖里的非遗韵 · 瑞金</span>
+          <time datetime="2026-10-14">2026 年 10 月 14 日</time>
+          <h4>在“五坊七铺”里，触摸一个有温度的瑞金</h4>
+          <p>55 栋历史建筑、一馆五坊七铺九店，在竹编与瑞墨间触摸非遗，再去擂茶牛市一站式吃遍瑞金。</p>
+          <a class="alink" href="文章详情.html?id=ruijin" onclick="event.stopPropagation()">阅读全文 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </article>
+      <article class="acard reveal" data-d="3" onclick="location.href='文章详情.html?id=yongxin'" role="link" tabindex="0" aria-label="阅读吉安永新文章全文">
+        <div class="aph"><img class="gen" loading="lazy" alt="三湾山水" data-prompt="Sanwan Yongxin Jiangxi, wooden trail through green mountains in thin morning mist, terraced fields and red maple lake reflection, serene healing nature mood, no political symbols" data-size="landscape_4_3"></div>
+        <div class="abody">
+          <span class="atag">三湾畔的慢时光 · 吉安永新</span>
+          <time datetime="2026-10-09">2026 年 10 月 09 日</time>
+          <h4>走一段挑粮小道，再喝一盅老鸭汤</h4>
+          <p>挑粮小道、情景剧《枫树坪的抉择》与沙盘推演，用一盅不放盐的酱萝卜老鸭汤收尾的慢游一日。</p>
+          <a class="alink" href="文章详情.html?id=yongxin" onclick="event.stopPropagation()">阅读全文 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- 页脚 -->
+<footer>
+  <div class="container">
+    <div class="fgrid">
+      <div>
+        <div class="fbrand">元乡<em>·江西</em></div>
+        <p>把世界最美的海，装进你的记忆。我们专注海岛度假定制，让每一次出发都成为值得珍藏的故事。</p>
+        <div class="socials">
+          <a href="javascript:void(0)" onclick="toast('感谢关注，社区即将开放')" aria-label="微信"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 3C5 3 2 5.6 2 8.8c0 1.8 1 3.4 2.4 4.5l-.6 2 2.2-1.1c.7.2 1.6.4 2.5.4M8.5 3c3.5 0 6.5 2.6 6.5 5.8M8.5 3C12 3 15 5.6 15 8.8c0 3.2-3 5.8-6.5 5.8-.8 0-1.6-.1-2.3-.4"/><path d="M15.5 9.5c2.9 0 6.5 2 6.5 5s-3 5-6 5c-.6 0-1.3-.1-1.9-.2l-1.9 1 .5-1.7c-1.3-.9-2.2-2.4-2.2-4.1 0-3 2.1-5 5-5z"/></svg></a>
+          <a href="javascript:void(0)" onclick="toast('感谢关注，社区即将开放')" aria-label="视频号"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="5" width="19" height="14" rx="3"/><path d="m10 9.5 5 2.5-5 2.5z"/></svg></a>
+          <a href="javascript:void(0)" onclick="toast('感谢关注，社区即将开放')" aria-label="小红书"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M7 9h4M9 9v6M14 15v-4a1.5 1.5 0 0 1 3 0v4M14 13h3"/></svg></a>
+          <a href="javascript:void(0)" onclick="toast('感谢关注，社区即将开放')" aria-label="微博"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="15" r="5.5"/><path d="M10 15h.01M14.5 4.5c3.5.5 6 3.5 6 7M14.5 8c1.8.3 3.2 1.8 3.2 3.7"/></svg></a>
+        </div>
+      </div>
+      <div>
+        <h5>快速导航</h5>
+        <ul class="flinks">
+          <li><a href="#home">旅行首页</a></li>
+          <li><a href="#destinations">精选目的地</a></li>
+          <li><a href="#articles">旅行故事</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>热门目的地</h5>
+        <ul class="flinks">
+          <li><a href="#destinations">马尔代夫</a></li>
+          <li><a href="#destinations">希腊 · 圣托里尼</a></li>
+          <li><a href="#destinations">美国 · 迈阿密</a></li>
+          <li><a href="#destinations">巴哈马群岛</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="fbottom">
+      <span>© 2026 元乡·江西 — 保留所有权利</span>
+      <span>本网站为前端设计演示作品 · 图片由 AI 生成</span>
+    </div>
+  </div>
+</footer>
+
+<button id="toTop" aria-label="返回顶部">↑</button>
+<div id="toast" role="status"></div>
+<noscript><p style="text-align:center;padding:20px">请启用 JavaScript 以加载图片与完整交互体验。</p></noscript>
+
+<script>
+/* ================= AI 图片加载（骨架微光 + 占位图检测 + 自动重试） ================= */
+const IMG_API = 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=';
+const isPh = img => img.naturalWidth === 1832 && img.naturalHeight === 1832;  // 排队时返回的固定占位图
+let genSeq = 0;
+document.querySelectorAll('img.gen').forEach(img => {
+  const prompt = img.dataset.prompt || 'beautiful Jiangxi mountain and village scenery with mist';
+  const size = img.dataset.size || 'landscape_4_3';
+  const base = IMG_API + encodeURIComponent(prompt) + '&image_size=' + size;
+  let tries = 0, timer = null;
+  const attempt = bust => {
+    img.classList.remove('loaded', 'failed');
+    img.src = base + (bust ? '&r=' + (++genSeq) : '');
+  };
+  const done = () => {
+    if (isPh(img)) {                       // 占位图：递增间隔换参重试
+      if (tries < 5) { tries++; timer = setTimeout(() => attempt(true), 3000 * tries); }
+      else { img.style.animation = 'none'; img.style.opacity = '.35'; }
+    } else {
+      clearTimeout(timer);
+      img.classList.add('loaded');
+    }
+  };
+  img.addEventListener('load', done);
+  img.addEventListener('error', () => {
+    if (tries < 3) { tries++; timer = setTimeout(() => attempt(tries > 1), 1500 * tries); }
+    else { img.style.animation = 'none'; img.style.opacity = '.35'; }
+  });
+  setTimeout(() => attempt(false), Math.min((++genSeq) * 320, 4000));  // 错峰请求，降低排队占位率
+});
+
+/* ================= Hero 大屏自动轮播 ================= */
+const slides = [...document.querySelectorAll('#heroBg .slide')];
+const dotsWrap = document.getElementById('heroDots');
+const slideLabel = document.getElementById('slideLabel');
+let curSlide = 0, slideTimer;
+slides.forEach((s, i) => {
+  const d = document.createElement('button');
+  d.className = 'dot' + (i === 0 ? ' active' : '');
+  d.setAttribute('aria-label', '切换到第 ' + (i + 1) + ' 张背景：' + (s.dataset.label || ''));
+  d.addEventListener('click', () => { showSlide(i); restartSlide(); });
+  dotsWrap.appendChild(d);
+});
+const dots = [...dotsWrap.children];
+function showSlide(i) {
+  const next = (i + slides.length) % slides.length;
+  if (next === curSlide) return;
+  slides[curSlide].classList.remove('active');
+  dots[curSlide].classList.remove('active');
+  curSlide = next;
+  slides[curSlide].classList.add('active');
+  dots[curSlide].classList.add('active');
+  slideLabel.style.opacity = '0';
+  setTimeout(() => { slideLabel.textContent = slides[curSlide].dataset.label || ''; slideLabel.style.opacity = '1'; }, 300);
+}
+function restartSlide() { clearInterval(slideTimer); slideTimer = setInterval(() => showSlide(curSlide + 1), 5200); }
+restartSlide();
+document.querySelector('.hero').addEventListener('mouseenter', () => clearInterval(slideTimer));
+document.querySelector('.hero').addEventListener('mouseleave', restartSlide);
+
+/* ================= 滚动显现 ================= */
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+}, { threshold: .12, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+/* ================= 导航栏：滚动态 + 当前分区高亮 ================= */
+const nav = document.getElementById('nav');
+const navLinks = [...document.querySelectorAll('#navLinks a')];
+const sections = navLinks
+  .map(a => a.getAttribute('href'))
+  .filter(h => h && h.startsWith('#'))
+  .map(h => document.querySelector(h))
+  .filter(Boolean);
+const secIO = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id));
+    }
+  });
+}, { rootMargin: '-45% 0px -50% 0px' });
+sections.forEach(s => s && secIO.observe(s));
+
+/* ================= 汉堡菜单 ================= */
+const burger = document.getElementById('burger');
+burger.addEventListener('click', () => nav.classList.toggle('open'));
+navLinks.forEach(a => a.addEventListener('click', () => nav.classList.remove('open')));
+
+/* ================= 平滑跳转 ================= */
+function goTo(sel) { document.querySelector(sel)?.scrollIntoView({ behavior: 'smooth' }); }
+
+/* ================= 轻提示 ================= */
+const toastEl = document.getElementById('toast');
+let toastTimer;
+function toast(msg) {
+  toastEl.textContent = msg;
+  toastEl.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toastEl.classList.remove('show'), 2600);
+}
+
+/* ================= 目的地筛选 ================= */
+const filterBtns = [...document.querySelectorAll('#filter button')];
+const dcards = [...document.querySelectorAll('#dgrid .dcard')];
+filterBtns.forEach(btn => btn.addEventListener('click', () => {
+  filterBtns.forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const cat = btn.dataset.cat;
+  let shown = 0;
+  dcards.forEach(card => {
+    const hit = cat === 'all' || card.dataset.cat === cat;
+    if (hit) {
+      card.style.position = ''; card.style.visibility = ''; card.classList.remove('hide');
+      card.style.animation = 'none'; void card.offsetWidth; card.style.animation = '';
+      shown++;
+    } else {
+      card.classList.add('hide');
+    }
+  });
+  toast(`已筛选出 ${shown} 条路线`);
+}));
+
+/* ================= 按钮涟漪 ================= */
+document.querySelectorAll('.btn, .btn-ghost').forEach(b => {
+  b.addEventListener('click', e => {
+    const r = document.createElement('span');
+    const rect = b.getBoundingClientRect();
+    const d = Math.max(rect.width, rect.height);
+    r.className = 'ripple';
+    r.style.cssText = `width:${d}px;height:${d}px;left:${e.clientX - rect.left - d / 2}px;top:${e.clientY - rect.top - d / 2}px`;
+    b.appendChild(r);
+    setTimeout(() => r.remove(), 650);
+  });
+});
+
+/* ================= Hero 视差 + 滚动进度 + 返回顶部 ================= */
+const heroBg = document.getElementById('heroBg');
+const heroInner = document.querySelector('.hero-inner');
+const progress = document.getElementById('progress');
+const toTop = document.getElementById('toTop');
+let ticking = false;
+function onScroll() {
+  const y = window.scrollY;
+  const h = document.documentElement.scrollHeight - innerHeight;
+  progress.style.width = (h > 0 ? (y / h) * 100 : 0) + '%';
+  toTop.classList.toggle('show', y > 640);
+  nav.classList.toggle('scrolled', y > 40);
+  if (y < innerHeight) {
+    heroBg.style.transform = `translateY(${y * .28}px)`;
+    heroInner.style.transform = `translateY(${y * .14}px)`;
+    heroInner.style.opacity = Math.max(0, 1 - y / (innerHeight * .8));
+  }
+  ticking = false;
+}
+addEventListener('scroll', () => { if (!ticking) { requestAnimationFrame(onScroll); ticking = true; } }, { passive: true });
+onScroll();
+toTop.addEventListener('click', () => scrollTo({ top: 0, behavior: 'smooth' }));
+</script>
+</body>
+</html>

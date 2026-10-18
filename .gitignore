@@ -1,0 +1,4 @@
+# 开发辅助产物，不纳入版本库
+预览截图/
+.trae-html-share-packages/
+*.log
