@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI大模型介绍 · DeepSeek V4.1 Flash — 元乡·江西</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --navy:#16324c;--blue:#2f80ed;--sky:#6cc4f2;--yellow:#f5b301;
+  --font-display:"Noto Serif SC","Songti SC","STSong","SimSun",Georgia,serif;
+  --line:rgba(108,196,242,.28);--glow:rgba(108,196,242,.45);
+  --txt:#dce9f7;--dim:rgba(220,233,247,.65);
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+  color:var(--txt);line-height:1.85;min-height:100vh;overflow-x:hidden;
+  background:linear-gradient(160deg,#07142a 0%,#0c2246 48%,#170f38 100%);
+}
+.blobs{position:fixed;inset:0;z-index:-1;pointer-events:none}
+.blob{position:absolute;border-radius:50%;filter:blur(100px);opacity:.55}
+.b1{width:560px;height:560px;background:radial-gradient(circle,#1c5da8,transparent 65%);top:-160px;left:-140px;animation:drift 24s ease-in-out infinite alternate}
+.b2{width:480px;height:480px;background:radial-gradient(circle,#4a2a8f,transparent 65%);bottom:-180px;right:-140px;animation:drift 28s ease-in-out infinite alternate-reverse}
+.grid-bg{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.35;
+  background-image:linear-gradient(rgba(108,196,242,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(108,196,242,.05) 1px,transparent 1px);
+  background-size:44px 44px;
+  mask-image:radial-gradient(70% 60% at 50% 30%,#000 40%,transparent 100%);
+  -webkit-mask-image:radial-gradient(70% 60% at 50% 30%,#000 40%,transparent 100%);}
+@keyframes drift{to{transform:translate(70px,50px) scale(1.1)}}
+
+.topbar{
+  position:sticky;top:14px;z-index:60;width:min(1160px,94%);margin:14px auto 0;
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+  padding:12px 24px;border-radius:50px;
+  background:rgba(10,24,44,.6);border:1px solid var(--line);
+  backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);
+  box-shadow:0 14px 30px -14px rgba(0,10,25,.6);
+}
+.brand{display:inline-flex;align-items:center;gap:9px;text-decoration:none;font-family:var(--font-display);font-weight:700;font-size:1.18rem;color:#fff}
+.brand em{font-style:normal;color:var(--yellow)}
+.crumb{font-size:.82rem;color:rgba(220,233,247,.7);letter-spacing:2px}
+@media(max-width:640px){.crumb{display:none}}
+
+.hero{position:relative;text-align:center;padding:92px 24px 30px;max-width:920px;margin:0 auto}
+.badge{
+  display:inline-flex;align-items:center;gap:10px;font-size:.8rem;letter-spacing:3px;font-weight:700;
+  color:#9ecbff;padding:7px 20px;border-radius:30px;border:1px solid var(--line);background:rgba(108,196,242,.08);
+}
+.badge::before{content:"✦";color:var(--yellow)}
+.hero h1{
+  font-family:var(--font-display);font-size:clamp(2.2rem,5.2vw,3.6rem);
+  color:#fff;letter-spacing:5px;margin-top:22px;line-height:1.3;
+  text-shadow:0 0 44px rgba(108,196,242,.4);
+}
+.hero .slogan{margin-top:14px;font-family:var(--font-display);font-size:clamp(1rem,2.2vw,1.2rem);color:#ffd76e;letter-spacing:2px}
+.hero p.intro{margin:20px auto 0;max-width:660px;color:var(--dim);font-size:.96rem}
+.hl{color:#ffd76e;font-weight:700}.hl-b{color:#9ecbff;font-weight:700}
+
+.container{width:min(1160px,92%);margin:0 auto}
+.sec-head{text-align:center;margin:90px 0 46px}
+.sec-head .ico{font-size:2rem;display:block;margin-bottom:8px}
+.sec-head h2{font-family:var(--font-display);font-size:clamp(1.6rem,3.2vw,2.3rem);color:#fff;letter-spacing:3px;margin-top:10px;text-shadow:0 0 30px rgba(108,196,242,.35)}
+.sec-head p{color:var(--dim);max-width:680px;margin:12px auto 0;font-size:.94rem}
+.panel{
+  position:relative;border-radius:24px;padding:28px 32px;
+  background:linear-gradient(135deg,rgba(18,42,82,.55),rgba(29,17,64,.45));
+  border:1px solid var(--line);
+  backdrop-filter:blur(16px) saturate(150%);-webkit-backdrop-filter:blur(16px) saturate(150%);
+  box-shadow:0 30px 60px -24px rgba(0,8,20,.7);
+  transition:transform .35s ease,box-shadow .35s ease,border-color .35s ease;
+}
+.panel:hover{transform:translateY(-5px);border-color:var(--glow);box-shadow:0 36px 66px -24px rgba(0,10,25,.8)}
+.rv{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
+.rv.in{opacity:1;transform:none}
+
+/* 数据卡 */
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+@media(max-width:920px){.stat-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.stat-grid{grid-template-columns:1fr}}
+.stat{
+  border-radius:18px;padding:22px 20px;text-align:center;
+  background:rgba(108,196,242,.06);border:1px solid var(--line);transition:.35s;
+}
+.stat:hover{transform:translateY(-6px);border-color:var(--sky);box-shadow:0 0 26px -6px var(--glow);background:rgba(108,196,242,.12)}
+.stat .num{font-family:Georgia,serif;font-size:2rem;font-weight:700;color:#ffd76e;text-shadow:0 0 20px rgba(245,179,1,.4)}
+.stat .num small{font-size:.9rem;color:#9ecbff;font-weight:400;margin-left:2px}
+.stat .lab{font-size:.85rem;color:#fff;letter-spacing:1px;margin-top:6px}
+.stat .sub{font-size:.72rem;color:var(--dim);margin-top:2px}
+.arch-note{margin-top:22px;border-radius:16px;padding:20px 26px;background:rgba(4,14,28,.6);border:1px dashed rgba(108,196,242,.35)}
+.arch-note b{color:#fff}
+.arch-note p{font-size:.9rem;color:var(--dim)}
+.tag{display:inline-block;padding:4px 14px;border-radius:20px;margin:10px 8px 0 0;font-size:.78rem;font-weight:600;color:#9ecbff;background:rgba(108,196,242,.12);border:1px solid rgba(108,196,242,.35);transition:.3s}
+.tag:hover{background:rgba(108,196,242,.24);transform:translateY(-2px)}
+
+/* 许愿式编程案例 */
+.wish-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:26px}
+@media(max-width:920px){.wish-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.wish-grid{grid-template-columns:1fr}}
+.wish{
+  border-radius:16px;padding:20px 18px;text-align:center;cursor:default;
+  background:rgba(108,196,242,.05);border:1px solid var(--line);transition:.35s;
+}
+.wish:hover{transform:translateY(-6px);border-color:var(--yellow);box-shadow:0 18px 36px -14px rgba(245,179,1,.4)}
+.wish .w-ico{font-size:1.8rem;display:block}
+.wish b{display:block;color:#fff;font-size:.95rem;margin-top:8px;letter-spacing:1px}
+.wish i{font-style:normal;font-size:.74rem;color:var(--dim)}
+
+/* 基准测试条形图 */
+.bench{display:grid;gap:22px}
+.brow{transition:.3s;border-radius:14px;padding:14px 18px}
+.brow:hover{background:rgba(108,196,242,.08)}
+.brow .bname{display:flex;justify-content:space-between;font-size:.9rem;color:#fff;margin-bottom:8px}
+.brow .bname small{color:var(--dim);letter-spacing:1px}
+.bar-row{display:flex;align-items:center;gap:12px;margin:6px 0}
+.bar-row .blab{flex:none;width:52px;font-size:.72rem;color:var(--dim);text-align:right}
+.bar-track{flex:1;height:10px;border-radius:6px;background:rgba(108,196,242,.1);overflow:hidden}
+.bar-fill{height:100%;border-radius:6px;width:0;transition:width 1.2s cubic-bezier(.2,.8,.25,1)}
+.bar-fill.prev{background:rgba(140,170,200,.4)}
+.bar-fill.now{background:linear-gradient(90deg,var(--blue),var(--sky) 60%,var(--yellow));box-shadow:0 0 14px rgba(108,196,242,.6)}
+.bar-row .bval{flex:none;width:56px;font-family:Georgia,serif;font-weight:700;font-size:.86rem;color:#ffd76e}
+.bar-row.prev-row .bval{color:rgba(200,220,240,.6)}
+.legend{display:flex;gap:22px;justify-content:center;margin-top:8px;font-size:.78rem;color:var(--dim)}
+.legend i{display:inline-block;width:22px;height:9px;border-radius:4px;margin-right:6px;vertical-align:1px}
+
+/* 四大功能 */
+.feat{display:grid;gap:22px;margin-top:8px}
+.fcard{
+  border-radius:20px;padding:26px 30px;position:relative;overflow:hidden;
+  background:linear-gradient(135deg,rgba(18,42,82,.55),rgba(29,17,64,.45));
+  border:1px solid var(--line);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  box-shadow:0 24px 48px -20px rgba(0,10,25,.7);transition:transform .35s ease,box-shadow .35s ease,border-color .35s ease;
+}
+.fcard:hover{transform:translateY(-6px);border-color:var(--glow);box-shadow:0 34px 60px -20px rgba(0,10,25,.85)}
+.fcard .fno{
+  position:absolute;top:18px;right:24px;font-family:Georgia,serif;font-size:2.4rem;font-weight:700;
+  color:rgba(108,196,242,.16);transition:.35s;
+}
+.fcard:hover .fno{color:rgba(245,179,1,.35);transform:scale(1.1)}
+.fcard h3{font-family:var(--font-display);font-size:1.3rem;color:#fff;letter-spacing:1px}
+.fcard .map{display:inline-block;margin:8px 0 4px;padding:4px 14px;border-radius:20px;font-size:.76rem;color:#ffd76e;background:rgba(245,179,1,.12);border:1px solid rgba(245,179,1,.4);text-decoration:none;transition:.3s}
+.fcard .map:hover{background:rgba(245,179,1,.28);transform:translateY(-2px)}
+.fcard .kv{margin-top:10px;font-size:.9rem}
+.fcard .kv b{flex:none;color:#9ecbff}
+.fcard .kv p{display:inline;color:var(--dim)}
+.fcard .plus{margin-top:12px;padding:10px 16px;border-radius:12px;font-size:.85rem;color:#cfe8d8;background:rgba(46,204,113,.08);border:1px dashed rgba(46,204,113,.35)}
+.fcard .plus b{color:#7be0a6}
+
+footer{padding:80px 0 34px;text-align:center;color:rgba(220,233,247,.55);font-size:.82rem;letter-spacing:1px}
+.toast{
+  position:fixed;left:50%;bottom:34px;z-index:90;transform:translateX(-50%) translateY(16px);
+  padding:12px 26px;border-radius:30px;font-size:.88rem;letter-spacing:1px;
+  color:#eaf4ff;background:rgba(12,30,54,.92);border:1px solid rgba(245,179,1,.55);
+  box-shadow:0 18px 36px -12px rgba(0,8,20,.6);opacity:0;pointer-events:none;transition:.35s;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+
+<div class="blobs"><div class="blob b1"></div><div class="blob b2"></div></div>
+<div class="grid-bg"></div>
+
+<header class="topbar">
+  <a class="brand" href="马尔代夫旅游网站.html">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6cc4f2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.1-7-11a7 7 0 0 1 14 0c0 4.9-7 11-7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>
+    元乡<em>·江西</em>
+  </a>
+  <span class="crumb">了解元乡 · AI大模型介绍</span>
+</header>
+
+<section class="hero">
+  <span class="badge">DeepSeek · V4.1-Flash-1017</span>
+  <h1>AI大模型介绍</h1>
+  <p class="slogan">小成本，大智能 —— 元乡引擎背后的模型底座</p>
+  <p class="intro">当前最新版本 <span class="hl">V4.1-Flash-1017</span> 已同步部署于<span class="hl-b">网页端、App 和 API</span>。元乡·江西的路线定制、文创生成与智能问答能力，均由它驱动。</p>
+</section>
+
+<main class="container">
+
+  <!-- 核心参数与架构 -->
+  <div class="sec-head rv"><span class="ico">📊</span><span class="badge">Core Architecture</span><h2>核心参数与架构</h2><p>混合专家（MoE）模型，采用独特的非对称架构，把每一分算力都花在刀刃上。</p></div>
+  <div class="stat-grid">
+    <div class="stat rv" data-d="1"><div class="num">763<small>B</small></div><div class="lab">总参数量（1017 版）</div><div class="sub">9 月版本 552B → 持续演进</div></div>
+    <div class="stat rv" data-d="2"><div class="num">1M<small>tokens</small></div><div class="lab">超长上下文窗口</div><div class="sub">适合长文档与 Agent 任务链</div></div>
+    <div class="stat rv" data-d="3"><div class="num">384<small>K</small></div><div class="lab">最大输出长度</div><div class="sub">端到端产出完整项目</div></div>
+    <div class="stat rv" data-d="4"><div class="num">8B+16<small>B</small></div><div class="lab">输入/输出侧激活参数</div><div class="sub">大幅降低推理成本</div></div>
+  </div>
+  <div class="arch-note rv">
+    <b>Causal-Encoder-Decoder 非对称结构：</b>
+    <p>2026 年 9 月版本起，模型采用全新的非对称结构——输入侧仅激活 8B 参数，输出侧激活 16B 参数；至 2026 年 10 月（1017 版），模型体量进一步增至 763B，超越了自家此前的旗舰模型 V3 和 R1。</p>
+    <span class="tag">混合专家 MoE</span><span class="tag">原生多模态 · 免外挂视觉理解</span><span class="tag">非对称架构</span><span class="tag">推理成本更低</span>
+  </div>
+
+  <!-- 许愿式编程 -->
+  <div class="sec-head rv"><span class="ico">🚀</span><span class="badge">Wish-Driven Programming</span><h2>核心能力：从“写代码”到“做项目”</h2><p>最核心的突破是“许愿式编程”——根据一个简单的想法，端到端构建出可运行的项目。基于自反馈的强化学习（RL），模型生成初版代码后能自行检查、发现问题并修改，而不再是“一次性输出”。</p></div>
+  <div class="wish-grid">
+    <div class="wish rv" data-d="1"><span class="w-ico">🏯</span><b>故宫 3D 建模</b><i>三维重建 · 一句话生成</i></div>
+    <div class="wish rv" data-d="2"><span class="w-ico">🏎️</span><b>网页版赛车游戏</b><i>可运行 · 可游玩</i></div>
+    <div class="wish rv" data-d="3"><span class="w-ico">🎮</span><b>复刻《传送门 2》</b><i>基于 Godot 引擎场景</i></div>
+    <div class="wish rv" data-d="4"><span class="w-ico">🦕</span><b>动态 3D 世界</b><i>从史前到现代的演化</i></div>
+  </div>
+  <div class="arch-note rv"><p style="margin:0">这意味着它更像一个能将任务推进到<b style="color:#ffd76e">“可运行状态”</b>的智能体（Agent），而非单纯的代码生成器。</p></div>
+
+  <!-- 性能表现 -->
+  <div class="sec-head rv"><span class="ico">📈</span><span class="badge">Pareto Improvement</span><h2>性能表现：性能—费用的帕累托改进</h2><p>在提升各项能力的同时，降低使用成本。以下为 1017 版与上一版的关键基准测试对比。</p></div>
+  <div class="panel rv">
+    <div class="bench" id="bench"></div>
+    <div class="legend"><span><i style="background:rgba(140,170,200,.4)"></i>上一版</span><span><i style="background:linear-gradient(90deg,var(--blue),var(--sky),var(--yellow))"></i>V4.1-Flash-1017</span></div>
+  </div>
+
+  <!-- 四大功能 -->
+  <div class="sec-head rv"><span class="ico">🤝</span><span class="badge">Yuanxiang × DeepSeek</span><h2>元乡网站的四大 AI 功能</h2><p>大模型能力与老区文旅场景的深度结合——每一个功能都对应网站的真实板块。</p></div>
+  <div class="feat" id="feats"></div>
+
+</main>
+
+<footer>© 2026 元乡·江西 — 元乡引擎 · AI大模型介绍</footer>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============ 基准测试数据（满分按 100 归一） ============ */
+const BENCH = [
+  { name: 'Terminal-Bench 4.0', sub: '终端操作', prev: 31.2, now: 42.3 },
+  { name: 'ProgramBench', sub: '编程', prev: 20.3, now: 29.1 },
+  { name: 'DeepSWE v1.1', sub: '软件工程', prev: 74.2, now: 77.0, pct: true },
+  { name: 'HLE (w/o tools)', sub: '高难度推理 · 纯文本', only: 42.6, note: '部分指标超越同期旗舰模型' }
+];
+document.getElementById('bench').innerHTML = BENCH.map(b => {
+  const unit = v => v + (b.pct ? '%' : '');
+  const rows = b.only != null
+    ? `<div class="bar-row"><span class="blab">1017版</span><div class="bar-track"><div class="bar-fill now" data-w="${b.only}"></div></div><span class="bval">${unit(b.only)}</span></div>
+       <div style="font-size:.78rem;color:var(--dim);padding-left:64px">${b.note}</div>`
+    : `<div class="bar-row prev-row"><span class="blab">上一版</span><div class="bar-track"><div class="bar-fill prev" data-w="${b.prev}"></div></div><span class="bval">${unit(b.prev)}</span></div>
+       <div class="bar-row"><span class="blab">1017版</span><div class="bar-track"><div class="bar-fill now" data-w="${b.now}"></div></div><span class="bval">${unit(b.now)}</span></div>`;
+  return `<div class="brow"><div class="bname"><b>${b.name}</b><small>${b.sub}</small></div>${rows}</div>`;
+}).join('');
+
+/* ============ 四大功能数据 ============ */
+const FEATS = [
+  { no: '01', ico: '🧭', title: '“元乡智游”管家（智能行程 Agent）',
+    map: '寻迹路线 / 云端定制路线', href: '元乡引擎.html',
+    ask: '用户在对话框输入自然语言，如：“我下周带父母去瑞金和永新玩 3 天，老人腿脚不便，喜欢自然风光和清淡的客家菜，预算 1500 元。”',
+    role: '利用其强大的逻辑推理与 Agent 任务处理能力，大模型在几秒内拆解需求，自动匹配网站内置的景点——如避开爬山的路线，推荐三湾平缓的栈道和象湖里的轻食，生成一份包含时间轴、预估花费、交通方式的详尽行程表。',
+    plus: '用户可以直接对行程表进行微调（如：“把第二天的午餐换成牛肉汤”），DeepSeek 能基于上下文迅速动态重排路线。' },
+  { no: '02', ico: '🎨', title: '“时光重塑”非遗文创定制（多模态与代码生成）',
+    map: '风物市集 · 文创商品详情页', href: '风物市集.html',
+    ask: '用户在商品页点击“AIGC 共创”，上传一张自己在瑞金拍的古建筑局部照片，输入：“提取这个青砖纹理，结合永新的竹编元素，设计一款极简风的帆布包”。',
+    role: '① 视觉理解：原生多模态能力直接“看懂”照片的纹理和色彩；② 提示词翻译：将自然语言转化为极高质量的 Stable Diffusion 绘画指令，甚至自动生成参数代码；③ 即时渲染：前端调用图像模型极速渲染出帆布包的设计效果图。',
+    plus: '展示了 “DeepSeek（语言/逻辑）+ SD/即梦（图像/生成）”的双模型协同工作流，直接命中赛题的“工具多样性”要求。' },
+  { no: '03', ico: '📜', title: '“赣鄱风物志”长文故事生成（1M 超长上下文应用）',
+    map: '元乡新语 · 文创产品背书', href: '马尔代夫旅游网站.html#articles',
+    ask: '点击任意一款特产（如“酱萝卜老鸭汤”礼盒），点击“生成我的专属风物志”。',
+    role: '后台塞入几十万字的江西地方志、非遗传承人口述史、旅游游记（利用其 1M 的超大上下文窗口）。DeepSeek 会在一秒钟内提取相关信息，用年轻人喜欢的“小红书体”或“散文体”，生成一篇包含历史渊源、食材故事、烹饪心法的生动推文。',
+    plus: '展示了对大模型长文本处理能力的深度运用，且大大降低了网站的文案运营成本。' },
+  { no: '04', ico: '💬', title: 'Site-GPT（网页原生交互导游）',
+    map: '全局悬浮窗（右下角）', href: '',
+    ask: '类似于网页版的 ChatGPT，但它的知识库被严格限制在“元乡”网站内容和江西文旅知识中。',
+    role: 'Flash 版本的推理成本极低且响应极快（250 tokens/秒），可以实现类似真人的无缝语音/文字对话。用户在任何页面随时提问（如：“这个万寿宫的冰箱贴是用什么材质做的？”），它能立刻结合当前页面上下文给出回答。',
+    plus: '低成本的极速推理，让“每个页面都有一个懂江西的导游”成为现实。' }
+];
+document.getElementById('feats').innerHTML = FEATS.map(f => `
+  <div class="fcard rv">
+    <span class="fno">${f.no}</span>
+    <h3>${f.ico} ${f.title}</h3>
+    ${f.href
+      ? `<a class="map" href="${f.href}">对应板块：${f.map} →</a>`
+      : `<a class="map" href="javascript:void(0)" onclick="toast('Site-GPT 悬浮导游即将上线，敬请期待')">对应板块：${f.map} →</a>`}
+    <div class="kv"><b>用户交互：</b><p>${f.ask}</p></div>
+    <div class="kv"><b>DeepSeek 的作用：</b><p>${f.role}</p></div>
+    <div class="plus"><b>人机协同加分点：</b>${f.plus}</div>
+  </div>`).join('');
+
+/* ============ 滚动显现 + 进度条动画 ============ */
+const io = new IntersectionObserver(es => es.forEach(e => {
+  if (!e.isIntersecting) return;
+  e.target.classList.add('in');
+  e.target.querySelectorAll('.bar-fill').forEach(b => { b.style.width = b.dataset.w + '%'; });
+  io.unobserve(e.target);
+}), { threshold: .15 });
+document.querySelectorAll('.rv').forEach(el => io.observe(el));
+
+/* ============ Toast ============ */
+let toastTimer = null;
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2600);
+}
+</script>
+</body>
+</html>
