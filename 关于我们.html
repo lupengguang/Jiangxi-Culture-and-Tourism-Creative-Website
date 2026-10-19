@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>关于我们 · 元乡数字营造社 — 元乡·江西</title>
+<meta name="description" content="元乡数字营造社（Yuanxiang Digital Studio）：用数字的温度，重构红土地的当代表达。一支由2名跨界青年组成的数字创意双核团队。">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --navy:#16324c;--blue:#2f80ed;--sky:#6cc4f2;--yellow:#f5b301;--red:#e05a4e;
+  --font-display:"Noto Serif SC","Songti SC","STSong","SimSun",Georgia,serif;
+  --line:rgba(108,196,242,.28);--glow:rgba(108,196,242,.45);
+  --txt:#dce9f7;--dim:rgba(220,233,247,.65);
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+  color:var(--txt);line-height:1.85;min-height:100vh;overflow-x:hidden;
+  background:linear-gradient(160deg,#07142a 0%,#0c2246 48%,#170f38 100%);
+}
+.blobs{position:fixed;inset:0;z-index:-1;pointer-events:none}
+.blob{position:absolute;border-radius:50%;filter:blur(100px);opacity:.55}
+.b1{width:560px;height:560px;background:radial-gradient(circle,#1c5da8,transparent 65%);top:-160px;left:-140px;animation:drift 24s ease-in-out infinite alternate}
+.b2{width:480px;height:480px;background:radial-gradient(circle,#4a2a8f,transparent 65%);bottom:-180px;right:-140px;animation:drift 28s ease-in-out infinite alternate-reverse}
+.grid-bg{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.35;
+  background-image:linear-gradient(rgba(108,196,242,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(108,196,242,.05) 1px,transparent 1px);
+  background-size:44px 44px;
+  mask-image:radial-gradient(70% 60% at 50% 30%,#000 40%,transparent 100%);
+  -webkit-mask-image:radial-gradient(70% 60% at 50% 30%,#000 40%,transparent 100%);}
+@keyframes drift{to{transform:translate(70px,50px) scale(1.1)}}
+
+.topbar{
+  position:sticky;top:14px;z-index:60;width:min(1160px,94%);margin:14px auto 0;
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+  padding:12px 24px;border-radius:50px;
+  background:rgba(10,24,44,.6);border:1px solid var(--line);
+  backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);
+  box-shadow:0 14px 30px -14px rgba(0,10,25,.6);
+}
+.brand{display:inline-flex;align-items:center;gap:9px;text-decoration:none;font-family:var(--font-display);font-weight:700;font-size:1.18rem;color:#fff}
+.brand em{font-style:normal;color:var(--yellow)}
+.crumb{font-size:.82rem;color:rgba(220,233,247,.7);letter-spacing:2px}
+@media(max-width:640px){.crumb{display:none}}
+
+.hero{position:relative;text-align:center;padding:92px 24px 30px;max-width:920px;margin:0 auto}
+.badge{
+  display:inline-flex;align-items:center;gap:10px;font-size:.8rem;letter-spacing:3px;font-weight:700;
+  color:#9ecbff;padding:7px 20px;border-radius:30px;border:1px solid var(--line);background:rgba(108,196,242,.08);
+}
+.badge::before{content:"✦";color:var(--yellow)}
+.hero h1{
+  font-family:var(--font-display);font-size:clamp(2.2rem,5.2vw,3.6rem);
+  color:#fff;letter-spacing:5px;margin-top:22px;line-height:1.3;
+  text-shadow:0 0 44px rgba(108,196,242,.4);
+}
+.hero .slogan{margin-top:14px;font-family:var(--font-display);font-size:clamp(1rem,2.2vw,1.2rem);color:#ffd76e;letter-spacing:2px}
+.hero p.intro{margin:20px auto 0;max-width:680px;color:var(--dim);font-size:.96rem}
+.hl{color:#ffd76e;font-weight:700}.hl-b{color:#9ecbff;font-weight:700}.hl-r{color:#ff9c8a;font-weight:700}
+
+.container{width:min(1160px,92%);margin:0 auto}
+.sec-head{text-align:center;margin:90px 0 46px}
+.sec-head .ico{font-size:2rem;display:block;margin-bottom:8px}
+.sec-head h2{font-family:var(--font-display);font-size:clamp(1.6rem,3.2vw,2.3rem);color:#fff;letter-spacing:3px;margin-top:10px;text-shadow:0 0 30px rgba(108,196,242,.35)}
+.sec-head p{color:var(--dim);max-width:720px;margin:12px auto 0;font-size:.94rem}
+.panel{
+  position:relative;border-radius:24px;padding:28px 32px;
+  background:linear-gradient(135deg,rgba(18,42,82,.55),rgba(29,17,64,.45));
+  border:1px solid var(--line);
+  backdrop-filter:blur(16px) saturate(150%);-webkit-backdrop-filter:blur(16px) saturate(150%);
+  box-shadow:0 30px 60px -24px rgba(0,8,20,.7);
+  transition:transform .35s ease,box-shadow .35s ease,border-color .35s ease;
+}
+.panel:hover{transform:translateY(-5px);border-color:var(--glow);box-shadow:0 36px 66px -24px rgba(0,10,25,.8)}
+.panel p{font-size:.94rem;color:var(--dim)}
+.panel p b{color:#fff}
+.rv{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
+.rv.in{opacity:1;transform:none}
+
+/* 数据卡 */
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+@media(max-width:920px){.stat-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.stat-grid{grid-template-columns:1fr}}
+.stat{
+  border-radius:18px;padding:22px 20px;text-align:center;
+  background:rgba(108,196,242,.06);border:1px solid var(--line);transition:.35s;
+}
+.stat:hover{transform:translateY(-6px);border-color:var(--sky);box-shadow:0 0 26px -6px var(--glow);background:rgba(108,196,242,.12)}
+.stat .num{font-family:Georgia,serif;font-size:2rem;font-weight:700;color:#ffd76e;text-shadow:0 0 20px rgba(245,179,1,.4)}
+.stat .num small{font-size:.9rem;color:#9ecbff;font-weight:400;margin-left:2px}
+.stat .lab{font-size:.85rem;color:#fff;letter-spacing:1px;margin-top:6px}
+.stat .sub{font-size:.72rem;color:var(--dim);margin-top:2px}
+.tag{display:inline-block;padding:4px 14px;border-radius:20px;margin:10px 8px 0 0;font-size:.78rem;font-weight:600;color:#9ecbff;background:rgba(108,196,242,.12);border:1px solid rgba(108,196,242,.35);transition:.3s}
+.tag:hover{background:rgba(108,196,242,.24);transform:translateY(-2px)}
+.tag.gold{color:#ffd76e;background:rgba(245,179,1,.1);border-color:rgba(245,179,1,.4)}
+.tag.gold:hover{background:rgba(245,179,1,.22)}
+
+/* 成员大卡（横向并列 · 等高） */
+.members{display:grid;grid-template-columns:repeat(2,1fr);gap:22px;grid-auto-rows:1fr;margin-top:40px}
+.members .member{height:100%}
+.member{
+  display:grid;grid-template-rows:auto 1fr;border-radius:24px;overflow:hidden;
+  background:linear-gradient(135deg,rgba(18,42,82,.55),rgba(29,17,64,.45));
+  border:1px solid var(--line);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  box-shadow:0 24px 48px -20px rgba(0,10,25,.7);
+  transition:transform .35s ease,border-color .35s ease,box-shadow .35s ease;
+}
+@media(max-width:860px){.members{grid-template-columns:1fr}}
+.member:hover{transform:translateY(-6px);border-color:var(--glow);box-shadow:0 34px 60px -20px rgba(0,10,25,.85)}
+.mside{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;
+  padding:38px 24px;text-align:center;position:relative;overflow:hidden;
+}
+.member:nth-child(odd) .mside{background:linear-gradient(160deg,rgba(108,196,242,.12),rgba(245,179,1,.06))}
+.member:nth-child(even) .mside{background:linear-gradient(200deg,rgba(74,42,143,.28),rgba(108,196,242,.08))}
+.mside::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 0,rgba(108,196,242,.14),transparent 65%);pointer-events:none}
+.avatar{
+  width:112px;height:112px;border-radius:50%;display:grid;place-items:center;font-size:2.6rem;
+  background:linear-gradient(150deg,#12305c,#2a1a52);border:1px solid rgba(159,203,255,.4);
+  box-shadow:0 0 0 6px rgba(108,196,242,.08),0 14px 30px -10px rgba(0,8,20,.8);
+  transition:.4s;
+}
+.avatar img{width:100%;height:100%;border-radius:50%;object-fit:cover;display:block}
+.member:hover .avatar{transform:scale(1.06) rotate(3deg);box-shadow:0 0 0 8px rgba(245,179,1,.12),0 18px 36px -10px rgba(0,8,20,.9)}
+.mcode{font-family:Georgia,serif;font-size:.78rem;letter-spacing:3px;color:#9ecbff}
+.mrole{font-family:var(--font-display);font-size:1.14rem;color:#fff;letter-spacing:1px;line-height:1.6}
+.mbody{padding:28px 32px}
+.mtags{margin:0 0 14px}
+.mtags .tag{margin:0 8px 8px 0}
+.mblock{border-radius:14px;padding:14px 18px;margin-top:12px;background:rgba(4,14,28,.5);border:1px dashed rgba(108,196,242,.3);transition:.3s}
+.mblock:hover{border-color:rgba(245,179,1,.5);background:rgba(4,14,28,.72)}
+.mblock b{display:inline-block;font-size:.82rem;letter-spacing:2px;color:#ffd76e;margin-bottom:2px}
+.mblock b.blue{color:#9ecbff}
+.mblock p{font-size:.88rem;color:var(--dim);display:inline}
+.mblock p b{display:inline;font-size:.88rem;letter-spacing:0;color:#cfe4ff;margin:0}
+.mlinks{margin-top:16px;display:flex;gap:10px;flex-wrap:wrap}
+.mlinks a{
+  font-size:.8rem;color:#9ecbff;text-decoration:none;padding:6px 16px;border-radius:20px;
+  border:1px solid rgba(108,196,242,.4);background:rgba(108,196,242,.06);transition:.3s;
+}
+.mlinks a:hover{color:#ffd76e;border-color:rgba(245,179,1,.6);background:rgba(245,179,1,.1);transform:translateY(-2px)}
+
+/* 协作流 */
+.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:26px}
+@media(max-width:920px){.flow{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.flow{grid-template-columns:1fr}}
+.flow .fstep{
+  border-radius:16px;padding:18px 16px;text-align:center;position:relative;
+  background:rgba(108,196,242,.05);border:1px solid var(--line);transition:.35s;
+}
+.flow .fstep:hover{transform:translateY(-5px);border-color:var(--yellow);box-shadow:0 16px 30px -12px rgba(245,179,1,.3)}
+.fstep i{font-style:normal;font-size:1.5rem;display:block}
+.fstep b{display:block;color:#fff;font-size:.88rem;margin-top:8px}
+.fstep span{font-size:.72rem;color:var(--dim);display:block;margin-top:2px}
+
+footer{padding:80px 0 34px;text-align:center;color:rgba(220,233,247,.55);font-size:.82rem;letter-spacing:1px}
+.toast{
+  position:fixed;left:50%;bottom:34px;z-index:90;transform:translateX(-50%) translateY(16px);
+  padding:12px 26px;border-radius:30px;font-size:.88rem;letter-spacing:1px;
+  color:#eaf4ff;background:rgba(12,30,54,.92);border:1px solid rgba(245,179,1,.55);
+  box-shadow:0 18px 36px -12px rgba(0,8,20,.6);opacity:0;pointer-events:none;transition:.35s;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+
+<div class="blobs"><div class="blob b1"></div><div class="blob b2"></div></div>
+<div class="grid-bg"></div>
+
+<header class="topbar">
+  <a class="brand" href="马尔代夫旅游网站.html">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6cc4f2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.1-7-11a7 7 0 0 1 14 0c0 4.9-7 11-7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>
+    元乡<em>·江西</em>
+  </a>
+  <span class="crumb">了解元乡 · 关于我们</span>
+</header>
+
+<section class="hero">
+  <span class="badge">Yuanxiang Digital Studio · 数字创意双核团队</span>
+  <h1>元乡数字营造社</h1>
+  <p class="slogan">用数字的温度，重构红土地的当代表达</p>
+  <p class="intro">一支由 <span class="hl">2 名跨界青年</span>组成的数字创意双核团队，专注于<span class="hl-b">UI/UX 设计、文创产品开发与 AIGC 前沿技术落地</span>。我们拒绝泛地域化的符号堆砌，致力于将江西老区的<span class="hl-b">隐性文化</span>转化为<span class="hl">显性的数字与实体体验</span>。</p>
+</section>
+
+<main class="container">
+
+  <!-- 团队速览 -->
+  <div class="sec-head rv"><span class="ico">🧭</span><span class="badge">Team at a Glance</span><h2>团队定位</h2><p>设计与技术双核驱动，从视觉表达到 AI 工程化的完整闭环。</p></div>
+  <div class="stat-grid">
+    <div class="stat rv" data-d="1"><div class="num">2<small>人</small></div><div class="lab">跨界青年 · 双核团队</div><div class="sub">视觉文创 × AIGC 工程</div></div>
+    <div class="stat rv" data-d="2"><div class="num">4<small>大系列</small></div><div class="lab">原创文创产品线</div><div class="sub">红土拾光 · 赣鄱新语 · 竹木生花 · 云游老区</div></div>
+    <div class="stat rv" data-d="3"><div class="num">2<small>大模块</small></div><div class="lab">AI 能力落地</div><div class="sub">云端定制路线 · AI 共创</div></div>
+    <div class="stat rv" data-d="4"><div class="num">100<small>%</small></div><div class="lab">Prompt 日志留档</div><div class="sub">流程透明 · 结果可复现</div></div>
+  </div>
+  <div style="height:24px"></div>
+  <div class="panel rv" style="text-align:center">
+    <p><b>我们拒绝泛地域化的符号堆砌。</b>老区的美，藏在青砖黛瓦的肌理里、映山红的色相里、竹编的经纬里——<span class="hl">把隐性文化翻译成显性体验</span>，是元乡数字营造社的全部工作。</p>
+    <div style="margin-top:6px">
+      <span class="tag gold">UI/UX 设计</span><span class="tag gold">文创产品开发</span><span class="tag gold">AIGC 前沿技术落地</span><span class="tag">去沉重化的当代表达</span><span class="tag">多模型协同工作流</span>
+    </div>
+  </div>
+
+  <!-- 成员介绍 -->
+  <div class="members">
+  <!-- 成员 A -->
+  <div class="member rv">
+    <div class="mside">
+      <div class="avatar"><img src="images/成员A-视觉文创主理人.jpg" alt="成员A · 视觉与文创主理人头像"></div>
+      <span class="mcode">CODE NAME · 🌊🔥</span>
+      <span class="mrole">成员 A<br>视觉与文创主理人</span>
+    </div>
+    <div class="mbody">
+      <div class="mtags">
+        <span class="tag gold">UI/UX 设计</span><span class="tag gold">文创全案</span><span class="tag gold">视觉统筹</span>
+      </div>
+      <div class="mblock"><b>项目分工</b><p>负责“元乡·江西”网站的<b>整体 UI 视觉、交互逻辑设计</b>，以及四大文创系列（<b>《红土拾光》《赣鄱新语》《竹木生花》《云游老区》</b>）的产品包装与落地排版。</p></div>
+      <div class="mblock"><b>创作理念</b><p>坚持“<b>去沉重化</b>”的当代表达。在设计中提取青砖黛瓦、映山红、竹编等自然与非遗元素，<b>剥离政治符号</b>，用极简、国潮的视觉语言重塑老区美学。</p></div>
+      <div class="mblock"><b>AI 协同模式</b><p>作为“<b>人工精修</b>”的把关人，负责对 AI 生成的图片进行二次调色、排版修饰与细节（如手部、文字）修正，确保画面符合<b>成熟的商业落地标准</b>。</p></div>
+      <div class="mlinks">
+        <a href="风物市集.html">看文创落地 · 风物市集 →</a>
+        <a href="马尔代夫旅游网站.html">看视觉落地 · 网站首页 →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 成员 B -->
+  <div class="member rv">
+    <div class="mside">
+      <div class="avatar"><img src="images/成员B-AIGC交互开发工程师.jpg" alt="成员B 南辰 · AIGC与交互开发工程师头像"></div>
+      <span class="mcode">CODE NAME · 南辰</span>
+      <span class="mrole">成员 B<br>AIGC 与交互开发工程</span>
+    </div>
+    <div class="mbody">
+      <div class="mtags">
+        <span class="tag gold">Prompt Engineering</span><span class="tag gold">模型微调</span><span class="tag gold">前端实现</span>
+      </div>
+      <div class="mblock"><b>项目分工</b><p>负责网站中“<b>云端定制路线</b>”与“<b>AI 共创</b>”模块的底层逻辑与前端交互实现。主导接入大语言模型（如 <b>DeepSeek V4.1 Flash</b>）与图像生成模型（如 <b>Stable Diffusion</b>）。</p></div>
+      <div class="mblock"><b>创作理念</b><p>技术不应喧宾夺主，而是<b>隐于幕后</b>。通过精准的提示词约束（规避敏感词），让 AI 理解江西的地域调性，实现“<b>一句话生成专属旅游路线</b>”的丝滑体验。</p></div>
+      <div class="mblock"><b>AI 协同模式</b><p>负责构建全案的“<b>多模型协同工作流</b>”。管理 ControlNet 的构图控制与 LoRA 权重参数，记录并输出完整的 <b>Prompt 迭代日志与参数矩阵</b>，保障作品的“流程透明性”与“可复现性”。</p></div>
+      <div class="mlinks">
+        <a href="元乡引擎.html">看工程落地 · 元乡引擎 →</a>
+        <a href="AI大模型介绍.html">看模型底座 · AI大模型介绍 →</a>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- 协作流程 -->
+  <div class="sec-head rv"><span class="ico">🤝</span><span class="badge">Human × AI Workflow</span><h2>双核 × AI 协作流</h2><p>从灵感到落地，每一步都有“人的判断”与“AI 的效率”互相咬合。</p></div>
+  <div class="flow">
+    <div class="fstep rv" data-d="1"><i>💡</i><b>灵感与 Brief</b><span>双核共创 · 定调性</span></div>
+    <div class="fstep rv" data-d="2"><i>🤖</i><b>AI 生成初稿</b><span>文生图 · 文案 · 路线</span></div>
+    <div class="fstep rv" data-d="3"><i>🖌️</i><b>人工精修把关</b><span>调色 · 排版 · 细节修正</span></div>
+    <div class="fstep rv" data-d="4"><i>📦</i><b>留档与复现</b><span>Prompt 日志 · 参数矩阵</span></div>
+  </div>
+  <div class="panel rv" style="margin-top:24px;text-align:center">
+    <p style="margin:0"><b>“人工精修 × 流程透明”</b>是我们对 AIGC 创作的态度——AI 负责效率，<span class="hl">人负责审美与责任</span>；每一次生成都有日志可查，<span class="hl">每一个作品都可复现</span>。</p>
+  </div>
+
+</main>
+
+<footer>© 2026 元乡·江西 — 了解元乡 · 关于我们</footer>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============ 滚动显现 ============ */
+const io = new IntersectionObserver(es => es.forEach(e => {
+  if (!e.isIntersecting) return;
+  e.target.classList.add('in');
+  io.unobserve(e.target);
+}), { threshold: .15 });
+document.querySelectorAll('.rv').forEach(el => io.observe(el));
+
+/* ============ Toast ============ */
+let toastTimer = null;
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2600);
+}
+</script>
+</body>
+</html>

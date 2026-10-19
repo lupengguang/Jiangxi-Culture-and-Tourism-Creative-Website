@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>江西介绍 · 赣鄱大地 — 元乡·江西</title>
+<meta name="description" content="赣鄱大地：以水得名，以山筑形。千年文脉、非遗风物、文旅新貌与三大站点——认识一个立体的江西。">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --navy:#16324c;--blue:#2f80ed;--sky:#6cc4f2;--yellow:#f5b301;--red:#e05a4e;
+  --font-display:"Noto Serif SC","Songti SC","STSong","SimSun",Georgia,serif;
+  --line:rgba(108,196,242,.28);--glow:rgba(108,196,242,.45);
+  --txt:#dce9f7;--dim:rgba(220,233,247,.65);
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+  color:var(--txt);line-height:1.85;min-height:100vh;overflow-x:hidden;
+  background:linear-gradient(160deg,#07142a 0%,#0c2246 48%,#170f38 100%);
+}
+.blobs{position:fixed;inset:0;z-index:-1;pointer-events:none}
+.blob{position:absolute;border-radius:50%;filter:blur(100px);opacity:.55}
+.b1{width:560px;height:560px;background:radial-gradient(circle,#1c5da8,transparent 65%);top:-160px;left:-140px;animation:drift 24s ease-in-out infinite alternate}
+.b2{width:480px;height:480px;background:radial-gradient(circle,#4a2a8f,transparent 65%);bottom:-180px;right:-140px;animation:drift 28s ease-in-out infinite alternate-reverse}
+.grid-bg{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.35;
+  background-image:linear-gradient(rgba(108,196,242,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(108,196,242,.05) 1px,transparent 1px);
+  background-size:44px 44px;
+  mask-image:radial-gradient(70% 60% at 50% 30%,#000 40%,transparent 100%);
+  -webkit-mask-image:radial-gradient(70% 60% at 50% 30%,#000 40%,transparent 100%);}
+@keyframes drift{to{transform:translate(70px,50px) scale(1.1)}}
+
+.topbar{
+  position:sticky;top:14px;z-index:60;width:min(1160px,94%);margin:14px auto 0;
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+  padding:12px 24px;border-radius:50px;
+  background:rgba(10,24,44,.6);border:1px solid var(--line);
+  backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);
+  box-shadow:0 14px 30px -14px rgba(0,10,25,.6);
+}
+.brand{display:inline-flex;align-items:center;gap:9px;text-decoration:none;font-family:var(--font-display);font-weight:700;font-size:1.18rem;color:#fff}
+.brand em{font-style:normal;color:var(--yellow)}
+.crumb{font-size:.82rem;color:rgba(220,233,247,.7);letter-spacing:2px}
+@media(max-width:640px){.crumb{display:none}}
+
+.hero{position:relative;text-align:center;padding:92px 24px 30px;max-width:920px;margin:0 auto}
+.badge{
+  display:inline-flex;align-items:center;gap:10px;font-size:.8rem;letter-spacing:3px;font-weight:700;
+  color:#9ecbff;padding:7px 20px;border-radius:30px;border:1px solid var(--line);background:rgba(108,196,242,.08);
+}
+.badge::before{content:"✦";color:var(--yellow)}
+.hero h1{
+  font-family:var(--font-display);font-size:clamp(2.2rem,5.2vw,3.6rem);
+  color:#fff;letter-spacing:5px;margin-top:22px;line-height:1.3;
+  text-shadow:0 0 44px rgba(108,196,242,.4);
+}
+.hero .slogan{margin-top:14px;font-family:var(--font-display);font-size:clamp(1rem,2.2vw,1.2rem);color:#ffd76e;letter-spacing:2px}
+.hero p.intro{margin:20px auto 0;max-width:660px;color:var(--dim);font-size:.96rem}
+.hl{color:#ffd76e;font-weight:700}.hl-b{color:#9ecbff;font-weight:700}.hl-r{color:#ff9c8a;font-weight:700}
+
+.container{width:min(1160px,92%);margin:0 auto}
+.sec-head{text-align:center;margin:90px 0 46px}
+.sec-head .ico{font-size:2rem;display:block;margin-bottom:8px}
+.sec-head h2{font-family:var(--font-display);font-size:clamp(1.6rem,3.2vw,2.3rem);color:#fff;letter-spacing:3px;margin-top:10px;text-shadow:0 0 30px rgba(108,196,242,.35)}
+.sec-head p{color:var(--dim);max-width:720px;margin:12px auto 0;font-size:.94rem}
+.panel{
+  position:relative;border-radius:24px;padding:28px 32px;
+  background:linear-gradient(135deg,rgba(18,42,82,.55),rgba(29,17,64,.45));
+  border:1px solid var(--line);
+  backdrop-filter:blur(16px) saturate(150%);-webkit-backdrop-filter:blur(16px) saturate(150%);
+  box-shadow:0 30px 60px -24px rgba(0,8,20,.7);
+  transition:transform .35s ease,box-shadow .35s ease,border-color .35s ease;
+}
+.panel:hover{transform:translateY(-5px);border-color:var(--glow);box-shadow:0 36px 66px -24px rgba(0,10,25,.8)}
+.panel p{font-size:.94rem;color:var(--dim)}
+.panel p b{color:#fff}
+.rv{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
+.rv.in{opacity:1;transform:none}
+
+/* 图文行 */
+.duo{display:grid;grid-template-columns:1.05fr .95fr;gap:26px;align-items:stretch}
+.duo.flip{grid-template-columns:.95fr 1.05fr}
+@media(max-width:860px){.duo,.duo.flip{grid-template-columns:1fr}}
+.ph-wrap{border-radius:20px;overflow:hidden;border:1px solid var(--line);min-height:230px;position:relative;background:rgba(108,196,242,.05)}
+.ph-wrap img{width:100%;height:100%;object-fit:cover;display:block;min-height:230px}
+.ph-wrap img.gen{opacity:0;transition:opacity .8s ease}
+.ph-wrap img.gen.loaded{opacity:1}
+.ph-cap{position:absolute;left:0;right:0;bottom:0;padding:26px 18px 12px;font-size:.78rem;letter-spacing:2px;color:#cfe4ff;background:linear-gradient(transparent,rgba(4,12,26,.85))}
+
+/* 数据卡 */
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+@media(max-width:920px){.stat-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.stat-grid{grid-template-columns:1fr}}
+.stat{
+  border-radius:18px;padding:22px 20px;text-align:center;
+  background:rgba(108,196,242,.06);border:1px solid var(--line);transition:.35s;
+}
+.stat:hover{transform:translateY(-6px);border-color:var(--sky);box-shadow:0 0 26px -6px var(--glow);background:rgba(108,196,242,.12)}
+.stat .num{font-family:Georgia,serif;font-size:2rem;font-weight:700;color:#ffd76e;text-shadow:0 0 20px rgba(245,179,1,.4)}
+.stat .num small{font-size:.9rem;color:#9ecbff;font-weight:400;margin-left:2px}
+.stat .lab{font-size:.85rem;color:#fff;letter-spacing:1px;margin-top:6px}
+.stat .sub{font-size:.72rem;color:var(--dim);margin-top:2px}
+.tag{display:inline-block;padding:4px 14px;border-radius:20px;margin:10px 8px 0 0;font-size:.78rem;font-weight:600;color:#9ecbff;background:rgba(108,196,242,.12);border:1px solid rgba(108,196,242,.35);transition:.3s}
+.tag:hover{background:rgba(108,196,242,.24);transform:translateY(-2px)}
+.tag.gold{color:#ffd76e;background:rgba(245,179,1,.1);border-color:rgba(245,179,1,.4)}
+.tag.gold:hover{background:rgba(245,179,1,.22)}
+.tag.red{color:#ffb0a3;background:rgba(224,90,78,.1);border-color:rgba(224,90,78,.4)}
+.tag.red:hover{background:rgba(224,90,78,.22)}
+
+/* 文化矩阵三卡 */
+.tri{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+@media(max-width:920px){.tri{grid-template-columns:1fr}}
+.tri .tcard{
+  border-radius:20px;padding:26px 28px;position:relative;overflow:hidden;
+  background:linear-gradient(135deg,rgba(18,42,82,.55),rgba(29,17,64,.45));
+  border:1px solid var(--line);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  box-shadow:0 24px 48px -20px rgba(0,10,25,.7);transition:transform .35s ease,box-shadow .35s ease,border-color .35s ease;
+}
+.tri .tcard:hover{transform:translateY(-6px);border-color:var(--glow);box-shadow:0 34px 60px -20px rgba(0,10,25,.85)}
+.tcard .tico{font-size:1.9rem;display:block}
+.tcard h3{font-family:var(--font-display);font-size:1.18rem;color:#fff;letter-spacing:1px;margin-top:10px}
+.tcard .k{font-family:Georgia,serif;font-size:1.9rem;font-weight:700;color:#ffd76e;margin-top:10px;text-shadow:0 0 20px rgba(245,179,1,.35)}
+.tcard .k small{font-size:.85rem;color:#9ecbff;font-weight:400;margin-left:4px}
+.tcard p{font-size:.88rem;color:var(--dim);margin-top:8px}
+.tcard p b{color:#cfe4ff}
+
+/* 名菜网格 */
+.dish-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-top:24px}
+@media(max-width:920px){.dish-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:560px){.dish-grid{grid-template-columns:repeat(2,1fr)}}
+.dish{
+  border-radius:14px;padding:16px 12px;text-align:center;
+  background:rgba(108,196,242,.05);border:1px solid var(--line);transition:.35s;
+}
+.dish:hover{transform:translateY(-5px);border-color:var(--yellow);box-shadow:0 16px 30px -12px rgba(245,179,1,.35)}
+.dish i{font-style:normal;font-size:1.3rem;display:block}
+.dish b{display:block;color:#fff;font-size:.86rem;margin-top:6px;font-weight:600;line-height:1.5}
+.dish .no{font-family:Georgia,serif;font-size:.68rem;color:rgba(159,203,255,.55);letter-spacing:2px}
+
+/* 文旅三地 */
+.city{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+@media(max-width:920px){.city{grid-template-columns:1fr}}
+.city .ccard{
+  border-radius:20px;padding:26px 28px;
+  background:rgba(108,196,242,.05);border:1px solid var(--line);transition:.35s;
+}
+.city .ccard:hover{transform:translateY(-6px);border-color:var(--glow);background:rgba(108,196,242,.1);box-shadow:0 26px 48px -18px rgba(0,10,25,.8)}
+.ccard h3{font-family:var(--font-display);font-size:1.15rem;color:#fff;letter-spacing:2px}
+.ccard .nums{margin-top:12px;display:flex;gap:18px;flex-wrap:wrap}
+.ccard .nums div b{font-family:Georgia,serif;font-size:1.35rem;color:#ffd76e;display:block}
+.ccard .nums div span{font-size:.72rem;color:var(--dim)}
+.ccard p{font-size:.86rem;color:var(--dim);margin-top:12px}
+.ccard p b{color:#cfe4ff}
+
+/* 三大站点 */
+.station{display:grid;grid-template-columns:1fr;gap:26px}
+.st{display:grid;grid-template-columns:340px 1fr;border-radius:22px;overflow:hidden;
+  background:linear-gradient(135deg,rgba(18,42,82,.55),rgba(29,17,64,.45));
+  border:1px solid var(--line);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  box-shadow:0 24px 48px -20px rgba(0,10,25,.7);transition:transform .35s ease,border-color .35s ease,box-shadow .35s ease;
+}
+.st.flip{grid-template-columns:1fr 340px}
+@media(max-width:860px){.st,.st.flip{grid-template-columns:1fr}}
+.st:hover{transform:translateY(-5px);border-color:var(--glow);box-shadow:0 34px 60px -20px rgba(0,10,25,.85)}
+.st .ph-wrap{border-radius:0;border:none;min-height:220px}
+.st .ph-wrap img{min-height:220px;height:100%}
+.st .sbody{padding:26px 30px}
+.st .sno{font-family:Georgia,serif;font-size:.72rem;letter-spacing:3px;color:#9ecbff}
+.st h3{font-family:var(--font-display);font-size:1.3rem;color:#fff;letter-spacing:1px;margin-top:6px}
+.st .sloc{display:inline-block;margin-top:8px;padding:3px 12px;border-radius:20px;font-size:.74rem;color:#ffd76e;background:rgba(245,179,1,.1);border:1px solid rgba(245,179,1,.35)}
+.st p{font-size:.9rem;color:var(--dim);margin-top:12px}
+.st p b{color:#cfe4ff}
+.st .more{display:inline-block;margin-top:14px;font-size:.82rem;color:#9ecbff;text-decoration:none;border-bottom:1px dashed rgba(159,203,255,.5);transition:.3s}
+.st .more:hover{color:#ffd76e;border-color:rgba(245,179,1,.6)}
+
+footer{padding:80px 0 34px;text-align:center;color:rgba(220,233,247,.55);font-size:.82rem;letter-spacing:1px}
+.toast{
+  position:fixed;left:50%;bottom:34px;z-index:90;transform:translateX(-50%) translateY(16px);
+  padding:12px 26px;border-radius:30px;font-size:.88rem;letter-spacing:1px;
+  color:#eaf4ff;background:rgba(12,30,54,.92);border:1px solid rgba(245,179,1,.55);
+  box-shadow:0 18px 36px -12px rgba(0,8,20,.6);opacity:0;pointer-events:none;transition:.35s;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+
+<div class="blobs"><div class="blob b1"></div><div class="blob b2"></div></div>
+<div class="grid-bg"></div>
+
+<header class="topbar">
+  <a class="brand" href="马尔代夫旅游网站.html">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6cc4f2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.1-7-11a7 7 0 0 1 14 0c0 4.9-7 11-7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>
+    元乡<em>·江西</em>
+  </a>
+  <span class="crumb">了解元乡 · 江西介绍</span>
+</header>
+
+<section class="hero">
+  <span class="badge">赣鄱大地 · 文章节义之邦</span>
+  <h1>江西介绍</h1>
+  <p class="slogan">以水得名，以山筑形 —— 一片被山水与文化共同塑造的土地</p>
+  <p class="intro">江西简称<span class="hl">“赣”</span>，因赣江纵贯全境而得名。从<span class="hl-b">山水生态</span>到<span class="hl-b">千年文脉</span>，从<span class="hl-r">红色摇篮</span>到<span class="hl-b">文旅新貌</span>，这里是老区当代表达的鲜活样本。</p>
+</section>
+
+<main class="container">
+
+  <!-- 赣鄱大地 -->
+  <div class="sec-head rv"><span class="ico">🏞️</span><span class="badge">Geography & Ecology</span><h2>赣鄱大地：以水得名，以山筑形</h2><p>五大水系汇入中国最大的淡水湖，六大山脉从三面合围，构成一个相对独立的地理单元。</p></div>
+  <div class="stat-grid">
+    <div class="stat rv" data-d="1"><div class="num">63<small>%</small></div><div class="lab">全省森林覆盖率</div><div class="sub">稳定位居全国前列</div></div>
+    <div class="stat rv" data-d="2"><div class="num">11<small>个</small></div><div class="lab">设区市全部入选</div><div class="sub">“国家森林城市”全满贯</div></div>
+    <div class="stat rv" data-d="3"><div class="num">5<small>大水系</small></div><div class="lab">赣·抚·信·饶·修</div><div class="sub">汇入鄱阳湖，再注入长江</div></div>
+    <div class="stat rv" data-d="4"><div class="num">6<small>大山脉</small></div><div class="lab">武夷·罗霄·九连·雩山·怀玉·幕阜</div><div class="sub">自东、南、西三面合围</div></div>
+  </div>
+  <div style="height:26px"></div>
+  <div class="duo">
+    <div class="panel rv">
+      <p><b>“山水合围”的格局，赋予了江西一流的生态底色。</b>赣、抚、信、饶、修五大水系汇入中国最大的淡水湖<span class="hl-b">鄱阳湖</span>，再注入长江；六大山脉合围出独立的地理单元，也涵养出稳定的绿色家底——全省森林覆盖率稳定在 <span class="hl">63%</span> 左右，11 个设区市全部获评“国家森林城市”。</p>
+      <p style="margin-top:12px">从婺源为极危物种<span class="hl-b">蓝冠噪鹛</span>打造的 <b>110 公里观鸟长廊</b>，到寻乌废弃矿山的<span class="hl-b">复绿再生</span>，生态保护在这里转化为了<span class="hl">可体验的文旅产品</span>。</p>
+    </div>
+    <div class="ph-wrap rv" data-d="2"><img class="gen" loading="lazy" alt="赣鄱山水" data-prompt="Aerial cinematic view of Jiangxi China landscape, winding river flowing into vast Poyang lake, layered green mountains in morning mist, traditional village rooftop among forest, blue teal and golden light, photorealistic, no text" data-size="landscape_16_9"><span class="ph-cap">五河汇鄱湖 · 六山合围的赣鄱大地</span></div>
+  </div>
+
+  <!-- 千年文脉 -->
+  <div class="sec-head rv"><span class="ico">📜</span><span class="badge">Cultural Heritage</span><h2>千年文脉：文章节义之邦的深厚积淀</h2><p>“八大特色文化 + 四大地域文化”交织出江西的文化谱系矩阵。</p></div>
+  <div class="panel rv" style="text-align:center">
+    <p><b>江西素以“文章节义之邦”著称。</b>书院、陶瓷、戏曲、农耕、商业、中医药、红色、山水——八大特色文化，与豫章、临川、庐陵、客家四大地域文化相互交织。</p>
+    <div style="margin-top:6px">
+      <span class="tag gold">书院文化</span><span class="tag gold">陶瓷文化</span><span class="tag gold">戏曲文化</span><span class="tag gold">农耕文化</span><span class="tag gold">商业文化</span><span class="tag gold">中医药文化</span><span class="tag gold">红色文化</span><span class="tag gold">山水文化</span>
+    </div>
+    <div>
+      <span class="tag">豫章文化</span><span class="tag">临川文化</span><span class="tag">庐陵文化</span><span class="tag">客家文化</span>
+    </div>
+  </div>
+  <div style="height:22px"></div>
+  <div class="tri">
+    <div class="tcard rv" data-d="1">
+      <span class="tico">🏯</span>
+      <h3>书院文化的巅峰</h3>
+      <div class="k">989<small>所有据可查</small></div>
+      <p>自唐宋以来，江西书院数量<b>居全国之首</b>。其中<b>白鹿洞书院</b>位列中国四大书院之首，朱熹在此亲订学规，开一代学风。</p>
+    </div>
+    <div class="tcard rv" data-d="2">
+      <span class="tico">🏺</span>
+      <h3>陶瓷与青铜的辉光</h3>
+      <div class="k">四绝<small>白如玉 · 明如镜 · 薄如纸 · 声如磬</small></div>
+      <p><b>景德镇瓷器</b>闻名于世；<b>新干大洋洲商代大墓</b>的青铜器，则改写了江南“蛮荒”的历史认知。</p>
+    </div>
+    <div class="tcard rv" data-d="3">
+      <span class="tico">🔴</span>
+      <h3>红色文化的摇篮</h3>
+      <div class="k">250,000<small>余名有名有姓的烈士</small></div>
+      <p><b>井冈山</b>是中国革命的摇篮，<b>南昌</b>是人民军队的诞生地，<b>瑞金</b>是苏维埃中央政府的所在地。</p>
+    </div>
+  </div>
+
+  <!-- 非遗与风物 -->
+  <div class="sec-head rv"><span class="ico">🎭</span><span class="badge">Living Heritage</span><h2>非遗与风物：活态传承的生活美学</h2><p>江西的文化不仅写在典籍里，更活在手艺与日常饮食中。</p></div>
+  <div class="duo flip">
+    <div class="ph-wrap rv" data-d="1"><img class="gen" loading="lazy" alt="赣味鲜辣" data-prompt="Jiangxi cuisine food photography, spicy braised duck and home-style stir-fry with chili and cured pork on rustic wooden table, steaming dishes, warm ambient light, appetizing, photorealistic, no text" data-size="landscape_16_9"><span class="ph-cap">鲜辣香醇 · 自成一体的赣菜</span></div>
+    <div class="panel rv">
+      <p>目前江西拥有省级非物质文化遗产代表性项目 <span class="hl">648 项</span>，涵盖传统技艺、民俗、戏剧等十大类别。<b>婺源晒秋习俗、铅山连四纸制作、客家民居营造技艺、赣南采茶戏</b>等，都是其中的典型代表。</p>
+      <p style="margin-top:12px">在饮食上，赣菜以<span class="hl">“鲜辣香醇”</span>自成一体。此外，<b>南安板鸭</b>（五百余年历史）、<b>赣南小炒鱼</b>（明代起源）等，也都是承载着地方记忆的风味。</p>
+      <div style="margin-top:4px">
+        <span class="tag">婺源晒秋</span><span class="tag">铅山连四纸</span><span class="tag">客家民居营造</span><span class="tag">赣南采茶戏</span><span class="tag red">南安板鸭 · 500余年</span><span class="tag red">赣南小炒鱼 · 明代起源</span>
+      </div>
+    </div>
+  </div>
+  <div class="dish-grid">
+    <div class="dish rv" data-d="1"><span class="no">01</span><i>🍗</i><b>宁都三杯鸡</b></div>
+    <div class="dish rv" data-d="2"><span class="no">02</span><i>🦆</i><b>莲花血鸭</b></div>
+    <div class="dish rv" data-d="3"><span class="no">03</span><i>🌕</i><b>四星望月</b></div>
+    <div class="dish rv" data-d="4"><span class="no">04</span><i>🌶️</i><b>余干辣椒炒肉</b></div>
+    <div class="dish rv" data-d="5"><span class="no">05</span><i>🎋</i><b>井冈烟笋</b></div>
+    <div class="dish rv" data-d="6"><span class="no">06</span><i>🐟</i><b>白浇雄鱼头</b></div>
+    <div class="dish rv" data-d="7"><span class="no">07</span><i>🍜</i><b>鳜鱼煮粉</b></div>
+    <div class="dish rv" data-d="8"><span class="no">08</span><i>🍲</i><b>甲鱼粉皮</b></div>
+    <div class="dish rv" data-d="9"><span class="no">09</span><i>🥓</i><b>藜蒿炒腊肉</b></div>
+    <div class="dish rv" data-d="10"><span class="no">10</span><i>🐔</i><b>滋补泰和乌鸡</b></div>
+  </div>
+  <p class="rv" style="text-align:center;font-size:.78rem;color:var(--dim);margin-top:14px;letter-spacing:2px">—— 赣菜“十大名菜” ——</p>
+
+  <!-- 文旅新貌 -->
+  <div class="sec-head rv"><span class="ico">🚀</span><span class="badge">Tourism Boom 2025</span><h2>文旅新貌：从“看一遍”到“住下来、沉进去”</h2><p>“红、绿、古”三种资源相互赋能：红色旅游吸引人流，绿色生态延长停留时间，古色文化提升消费品质。</p></div>
+  <div class="stat-grid">
+    <div class="stat rv" data-d="1"><div class="num">+13.8<small>%</small></div><div class="lab">旅游总花费同比增长</div><div class="sub">2025 年全省</div></div>
+    <div class="stat rv" data-d="2"><div class="num">第3<small>全国</small></div><div class="lab">省外游客占比</div><div class="sub">中部第 1</div></div>
+    <div class="stat rv" data-d="3"><div class="num">红绿古<small>三色</small></div><div class="lab">资源相互赋能</div><div class="sub">增长的核心动力</div></div>
+    <div class="stat rv" data-d="4"><div class="num">3<small>样本</small></div><div class="lab">于都 · 婺源 · 庐山</div><div class="sub">体验升级的代表</div></div>
+  </div>
+  <div style="height:22px"></div>
+  <div class="city">
+    <div class="ccard rv" data-d="1">
+      <h3>于都</h3>
+      <div class="nums"><div><b>1864.68<small style="font-size:.7rem;color:#9ecbff"> 万人次</small></b><span>2025 接待游客</span></div><div><b>179.98<small style="font-size:.7rem;color:#9ecbff"> 亿元</small></b><span>旅游综合收入</span></div></div>
+      <p><b>红色情景剧与沉浸式体验</b>，让“住下来”成为可能。</p>
+    </div>
+    <div class="ccard rv" data-d="2">
+      <h3>婺源</h3>
+      <div class="nums"><div><b>3602.2<small style="font-size:.7rem;color:#9ecbff"> 万人次</small></b><span>2025 接待游客</span></div><div><b>349.1<small style="font-size:.7rem;color:#9ecbff"> 亿元</small></b><span>综合收入</span></div></div>
+      <p>位列<b>中国县域旅游综合竞争力百强榜第四</b>。</p>
+    </div>
+    <div class="ccard rv" data-d="3">
+      <h3>庐山</h3>
+      <div class="nums"><div><b>2186.79<small style="font-size:.7rem;color:#9ecbff"> 万人次</small></b><span>2025 接待游客</span></div><div><b>187.47<small style="font-size:.7rem;color:#9ecbff"> 亿元</small></b><span>旅游总收入</span></div></div>
+      <p>传统名山在<b>文脉中持续焕新</b>。</p>
+    </div>
+  </div>
+
+  <!-- 三大站点 -->
+  <div class="sec-head rv"><span class="ico">📍</span><span class="badge">Route Highlights</span><h2>三大站点：老区当代表达的具体样本</h2><p>在你设计的「寻迹路线」中，三个站点恰好对应了三种不同的“当代表达”路径。</p></div>
+  <div class="station">
+
+    <div class="st rv">
+      <div class="ph-wrap"><img class="gen" loading="lazy" alt="南昌·万寿宫与大士院" data-prompt="Nanchang Wanshou Palace historical cultural street at night, traditional Chinese wooden architecture with red lanterns, golden warm lights, bustling crowd enjoying street food, cinematic night photography, photorealistic, no text" data-size="landscape_4_3"><span class="ph-cap">登阁观江景 · 下楼品烟火</span></div>
+      <div class="sbody">
+        <span class="sno">STATION 01</span>
+        <h3>南昌 · 万寿宫与大士院</h3>
+        <span class="sloc">市井烟火 × 潮流消费的缝合</span>
+        <p><b>万寿宫历史文化街区</b>以 1600 余年历史的铁柱万寿宫为核心，是国家级旅游休闲街区，节假日高峰期日均客流量可达 <span class="hl">10 万人次</span>以上，夜间消费占比超过 <span class="hl">60%</span>。与之相邻的<b>大士院街</b>则保留了更原生、更松弛的市井底色，数百米长街藏着<span class="hl-b">四十余种本土小吃</span>——白糖糕、拌粉、瓦罐汤是南昌味道的鲜活注脚。两者通过天桥相连，形成“<span class="hl">登阁观江景，下楼品烟火</span>”的游览闭环。</p>
+        <a class="more" href="马尔代夫旅游网站.html#destinations">在首页查看精选目的地 →</a>
+      </div>
+    </div>
+
+    <div class="st flip rv">
+      <div class="ph-wrap"><img class="gen" loading="lazy" alt="瑞金·象湖里" data-prompt="Ruijin Xianghuli cultural creative street in Jiangxi, well-preserved Hakka traditional buildings, craft workshops displaying woodblock prints and bamboo weaving, visitors tasting tea, warm afternoon light, documentary photography, photorealistic, no text" data-size="landscape_4_3"><span class="ph-cap">非遗活化的“城市会客厅”</span></div>
+      <div class="sbody">
+        <span class="sno">STATION 02</span>
+        <h3>瑞金 · 象湖里</h3>
+        <span class="sloc">非遗活化的“城市会客厅”</span>
+        <p><b>象湖里文化创意街区</b>是国家 3A 级旅游景区，保留了 <span class="hl-b">55 栋历史建筑</span>和完整的传统街巷肌理。其核心业态“<span class="hl">一馆五坊七铺九店</span>”，将苏区版画、瑞墨制作、竹编等 <span class="hl">25 个传统非遗项目</span>和 60 余种客家小吃集中呈现。在“<b>擂茶牛市</b>”，23 个档口汇聚了全市各乡镇的客家风味，<b>瑞金牛肉汤</b>是当之无愧的“C位”。这里被定位为“城市会客厅”，让游客在革命旧址群的庄重之外，触摸到一个<span class="hl">有温度、有烟火气的瑞金</span>。</p>
+        <a class="more" href="体验详情.html">查看瑞金体验详情 →</a>
+      </div>
+    </div>
+
+    <div class="st rv">
+      <div class="ph-wrap"><img class="gen" loading="lazy" alt="永新·三湾与龙源口" data-prompt="Sanwan village Yongxin Jiangxi, ancient single-arch stone bridge over crystal clear stream, lush green mountains and bamboo grove, red hiking trail marker along grain-carrying path, peaceful rural morning mist, photorealistic, no text" data-size="landscape_4_3"><span class="ph-cap">用“味道”记住的山水慢游</span></div>
+      <div class="sbody">
+        <span class="sno">STATION 03</span>
+        <h3>永新 · 三湾与龙源口</h3>
+        <span class="sloc">身体参与 + 味觉收尾</span>
+        <p>永新的体验逻辑是“<span class="hl">身体参与 + 味觉收尾</span>”。<b>三湾的挑粮小道徒步</b>与<b>龙源口的古桥山水</b>，构成了沉浸式的身体记忆。而真正让这段记忆变得具体的，是“<span class="hl-b">永新味道</span>”美食品牌——<b>永新血鸭</b>香辣醇厚；<b>酱萝卜老鸭汤</b>依靠非遗“和子四珍”中的酱萝卜与老鸭慢炖，汤色清亮、酱香回甘；<b>南乡扣肉</b>则是民间宴席“十大罗碗”的头牌。永新将红色历史印记与非遗美食技艺系统性地结合，让<span class="hl">每一道菜都成为可品尝的文化载体</span>。</p>
+        <a class="more" href="路线详情.html">查看永新路线详情 →</a>
+      </div>
+    </div>
+
+  </div>
+
+</main>
+
+<footer>© 2026 元乡·江西 — 了解元乡 · 江西介绍</footer>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============ AI 图片加载（与首页同款：骨架微光 + 占位图检测 + 自动重试） ============ */
+const IMG_API = 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=';
+const isPh = img => img.naturalWidth === 1832 && img.naturalHeight === 1832;
+let genSeq = 0;
+document.querySelectorAll('img.gen').forEach(img => {
+  const prompt = img.dataset.prompt || 'beautiful Jiangxi mountain and village scenery with mist';
+  const size = img.dataset.size || 'landscape_4_3';
+  const base = IMG_API + encodeURIComponent(prompt) + '&image_size=' + size;
+  let tries = 0, timer = null;
+  const attempt = bust => {
+    img.classList.remove('loaded', 'failed');
+    img.src = base + (bust ? '&r=' + (++genSeq) : '');
+  };
+  const done = () => {
+    if (isPh(img)) {
+      if (tries < 5) { tries++; timer = setTimeout(() => attempt(true), 3000 * tries); }
+      else { img.style.animation = 'none'; img.style.opacity = '.35'; }
+    } else {
+      clearTimeout(timer);
+      img.classList.add('loaded');
+    }
+  };
+  img.addEventListener('load', done);
+  img.addEventListener('error', () => {
+    if (tries < 3) { tries++; timer = setTimeout(() => attempt(tries > 1), 1500 * tries); }
+    else { img.style.animation = 'none'; img.style.opacity = '.35'; }
+  });
+  setTimeout(() => attempt(false), Math.min((++genSeq) * 320, 4000));
+});
+
+/* ============ 滚动显现 ============ */
+const io = new IntersectionObserver(es => es.forEach(e => {
+  if (!e.isIntersecting) return;
+  e.target.classList.add('in');
+  io.unobserve(e.target);
+}), { threshold: .15 });
+document.querySelectorAll('.rv').forEach(el => io.observe(el));
+
+/* ============ Toast ============ */
+let toastTimer = null;
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2600);
+}
+</script>
+</body>
+</html>

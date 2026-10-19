@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>加盟合作 · 合伙共生 — 元乡·江西</title>
+<meta name="description" content="合伙·共生 | 共建老区文旅新生态。诚邀在地商户、非遗传承人与青年主理人，共同打造“元乡”标准的当代表达。">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --navy:#16324c;--blue:#2f80ed;--sky:#6cc4f2;--yellow:#f5b301;--red:#e05a4e;
+  --font-display:"Noto Serif SC","Songti SC","STSong","SimSun",Georgia,serif;
+  --line:rgba(108,196,242,.28);--glow:rgba(108,196,242,.45);
+  --txt:#dce9f7;--dim:rgba(220,233,247,.65);
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+  color:var(--txt);line-height:1.85;min-height:100vh;overflow-x:hidden;
+  background:linear-gradient(160deg,#07142a 0%,#0c2246 48%,#170f38 100%);
+}
+.blobs{position:fixed;inset:0;z-index:-1;pointer-events:none}
+.blob{position:absolute;border-radius:50%;filter:blur(100px);opacity:.55}
+.b1{width:560px;height:560px;background:radial-gradient(circle,#1c5da8,transparent 65%);top:-160px;left:-140px;animation:drift 24s ease-in-out infinite alternate}
+.b2{width:480px;height:480px;background:radial-gradient(circle,#4a2a8f,transparent 65%);bottom:-180px;right:-140px;animation:drift 28s ease-in-out infinite alternate-reverse}
+.grid-bg{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.35;
+  background-image:linear-gradient(rgba(108,196,242,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(108,196,242,.05) 1px,transparent 1px);
+  background-size:44px 44px;
+  mask-image:radial-gradient(70% 60% at 50% 30%,#000 40%,transparent 100%);
+  -webkit-mask-image:radial-gradient(70% 60% at 50% 30%,#000 40%,transparent 100%);}
+@keyframes drift{to{transform:translate(70px,50px) scale(1.1)}}
+
+.topbar{
+  position:sticky;top:14px;z-index:60;width:min(1160px,94%);margin:14px auto 0;
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+  padding:12px 24px;border-radius:50px;
+  background:rgba(10,24,44,.6);border:1px solid var(--line);
+  backdrop-filter:blur(18px) saturate(160%);-webkit-backdrop-filter:blur(18px) saturate(160%);
+  box-shadow:0 14px 30px -14px rgba(0,10,25,.6);
+}
+.brand{display:inline-flex;align-items:center;gap:9px;text-decoration:none;font-family:var(--font-display);font-weight:700;font-size:1.18rem;color:#fff}
+.brand em{font-style:normal;color:var(--yellow)}
+.crumb{font-size:.82rem;color:rgba(220,233,247,.7);letter-spacing:2px}
+@media(max-width:640px){.crumb{display:none}}
+
+.hero{position:relative;text-align:center;padding:92px 24px 30px;max-width:920px;margin:0 auto}
+.badge{
+  display:inline-flex;align-items:center;gap:10px;font-size:.8rem;letter-spacing:3px;font-weight:700;
+  color:#9ecbff;padding:7px 20px;border-radius:30px;border:1px solid var(--line);background:rgba(108,196,242,.08);
+}
+.badge::before{content:"✦";color:var(--yellow)}
+.hero h1{
+  font-family:var(--font-display);font-size:clamp(2rem,4.8vw,3.3rem);
+  color:#fff;letter-spacing:4px;margin-top:22px;line-height:1.35;
+  text-shadow:0 0 44px rgba(108,196,242,.4);
+}
+.hero h1 .bar{color:var(--yellow);margin:0 .18em}
+.hero .slogan{margin-top:14px;font-family:var(--font-display);font-size:clamp(.98rem,2.2vw,1.18rem);color:#ffd76e;letter-spacing:2px}
+.hero p.intro{margin:20px auto 0;max-width:680px;color:var(--dim);font-size:.96rem}
+.hl{color:#ffd76e;font-weight:700}.hl-b{color:#9ecbff;font-weight:700}.hl-r{color:#ff9c8a;font-weight:700}
+
+.container{width:min(1160px,92%);margin:0 auto}
+.sec-head{text-align:center;margin:90px 0 46px}
+.sec-head .ico{font-size:2rem;display:block;margin-bottom:8px}
+.sec-head h2{font-family:var(--font-display);font-size:clamp(1.6rem,3.2vw,2.3rem);color:#fff;letter-spacing:3px;margin-top:10px;text-shadow:0 0 30px rgba(108,196,242,.35)}
+.sec-head p{color:var(--dim);max-width:720px;margin:12px auto 0;font-size:.94rem}
+.rv{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
+.rv.in{opacity:1;transform:none}
+
+/* 合作模式 2×2 卡 */
+.coop-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
+@media(max-width:860px){.coop-grid{grid-template-columns:1fr}}
+.coop{
+  display:flex;flex-direction:column;border-radius:22px;padding:26px 28px;position:relative;overflow:hidden;
+  background:linear-gradient(135deg,rgba(18,42,82,.55),rgba(29,17,64,.45));
+  border:1px solid var(--line);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  box-shadow:0 24px 48px -20px rgba(0,10,25,.7);
+  transition:transform .35s ease,border-color .35s ease,box-shadow .35s ease;
+}
+.coop::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--sky),var(--yellow));opacity:.7}
+.coop:hover{transform:translateY(-6px);border-color:var(--glow);box-shadow:0 34px 60px -20px rgba(0,10,25,.85)}
+.coop .cno{font-family:Georgia,serif;font-size:.7rem;letter-spacing:3px;color:#9ecbff}
+.coop h3{font-family:var(--font-display);font-size:1.22rem;color:#fff;letter-spacing:1px;margin-top:6px;line-height:1.6}
+.coop .row{margin-top:14px;border-radius:12px;padding:12px 16px;background:rgba(4,14,28,.5);border:1px dashed rgba(108,196,242,.3);transition:.3s}
+.coop .row:hover{border-color:rgba(245,179,1,.5);background:rgba(4,14,28,.72)}
+.coop .row b{display:inline-block;font-size:.78rem;letter-spacing:2px;margin-bottom:2px}
+.coop .row b.who{color:#9ecbff}
+.coop .row b.what{color:#ffd76e}
+.coop .row b.emp{color:#ff9c8a}
+.coop .row p{font-size:.86rem;color:var(--dim);display:inline}
+.coop .row p b{display:inline;font-size:.86rem;letter-spacing:0;color:#cfe4ff;margin:0}
+
+/* 三大支持 3 卡 */
+.support{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+@media(max-width:920px){.support{grid-template-columns:1fr}}
+.scard{
+  border-radius:20px;padding:26px 28px;text-align:center;position:relative;
+  background:rgba(108,196,242,.05);border:1px solid var(--line);transition:.35s;
+}
+.scard:hover{transform:translateY(-6px);border-color:var(--sky);box-shadow:0 0 26px -6px var(--glow);background:rgba(108,196,242,.1)}
+.scard i{font-style:normal;font-size:2rem;display:block}
+.scard h3{font-family:var(--font-display);font-size:1.14rem;color:#fff;letter-spacing:1px;margin-top:10px}
+.scard .num{font-family:Georgia,serif;font-size:1.9rem;font-weight:700;color:#ffd76e;margin-top:8px;text-shadow:0 0 20px rgba(245,179,1,.35)}
+.scard .num small{font-size:.85rem;color:#9ecbff;font-weight:400;margin-left:4px}
+.scard p{font-size:.86rem;color:var(--dim);margin-top:10px;text-align:left}
+.scard p b{color:#cfe4ff}
+
+/* 时间轴 */
+.timeline{position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:22px;padding-top:14px}
+.timeline::before{content:"";position:absolute;top:34px;left:8%;right:8%;height:2px;background:linear-gradient(90deg,rgba(108,196,242,.15),var(--sky),var(--yellow),rgba(245,179,1,.15))}
+@media(max-width:860px){
+  .timeline{grid-template-columns:1fr;padding-top:0;padding-left:26px}
+  .timeline::before{top:10px;bottom:10px;left:9px;right:auto;width:2px;height:auto;background:linear-gradient(180deg,rgba(108,196,242,.15),var(--sky),var(--yellow),rgba(245,179,1,.15))}
+}
+.tstep{position:relative;text-align:center;padding:0 8px}
+@media(max-width:860px){.tstep{text-align:left;padding:0 0 8px 12px}}
+.tstep .dot{
+  width:44px;height:44px;border-radius:50%;margin:0 auto;display:grid;place-items:center;
+  font-family:Georgia,serif;font-weight:700;font-size:1.05rem;color:#fff;position:relative;z-index:2;
+  background:linear-gradient(150deg,#12305c,#2a1a52);border:1px solid rgba(159,203,255,.5);
+  box-shadow:0 0 0 6px rgba(108,196,242,.08),0 12px 26px -8px rgba(0,8,20,.8);
+  transition:.35s;
+}
+@media(max-width:860px){.tstep .dot{margin:0}}
+.tstep:hover .dot{transform:scale(1.1);border-color:var(--yellow);box-shadow:0 0 0 8px rgba(245,179,1,.14),0 16px 30px -8px rgba(0,8,20,.9)}
+.tstep h3{font-family:var(--font-display);font-size:1.08rem;color:#fff;letter-spacing:1px;margin-top:14px}
+.tstep .stg{font-size:.72rem;letter-spacing:3px;color:#9ecbff;font-family:Georgia,serif}
+.tstep p{font-size:.84rem;color:var(--dim);margin-top:8px;text-align:left}
+@media(max-width:860px){.tstep p{text-align:left}}
+.tstep p b{color:#cfe4ff}
+
+/* CTA */
+.cta{
+  margin-top:60px;border-radius:26px;padding:44px 32px;text-align:center;position:relative;overflow:hidden;
+  background:linear-gradient(135deg,rgba(18,42,82,.7),rgba(74,42,143,.5));
+  border:1px solid rgba(245,179,1,.4);
+  box-shadow:0 30px 60px -24px rgba(0,8,20,.8);
+}
+.cta h2{font-family:var(--font-display);font-size:clamp(1.4rem,3vw,2rem);color:#fff;letter-spacing:3px}
+.cta p{color:var(--dim);max-width:640px;margin:12px auto 0;font-size:.92rem}
+.cta .btns{margin-top:24px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.cta .btn{
+  display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-size:.92rem;font-weight:700;letter-spacing:2px;
+  padding:13px 34px;border-radius:30px;transition:.3s;cursor:pointer;border:none;
+}
+.cta .btn.primary{color:#1a1204;background:linear-gradient(120deg,#ffd76e,var(--yellow));box-shadow:0 14px 30px -10px rgba(245,179,1,.55)}
+.cta .btn.primary:hover{transform:translateY(-3px);box-shadow:0 20px 38px -10px rgba(245,179,1,.7)}
+.cta .btn.ghost{color:#9ecbff;background:transparent;border:1px solid rgba(108,196,242,.5)}
+.cta .btn.ghost:hover{color:#ffd76e;border-color:rgba(245,179,1,.6);background:rgba(245,179,1,.08);transform:translateY(-3px)}
+
+footer{padding:80px 0 34px;text-align:center;color:rgba(220,233,247,.55);font-size:.82rem;letter-spacing:1px}
+.toast{
+  position:fixed;left:50%;bottom:34px;z-index:90;transform:translateX(-50%) translateY(16px);
+  padding:12px 26px;border-radius:30px;font-size:.88rem;letter-spacing:1px;
+  color:#eaf4ff;background:rgba(12,30,54,.92);border:1px solid rgba(245,179,1,.55);
+  box-shadow:0 18px 36px -12px rgba(0,8,20,.6);opacity:0;pointer-events:none;transition:.35s;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+
+<div class="blobs"><div class="blob b1"></div><div class="blob b2"></div></div>
+<div class="grid-bg"></div>
+
+<header class="topbar">
+  <a class="brand" href="马尔代夫旅游网站.html">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6cc4f2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.1-7-11a7 7 0 0 1 14 0c0 4.9-7 11-7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>
+    元乡<em>·江西</em>
+  </a>
+  <span class="crumb">了解元乡 · 加盟合作</span>
+</header>
+
+<section class="hero">
+  <span class="badge">Partnership · 共建共生</span>
+  <h1>合伙<span class="bar">·</span>共生<span class="bar">|</span>共建老区文旅新生态</h1>
+  <p class="slogan">用数字科技激活在地文化</p>
+  <p class="intro">我们诚邀<span class="hl-b">在地商户、非遗传承人与青年主理人</span>，共同打造“<span class="hl">元乡</span>”标准的当代表达。</p>
+</section>
+
+<main class="container">
+
+  <!-- 四大合作模式 -->
+  <div class="sec-head rv"><span class="ico">🤝</span><span class="badge">Cooperation Models</span><h2>四大合作模式</h2><p>从实体空间到数字资产，总有一种方式适合你。</p></div>
+  <div class="coop-grid">
+
+    <div class="coop rv" data-d="1">
+      <span class="cno">MODEL 01</span>
+      <h3>线下文创体验店 / 快闪店加盟</h3>
+      <div class="row"><b class="who">面向对象</b><p><b>景区商户、民宿主、返乡创业青年。</b></p></div>
+      <div class="row"><b class="what">合作内容</b><p>将“元乡”的<b>《红土拾光》数字文创</b>、<b>《赣鄱新语》伴手礼</b>等全套产品引入实体空间，打造标准化的“元乡·风物市集”或“AIGC 数字体验角”。</p></div>
+      <div class="row"><b class="emp">我们的赋能</b><p>提供全套 <b>SI（空间视觉识别）系统</b>（UI / 软装统一）、产品供应链直供，以及店内专属 <b>AIGC 打卡设备</b>——扫码即可生成专属明信片。</p></div>
+    </div>
+
+    <div class="coop rv" data-d="2">
+      <span class="cno">MODEL 02</span>
+      <h3>农特产品供应链合作</h3>
+      <div class="row"><b class="who">面向对象</b><p><b>江西本地农业合作社、食品加工厂。</b></p></div>
+      <div class="row"><b class="what">合作内容</b><p>挖掘如“<b>瑞金黄元米果</b>”“<b>永新酱萝卜</b>”“<b>大士院小吃</b>”等优质物产，共同开发符合现代审美的文旅伴手礼。</p></div>
+      <div class="row"><b class="emp">我们的赋能</b><p>提供品牌策划与包装设计（利用 AIGC 快速迭代包装方案，<b>大幅降低设计成本</b>），并纳入“元乡”线上商城及线下渠道销售。</p></div>
+    </div>
+
+    <div class="coop rv" data-d="3">
+      <span class="cno">MODEL 03</span>
+      <h3>非遗手作工坊联营</h3>
+      <div class="row"><b class="who">面向对象</b><p><b>非遗传承人、手工艺人</b>（如瑞金竹编、瑞墨，永新斗笠）。</p></div>
+      <div class="row"><b class="what">合作内容</b><p>将非遗技艺转化为“<b>轻量级、高体验</b>”的研学课程或文创周边（如竹编氛围灯、拓印手账）。</p></div>
+      <div class="row"><b class="emp">我们的赋能</b><p>提供<b>现代工业设计辅导</b>，解决非遗产品“叫好不叫座”的问题；通过网站导流，把线上用户直接转化为线下体验客源。</p></div>
+    </div>
+
+    <div class="coop rv" data-d="4">
+      <span class="cno">MODEL 04</span>
+      <h3>数字资产与 IP 授权</h3>
+      <div class="row"><b class="who">面向对象</b><p><b>文旅景区、地方商业街区</b>（如万寿宫、象湖里）。</p></div>
+      <div class="row"><b class="what">合作内容</b><p>授权“元乡”网站内由 AIGC 生成的<b>优秀数字插画、虚拟 IP 形象</b>，用于景区的导视系统、宣传海报或数字藏品发行。</p></div>
+      <div class="row"><b class="emp">我们的赋能</b><p>输出合规的、<b>无政治符号</b>的当代视觉资产，提升景区的年轻化吸引力。</p></div>
+    </div>
+
+  </div>
+
+  <!-- 三大加盟支持 -->
+  <div class="sec-head rv"><span class="ico">🚀</span><span class="badge">Partner Benefits</span><h2>我们提供的“三大加盟支持”</h2><p>技术、流量与合规，三重护航。</p></div>
+  <div class="support">
+    <div class="scard rv" data-d="1">
+      <i>🤖</i>
+      <h3>AIGC 技术降本增效</h3>
+      <div class="num">-30<small>% 以上营销成本</small></div>
+      <p>传统文创设计周期长、成本高。我们为合伙人提供基于“<b>元乡引擎</b>”的 AIGC 工具包，实现<b>海报、包装、短视频文案</b>的高效生成。</p>
+    </div>
+    <div class="scard rv" data-d="2">
+      <i>📡</i>
+      <h3>全渠道流量矩阵</h3>
+      <div class="num">官网<small>+</small>小红书<small>+</small>抖音</div>
+      <p>依托“<b>元乡·江西</b>”网站，结合小红书、抖音等社交媒体矩阵，为线下门店和产品进行<b>线上曝光引流</b>。</p>
+    </div>
+    <div class="scard rv" data-d="3">
+      <i>🛡️</i>
+      <h3>合规与知识产权护航</h3>
+      <div class="num">0<small> 政治符号风险</small></div>
+      <p>所有联名文创和视觉设计，均由“元乡”团队进行<b>严格的合规审核</b>，并提供<b>版权登记、商标注册</b>等专业支持，保障合伙人权益。</p>
+    </div>
+  </div>
+
+  <!-- 加盟流程 -->
+  <div class="sec-head rv"><span class="ico">📝</span><span class="badge">Simple Process</span><h2>极简加盟流程</h2><p>四步走，从意向到落地。</p></div>
+  <div class="timeline">
+    <div class="tstep rv" data-d="1">
+      <div class="dot">1</div>
+      <span class="stg">STEP 01</span>
+      <h3>在线申请</h3>
+      <p>填写您的<b>所在地、实体类型</b>（民宿 / 景区 / 农业等）及合作意向。</p>
+    </div>
+    <div class="tstep rv" data-d="2">
+      <div class="dot">2</div>
+      <span class="stg">STEP 02</span>
+      <h3>云端洽谈</h3>
+      <p>团队将通过线上会议，为您展示 <b>AIGC 工作流</b>及文创产品矩阵。</p>
+    </div>
+    <div class="tstep rv" data-d="3">
+      <div class="dot">3</div>
+      <span class="stg">STEP 03</span>
+      <h3>实地调研</h3>
+      <p>针对核心加盟商，我们进行<b>在地文化挖掘</b>与选址评估。</p>
+    </div>
+    <div class="tstep rv" data-d="4">
+      <div class="dot">4</div>
+      <span class="stg">STEP 04</span>
+      <h3>授权落地</h3>
+      <p>签署合作协议，输出<b>全套设计包</b>，启动实体空间改造或产品供货。</p>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta rv">
+    <h2>下一站，与元乡同行</h2>
+    <p>无论你是一家小店、一间工坊，还是一片山水——只要认同“用数字的温度，重构红土地的当代表达”，我们都在等你。</p>
+    <div class="btns">
+      <button class="btn primary" onclick="toast('申请通道即将开放，可先通过页脚「关于我们」了解团队 ✦')">立即在线申请</button>
+      <a class="btn ghost" href="关于我们.html">先看看团队 →</a>
+    </div>
+  </div>
+
+</main>
+
+<footer>© 2026 元乡·江西 — 了解元乡 · 加盟合作</footer>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============ 滚动显现 ============ */
+const io = new IntersectionObserver(es => es.forEach(e => {
+  if (!e.isIntersecting) return;
+  e.target.classList.add('in');
+  io.unobserve(e.target);
+}), { threshold: .15 });
+document.querySelectorAll('.rv').forEach(el => io.observe(el));
+
+/* ============ Toast ============ */
+let toastTimer = null;
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2600);
+}
+</script>
+</body>
+</html>
