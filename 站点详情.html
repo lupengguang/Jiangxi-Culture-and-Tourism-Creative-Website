@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>站点攻略 · 元乡·江西</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --navy:#16324c;--blue:#2f80ed;--sky:#6cc4f2;--yellow:#f5b301;
+  --ink:#20304a;--muted:#5b7286;
+  --glass:rgba(255,255,255,.62);--stroke:rgba(255,255,255,.75);
+  --shadow:0 20px 40px -18px rgba(21,52,90,.28);
+  --font-display:"Noto Serif SC","Songti SC","STSong","SimSun",Georgia,serif;
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+  color:var(--ink);line-height:1.85;min-height:100vh;overflow-x:hidden;
+  background:linear-gradient(160deg,#eaf4fb 0%,#f7fbff 45%,#eef3fa 100%);
+}
+/* 背景光斑 */
+.blobs{position:fixed;inset:0;z-index:-1;pointer-events:none}
+.blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:.5}
+.b1{width:520px;height:520px;background:radial-gradient(circle,#9ec9f6,transparent 65%);top:-140px;left:-120px;animation:drift 22s ease-in-out infinite alternate}
+.b2{width:460px;height:460px;background:radial-gradient(circle,#ffe6a6,transparent 65%);bottom:-160px;right:-120px;animation:drift 26s ease-in-out infinite alternate-reverse}
+.b3{width:340px;height:340px;background:radial-gradient(circle,#c9b6f0,transparent 65%);top:38%;left:60%;animation:drift 30s ease-in-out infinite alternate}
+@keyframes drift{to{transform:translate(60px,40px) scale(1.08)}}
+
+/* 顶栏 */
+.topbar{
+  position:sticky;top:14px;z-index:60;width:min(1160px,94%);margin:14px auto 0;
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+  padding:12px 24px;border-radius:50px;
+  background:var(--glass);border:1px solid var(--stroke);
+  backdrop-filter:blur(18px) saturate(170%);-webkit-backdrop-filter:blur(18px) saturate(170%);
+  box-shadow:0 14px 30px -14px rgba(21,52,90,.25);
+}
+.brand{display:inline-flex;align-items:center;gap:9px;text-decoration:none;font-family:var(--font-display);font-weight:700;font-size:1.18rem;color:var(--navy)}
+.brand svg{width:22px;height:22px}
+.crumb{font-size:.82rem;color:var(--muted);letter-spacing:2px}
+@media(max-width:640px){.crumb{display:none}}
+
+/* 站点 Hero */
+.hero-route{position:relative;min-height:58vh;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;margin-top:-72px;padding-top:72px}
+.hero-route .hero-bg{position:absolute;inset:0;z-index:0}
+.hero-route .hero-bg img{width:100%;height:100%;object-fit:cover;transform:scale(1.06);animation:slowzoom 18s ease-in-out infinite alternate}
+@keyframes slowzoom{to{transform:scale(1.14)}}
+.hero-route .hero-bg::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(9,25,44,.5) 0%,rgba(9,25,44,.62) 55%,#f4f9fd 100%);
+}
+.hero-inner{position:relative;z-index:2;padding:110px 24px 90px;max-width:860px}
+.no-badge{
+  display:inline-block;padding:7px 20px;border-radius:30px;margin-bottom:18px;
+  font-size:.85rem;font-weight:700;letter-spacing:3px;color:#20315a;
+  background:var(--yellow);box-shadow:0 10px 24px -8px rgba(245,179,1,.7);
+}
+.hero-inner h1{
+  font-family:var(--font-display);font-size:clamp(2rem,5vw,3.4rem);
+  color:#fff;letter-spacing:4px;text-shadow:0 4px 26px rgba(6,24,42,.55);line-height:1.3;
+}
+.hero-inner .theme-en{display:block;margin-top:8px;font-size:.85rem;letter-spacing:6px;color:rgba(255,255,255,.82);font-family:Georgia,serif}
+.hero-inner .intro{
+  margin:26px auto 0;max-width:640px;padding:16px 26px;border-radius:18px;
+  color:#fff;font-size:1.02rem;
+  background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.32);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  text-shadow:0 1px 8px rgba(6,24,42,.4);
+}
+
+/* 通用容器 */
+.container{width:min(1160px,92%);margin:0 auto}
+.sec-head{text-align:center;margin:76px 0 50px}
+.sec-head .eyebrow{
+  display:inline-flex;align-items:center;gap:10px;font-size:.8rem;letter-spacing:4px;
+  color:var(--blue);font-weight:700;text-transform:uppercase;
+}
+.sec-head .eyebrow::before,.sec-head .eyebrow::after{content:"";width:36px;height:1px;background:linear-gradient(90deg,transparent,var(--sky))}
+.sec-head .eyebrow::after{background:linear-gradient(90deg,var(--sky),transparent)}
+.sec-head h2{font-family:var(--font-display);font-size:clamp(1.7rem,3.4vw,2.4rem);color:var(--navy);letter-spacing:3px;margin-top:10px}
+
+/* 区块标题（图标 + 标题） */
+.xsec{max-width:920px;margin:64px auto 0}
+.xhead{display:flex;align-items:center;gap:14px;margin-bottom:22px}
+.xicon{
+  width:46px;height:46px;border-radius:14px;display:grid;place-items:center;flex:none;
+  font-family:var(--font-display);font-weight:800;font-size:1.15rem;color:#fff;
+  background:linear-gradient(135deg,#3f92f2,#6cc4f6);
+  box-shadow:0 12px 24px -10px rgba(47,128,237,.55);
+}
+.xhead h3{font-family:var(--font-display);font-size:1.5rem;color:var(--navy);letter-spacing:2px}
+.xdesc{max-width:920px;margin:-6px 0 20px;color:var(--muted);font-size:.95rem;line-height:1.8}
+
+/* 玻璃卡片 */
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 4px}
+.schip{
+  padding:4px 14px;border-radius:20px;font-size:.78rem;font-weight:600;
+  color:#8a6a10;background:rgba(255,201,77,.3);border:1px solid rgba(245,179,1,.45);
+}
+.xcard{
+  background:var(--glass);border:1px solid var(--stroke);border-radius:18px;
+  padding:20px 24px;margin-bottom:16px;backdrop-filter:blur(14px) saturate(160%);
+  -webkit-backdrop-filter:blur(14px) saturate(160%);box-shadow:0 16px 32px -18px rgba(21,52,90,.3);
+  transition:transform .35s ease,box-shadow .35s ease;
+}
+.xcard:hover{transform:translateY(-4px);box-shadow:0 26px 46px -18px rgba(21,52,90,.4)}
+.xcard h4{font-family:var(--font-display);color:var(--navy);font-size:1.12rem;margin-bottom:4px}
+.xcard p{color:var(--muted);font-size:.93rem}
+
+/* 基础信息行 */
+.info-card{
+  background:var(--glass);border:1px solid var(--stroke);border-radius:18px;
+  padding:10px 26px;backdrop-filter:blur(14px) saturate(160%);
+  -webkit-backdrop-filter:blur(14px) saturate(160%);box-shadow:0 16px 32px -18px rgba(21,52,90,.3);
+}
+.info-row{display:flex;gap:18px;padding:16px 0;border-bottom:1px dashed rgba(47,128,237,.28)}
+.info-row:last-child{border-bottom:none}
+.info-row .k{
+  flex:none;width:130px;font-family:var(--font-display);font-weight:700;
+  color:var(--navy);font-size:1.02rem;padding-left:12px;border-left:3px solid var(--yellow);
+}
+.info-row .v{color:var(--muted);font-size:.95rem}
+@media(max-width:640px){
+  .info-row{flex-direction:column;gap:4px}
+  .info-row .k{width:auto}
+}
+
+/* 美食卡片网格 */
+.food-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.fcard{
+  background:var(--glass);border:1px solid var(--stroke);border-radius:18px;
+  padding:20px 24px;backdrop-filter:blur(14px) saturate(160%);
+  -webkit-backdrop-filter:blur(14px) saturate(160%);box-shadow:0 16px 32px -18px rgba(21,52,90,.3);
+  transition:transform .35s ease,box-shadow .35s ease;
+}
+.fcard:hover{transform:translateY(-4px);box-shadow:0 26px 46px -18px rgba(21,52,90,.4)}
+.fcard h4{font-family:var(--font-display);color:var(--navy);font-size:1.1rem;margin-bottom:4px}
+.fcard p{color:var(--muted);font-size:.92rem}
+@media(max-width:760px){.food-grid{grid-template-columns:1fr}}
+
+/* 实用贴士 */
+.tipcard{
+  background:linear-gradient(135deg,rgba(255,244,214,.75),rgba(255,251,240,.65));
+  border:1px solid rgba(245,179,1,.4);border-radius:18px;
+  padding:20px 26px;box-shadow:0 16px 32px -18px rgba(21,52,90,.3);
+}
+.tipcard li{list-style:none;position:relative;padding:8px 0 8px 26px;color:#6d5a20;font-size:.94rem;line-height:1.8}
+.tipcard li::before{content:"✦";position:absolute;left:0;top:8px;color:#d9a410}
+
+/* 上一站 / 下一站 */
+.others{max-width:820px;margin:44px auto 90px;display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.ocard{
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+  padding:20px 24px;border-radius:18px;text-decoration:none;
+  background:var(--glass);border:1px solid var(--stroke);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  box-shadow:0 16px 30px -18px rgba(21,52,90,.3);
+  transition:transform .35s ease,box-shadow .35s ease;
+}
+.ocard:hover{transform:translateY(-5px);box-shadow:0 26px 46px -18px rgba(21,52,90,.42)}
+.ocard .oname{font-family:var(--font-display);font-weight:700;font-size:1.08rem;color:var(--navy)}
+.ocard .otheme{display:block;font-size:.8rem;color:var(--muted);letter-spacing:1px;margin-top:2px}
+.ocard .oarr{
+  flex:none;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;
+  color:var(--blue);background:rgba(47,128,237,.1);transition:.3s;
+}
+.ocard:hover .oarr{background:var(--yellow);color:#20315a;transform:rotate(-45deg)}
+.ocard.prev:hover .oarr{transform:rotate(135deg)}
+.ocard .oarr svg{width:18px;height:18px}
+@media(max-width:680px){.others{grid-template-columns:1fr}}
+.rv{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
+.rv.in{opacity:1;transform:none}
+
+/* 页脚 */
+footer{padding:30px 0 34px;text-align:center;color:var(--muted);font-size:.82rem;letter-spacing:1px;border-top:1px solid rgba(21,52,90,.08)}
+
+/* 图片骨架微光 */
+img.gen{opacity:0;filter:blur(8px);transform:scale(1.03);transition:opacity .9s ease,filter .9s ease,transform .9s ease;background:linear-gradient(100deg,#dfe9f2 30%,#f2f7fb 50%,#dfe9f2 70%);background-size:200% 100%;animation:shimmer 1.6s linear infinite}
+img.gen.loaded{opacity:1;filter:blur(0);transform:scale(1)}
+@keyframes shimmer{to{background-position:-200% 0}}
+img.gen.failed{opacity:.35;animation:none;filter:none}
+</style>
+</head>
+<body>
+
+<div class="blobs"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
+
+<header class="topbar">
+  <a class="brand" href="马尔代夫旅游网站.html">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#2f80ed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.1-7-11a7 7 0 0 1 14 0c0 4.9-7 11-7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>
+    元乡<em>·江西</em>
+  </a>
+  <span class="crumb" id="crumb">寻迹路线 · 站点攻略</span>
+</header>
+
+<section class="hero-route">
+  <div class="hero-bg"><img class="gen" id="heroImg" alt="站点风景"></div>
+  <div class="hero-inner">
+    <span class="no-badge" id="noBadge"></span>
+    <h1 id="sTitle"></h1>
+    <span class="theme-en" id="sEn"></span>
+    <p class="intro" id="sIntro"></p>
+  </div>
+</section>
+
+<main class="container">
+  <div id="spotWrap"></div>
+
+  <div class="sec-head" style="margin-top:64px">
+    <span class="eyebrow">继续漫步</span>
+    <h2>相邻站点</h2>
+  </div>
+  <div class="others" id="nav"></div>
+</main>
+
+<footer>© 2026 元乡·江西 — 保留所有权利</footer>
+
+<script>
+/* ============ 站点攻略数据 ============ */
+const SPOTS = {
+  bayi: {
+    no: '01', name: '八一广场 & 江西省美术馆', en: 'BAYI SQUARE & ART MUSEUM',
+    route: '南昌 · 城市漫步线', routeHref: '路线详情.html?stop=nanchang',
+    prompt: 'Nanchang Bayi Square monument with city skyline at dusk Jiangxi China, red soviet style art museum building, warm evening light, wide travel photography',
+    intro: '广场是南昌的城市原点，美术馆是苏式老建筑的出片担当——这一站把开阔天际线与艺术空间一并收入行程。',
+    info: [
+      { k: '八一广场', v: '全天开放，免费且无需预约；地铁 1/2 号线八一广场站 3/4 号口直达。' },
+      { k: '江西省美术馆', v: '位于八一大道 266 号，周二至周日 9:00—17:00 开放（16:30 停止入馆），周一闭馆；免费参观，但需在“江西省美术馆”公众号实名预约，可提前 7 天；地铁八一广场站 5 号口出站步行约 200 米即到。' }
+    ],
+    exp: [
+      { t: '八一南昌起义纪念塔', chips: ['塔高 53.6 米', '每月 1 日清晨升旗仪式'],
+        d: '广场中央的八一南昌起义纪念塔高 53.6 米，塔顶为军旗与步枪造型，是广场的视觉核心。每月 1 日清晨有正式升旗仪式，建议提前 1 小时到场占位。' },
+      { t: '广场机位与光线', chips: ['上午 9—11 点', '傍晚 16—18 点', '武商 MALL 7 楼俯拍'],
+        d: '广场本身适合拍开阔的城市天际线，最佳拍照时间为上午 9—11 点和傍晚 16—18 点，光线柔和，人像和建筑都比较出片。如果想俯拍广场全景，可以前往旁边武商 MALL 的 7 楼空中花园，傍晚晚霞时段效果最好。' },
+      { t: '江西省美术馆看点', chips: ['红星穹顶', '旋转楼梯', '建议预留 1.5 小时'],
+        d: '美术馆建筑本身是红色苏式老建筑，红星穹顶与旋转楼梯是馆内最出片的两个点位，展厅以江西本土美术和主题书画为主，建议预留 1.5 小时左右。馆内禁止使用闪光灯，不可携带零食饮料。' }
+    ],
+    tips: [
+      '广场夜景在晚 7 点后亮灯，纪念塔搭配音乐喷泉，适合作为一天行程的收尾。',
+      '如果时间充裕，可以从美术馆步行前往八一起义纪念馆（中山路 380 号，周二至周日 9:00—21:00，周一闭馆），馆内有 VR 体验项目《破晓 1927》，建议预留 1.5—2.5 小时。',
+      '周边省府大院文艺气息浓厚，有甜品店、咖啡店和创意书店，适合穿插一段 city walk。'
+    ]
+  },
+  dashiyuan: {
+    no: '02', name: '大士院街早市', en: 'DASHIYUAN MARKET',
+    route: '南昌 · 城市漫步线', routeHref: '路线详情.html?stop=nanchang',
+    prompt: 'Nanchang old street morning market with steaming breakfast stalls Jiangxi China, nostalgic retro wall paintings and grey tile wall, warm morning light, travel photography',
+    intro: '南昌老城的市井生活样本——用一份拌粉、一碗瓦罐汤和一块白糖糕，唤醒属于老街的清晨。',
+    info: [
+      { k: '位置', v: '位于南昌市东湖区，核心区域由大士院街和半步街十字交错构成。' },
+      { k: '开放时段', v: '全天开放，但早市体验集中在清晨至上午。' },
+      { k: '交通', v: '地铁 2 号线阳明公园站 1 号口出站后步行约 500 米即达；也可从 3 号线墩子塘站出站后骑行约 8 分钟。' }
+    ],
+    exp: [
+      { t: '老城市井生活样本', chips: ['早餐高峰 8—10 点', '建议错峰前往'],
+        d: '大士院是南昌老城的市井生活样本，早餐高峰期在上午 8—10 点，建议错峰前往，清晨至上午的烟火气最足。' },
+      { t: '必拍点位', chips: ['“南昌”灰瓦大字墙', '烟火人生彩带主街', '花墙', '收音机复古墙'],
+        d: '必拍的点位包括“南昌”灰瓦大字墙、烟火人生彩带主街、花墙和拐角收音机复古墙，都是带有老城质感的自然背景。' }
+    ],
+    food: { note: '以下价格为参考，以现场为准', items: [
+      { t: '小罗子汤店', chips: ['拌粉 3.5 元', '皮蛋肉饼汤 5 元'], d: '建议去菜场里的总店。' },
+      { t: '南昌白糖糕', chips: ['1 元/个'], d: '转角黄底白字招牌，外酥内糯。' },
+      { t: '无矾鸡蛋油条', chips: ['1.5 元/根'], d: '黄底白字招牌，本地人首推。' },
+      { t: '福顺记油条包麻糍', chips: ['黑芝麻口味 5 元/个'], d: '10 年老店。' },
+      { t: '陈记手工绿豆饼', chips: ['1 元/个（5 个以下）', '14.8 元/斤'], d: '香而不腻。' },
+      { t: '更多本地选择', chips: ['长英绝味水煮 人均 20—25 元', '程记脆皮烧饼 2.5 元/个'], d: '程记脆皮烧饼推荐梅干菜扣肉口味。' },
+      { t: '饮品推荐', chips: ['洪都大拇指·雪顶幽兰 约 13 元/杯', '茶决决·青花瓷云雾 约 22 元/杯'], d: '江西本土品牌茶饮，逛累了解渴歇脚。' }
+    ]},
+    tips: [
+      '拌粉、水煮、烤鸭如果不吃辣，务必提前告知商家。',
+      '各种饼、油条、罩子建议趁热吃，凉了口感差别明显。',
+      '大士院串联了滕王阁、胜利路步行街、蛤蟆街夜市和八一大桥，可以作为一条完整的 city walk 起点。'
+    ]
+  },
+  wanshougong: {
+    no: '03', name: '万寿宫历史文化街区', en: 'WANSHOUGONG BLOCK',
+    route: '南昌 · 城市漫步线', routeHref: '路线详情.html?stop=nanchang',
+    prompt: 'Wanshougong historical cultural street Nanchang Jiangxi China at dusk, traditional Gan style architecture with red lanterns and warm lights, ancient theater stage, travel photography',
+    intro: '从遗址上长出来的历史街区——铁柱万寿宫的千年地基之上，是非遗、市集与赣派巷弄的当代烟火。',
+    info: [
+      { k: '交通', v: '位于西湖区中山路商圈旁，地铁 1 号线万寿宫站直达；也可乘坐 3 号线至八一馆站，从 2 号或 5 号口出站步行到达。' },
+      { k: '开放与时段', v: '街区免费开放，全天可进入；最佳游览时间是傍晚 5 点后，从日落逛到亮灯，两三个小时刚好，古建筑在暖光下的氛围与白天完全不同。' }
+    ],
+    exp: [
+      { t: '铁柱万寿宫 · 遗址上的重生', chips: ['原址重建', '明清地基 + 民国砖石'],
+        d: '万寿宫的核心看点是原址重建的铁柱万寿宫，脚下玻璃层下叠压着明清地基和民国砖石，是真正“从遗址上长出来”的历史街区，而非仿古商业街。' },
+      { t: '推荐游览路线', chips: ['牌坊进 · 中山路出', '精华在巷子里'],
+        d: '牌坊进 → 主街直走到铁柱万寿宫（看遗址层）→ 拐进醋巷 → 萝卜巷 → 古戏台 → 灯笼巷 → “南昌”字样墙打卡 → 从中山路出。主街热闹，但精华在巷子里，醋巷、萝卜巷、翘步街都曾是江南商贸中心“千船万帆广润门”的肌理遗存。' },
+      { t: '非遗与手作', chips: ['豫章首饰錾镶', '豫章绣 · 南昌竹雕', '青山湖面塑'],
+        d: '街区内的非遗匠心馆可以体验豫章首饰錾镶、豫章绣、南昌竹雕、青山湖面塑等技艺，古戏台有时有传统戏曲表演；仙丹市集汇集文创零售和吹糖人、捏泥人等民俗摊位。' }
+    ],
+    food: { items: [
+      { t: '瓦罐奶茶', chips: ['街区爆款单品'], d: '万寿宫的瓦罐奶茶是街区内的爆款单品，适合搭配南昌拌粉、白糖糕一起体验。' },
+      { t: '边逛边吃', chips: ['白糖糕 外酥内糯', '现烤绿豆饼 趁热吃'], d: '都是边逛边吃的常见选择。' },
+      { t: '坐下吃正餐', chips: ['赣味人家等餐厅'], d: '街区内的赣味人家等餐厅可以品尝地道南昌菜。' }
+    ]},
+    tips: [
+      '街区内的万寿宫博物馆和复古戏台是核心文化点位，如果对南昌历史感兴趣，可以优先安排。',
+      '购物方面，文创街区的万寿宫主题明信片和手工工艺品适合作为轻量纪念品带走。',
+      '街区周边紧邻珠宝街（步行可达），珠宝街的糊羹、辣藕片、皮蛋肉粽可以作为万寿宫之后的补充小吃站。'
+    ]
+  },
+  zhoubao: {
+    no: '04', name: '珠宝街美食街', en: 'ZHOUBAO STREET',
+    route: '南昌 · 城市漫步线', routeHref: '路线详情.html?stop=nanchang',
+    prompt: 'Zhoubao narrow food street Nanchang Jiangxi China at evening, old alley with street food stalls and fried dough skewers steam, warm lanterns and shop signs, lively night market, travel photography',
+    intro: '百年“五金老街”的当代转身——从未卖过珠宝的珠宝街，如今是南昌“市井烟火”最集中的味觉载体。',
+    info: [
+      { k: '位置与来历', v: '位于南昌市西湖区广润门街道，南接孺子路，北通中山路，东靠象山南路，西连棉花街、带子街和万寿宫；整条街全长 400 余米、宽约 4 米，是南北走向的窄巷。原为清末“珠市街”，旧时以生产修理锉刀出名，1984 年因与滕王阁附近的“猪市街”同音更名为珠宝街——百年以来从未卖过珠宝。' },
+      { k: '交通方式', v: '地铁 1 号线或 3 号线至八一馆站，从 5 号出口出站步行约 300 米即达；也可乘 1 号线至万寿宫站，从 1 号出口步行约 3 分钟到北入口。自驾可导航“百盛 B 馆停车场”，停好车后步行约 300 米。' },
+      { k: '营业时间', v: '街道全天开放，但店铺营业时间一般为 10:00—23:00；17:00 之后绝大多数店铺开门，是逛吃的黄金时段。' },
+      { k: '当前规模', v: '街区现存 130 余家商铺，其中餐饮店 81 家、占比超过 60%；日常日均客流超 3 万人次，2023 年“五一”假期日均客流突破 15 万人次，高峰期单店日营业额可破万元。街区经微改造、通过电动升降桩成为步行街，已成为年轻人“特种兵式旅游”的热门打卡地。' }
+    ],
+    exp: [
+      { t: '“五金老街”向“小吃一条街”的转型', chips: ['紧邻万寿宫与八一起义纪念馆', '商圈提质改造扩至 300 亩'],
+        d: '珠宝街紧邻万寿宫历史文化街区与八一起义纪念馆，与翠花街、棉花街等老街巷共同构成了“历史街区 + 滨水休闲 + 市井烟火”的复合空间。2025 年，万寿宫商圈提质改造工程已启动，范围扩至 300 亩，覆盖中山路、珠宝街、棉花街、翠花街四条核心街巷。' },
+      { t: '南昌老城最真实的生活切面', chips: ['经营数十年的本土老店', '“市井烟火”味觉载体'],
+        d: '在这里，你能看到经营数十年的本土老店、下午三点才开卖的臭豆腐摊、需要取号限购的绿豆饼铺，以及坐在路边小凳上吃水煮的本地街坊。它不精致，但足够鲜活。' }
+    ],
+    food: { note: '按品类整理，排队人气与营业时段以现场为准', items: [
+      { t: '街头招牌 · 油条包麻糍', chips: ['全街人气最高单品'], d: '现炸的金黄酥脆油条对半掰开，裹上手打软糯麻糍，铺上肉松、芝麻、花生碎，咸甜交织、外脆内软，是南昌独有的特色小吃，每日排队者络绎不绝。' },
+      { t: '小邓臭豆腐', chips: ['下午 3 点开卖', '一口爆汁'], d: '外酥里嫩，淋上秘制辣酱，汤汁浓郁，排队者络绎不绝。' },
+      { t: '陈记手工绿豆饼', chips: ['炭火现烤', '取号限购 2 盒'], d: '饼皮薄如纸，内馅甜而不腻，趁热吃外酥里糯。' },
+      { t: '章记夫妻煎饼', chips: ['日售至少 500 个', '推荐韭菜猪肉馅'], d: '南昌煎饼界的代表，现点现炸、外皮金黄酥脆，本地人也常排队；走红后日售至少 500 个，此前最多日售 200 个。' },
+      { t: '刘记白糖糕', chips: ['外脆内软'], d: '糯米团炸至金黄、裹满白糖，是南昌人童年的甜蜜记忆。' },
+      { t: '熊氏手工麻糍', chips: ['现做现卖', '芝麻味尤为经典'], d: '皮薄馅多、口感 Q 弹，趁热吃风味更佳。' },
+      { t: '水煮', chips: ['南昌版麻辣烫'], d: '汤底和卤味自成一派，脚板（炸得外酥里嫩）和藕丸（浸满汤汁）是许多人的心头好。' },
+      { t: '万寿宫糊羹', chips: ['冬日限定暖胃'], d: '以藕粉、豆腐、香菇熬制，热气腾腾，加入脆爽萝卜干，口感层次丰富。' },
+      { t: '变态辣烤翅', chips: ['以辣度闻名', '配绿豆汤解辣'], d: '鸡翅油香鲜嫩、裹满辣椒，搭配绿豆汤解辣更佳。' },
+      { t: '洪都大拇指 · 清纯幽兰', chips: ['南昌本土奶茶品牌'], d: '口感清新不腻，是逛街解渴的常见选择。' }
+    ]},
+    tips: [
+      '<strong>备少量现金：</strong>部分老摊主只收现金，手机支付虽普及，但零钱会更方便。',
+      '<strong>辣度提前沟通：</strong>南昌小吃普遍偏咸辣，拌粉、水煮、烤翅如果不吃辣，购买前务必提前告知；可以搭配绿豆汤或奶茶解辣。',
+      '<strong>错峰与排队：</strong>午后 14:00 后店铺陆续开门、人流相对平缓；17:00—22:00 是热闹黄金时段，热门摊位排队较长。如果某家网红店队伍太长，不妨转向坐满本地街坊的店铺，往往也有惊喜。',
+      '<strong>穿着建议：</strong>街道不宽，人多时较拥挤，建议穿舒适平底鞋。',
+      '<strong>周边联动：</strong>珠宝街与万寿宫历史文化街区、八一起义纪念馆步行可达，适合安排在同一个下午至晚间：先逛馆与街区，傍晚开始逛吃珠宝街，形成完整的“Citywalk + 夜市”闭环。'
+    ]
+  },
+  craft: {
+    no: '01', name: '非遗手作店铺（竹编铺、瑞墨铺等）', en: 'HERITAGE CRAFTS',
+    route: '瑞金 · 象湖里街区', routeHref: '路线详情.html?stop=ruijin',
+    prompt: 'Inside a bamboo weaving craft shop in Xianghuli old street Ruijin Jiangxi China, warm lamp light, craftsman splitting bamboo into thin strips, small woven bamboo crafts and an ink stick on wooden table, blurred red lantern bokeh outside window, wooden interior, documentary photography, quiet and warm',
+    intro: '“七铺”之中藏着瑞金非遗的集中传习所——看毛竹在传承人手中经三十多道工序化作精美竹器。',
+    info: [
+      { k: '七铺格局', v: '象湖里的非遗手作集中在“七铺”——竹编铺、瑞墨铺、竹刻铺、钢雕铺、灯彩铺、紫砂铺、古玩铺等，被打造成瑞金非遗的集中传习场所。' },
+      { k: '活化传承', v: '街区现有苏区版画、瑞墨、竹编竹刻、紫砂、制香、酱油、水酒等 25 个传统非遗项目和 30 余种传统制作工艺在此活化传承。' }
+    ],
+    exp: [
+      { t: '竹编铺 · 最值得停留的手作空间', chips: ['省级非遗传承人杨荣仿驻店', '三十多道工序'],
+        d: '瑞金传统竹编工艺省级非遗传承人杨荣仿常年在此驻店，毛竹在他手中经过破篾、劈条、分层、梳丝等三十多道工序，变成一件件精致的工艺品。他将瑞金本地故事融入创作，小红军、红井、八角楼等题材的竹编作品栩栩如生，既保留了手艺的温度，也让传统竹编有了当代的叙事入口。' },
+      { t: '瑞墨铺 · 另一种时间的质感', chips: ['“六朝贡墨”之誉', '可挥毫书写体验'],
+        d: '瑞墨有“六朝贡墨”之誉，在古韵氛围中可以观摩制墨流程，用瑞墨挥毫书写，体验千年墨香与书法艺术的交融。' }
+    ],
+    tips: [
+      '竹编和瑞墨体验适合安排在行程的前半段，天色还亮时店铺的手作氛围最完整。',
+      '节假日竹编铺常有亲子体验，可以亲手编一件小物，比单纯拍照更有记忆点。'
+    ]
+  },
+  ipstore: {
+    no: '02', name: '“苏晓”主题文创集合店 &《少年家国梦》IP体验馆', en: 'IP STORE',
+    route: '瑞金 · 象湖里街区', routeHref: '路线详情.html?stop=ruijin',
+    prompt: 'Modern cultural creative concept store in Ruijin Jiangxi China old street, cartoon IP merchandise shelves and design products, young visitors browsing creative goods, warm inviting retail interior, lifestyle photography',
+    intro: '象湖里最年轻化的两个消费空间——既有日常用得上的消费品，也有值得收藏的文创产品。',
+    info: [
+      { k: '双店定位', v: '“苏晓”和《少年家国梦》是象湖里街区里最年轻化的两个消费空间，定位明确：既有可供日常使用的消费品，又有可供收藏的文创产品。' }
+    ],
+    exp: [
+      { t: '“苏晓”主题文创集合店', chips: ['“买得走、用得上”'],
+        d: '偏向日常可用的文创路线，店内的选品逻辑是“买得走、用得上”，从生活小物到设计感单品都有覆盖，适合作为轻量纪念品的挑选站点。' },
+      { t: '《少年家国梦》IP体验馆', chips: ['同名动漫 IP 多元开发', '上百个文创品类', '签约授权 28 个品类'],
+        d: '围绕同名动漫 IP 进行多元化开发，已延展出上百个文创品类，产品覆盖瑞金特产、文旅、研学等多个领域，将瑞金的红色文化与客家文化融合在 IP 叙事中；体验馆本身也是象湖里作为文旅新地标的组成部分之一。' }
+    ],
+    tips: [
+      '两家店适合安排在非遗手作之后，作为“逛”的节奏调剂。',
+      '如果对 IP 衍生品感兴趣，《少年家国梦》的品类矩阵值得多留一点时间。'
+    ]
+  },
+  leicha: {
+    no: '03', name: '擂茶牛市 & 客家小吃', en: 'LEICHA TEA MARKET',
+    route: '瑞金 · 象湖里街区', routeHref: '路线详情.html?stop=ruijin',
+    prompt: 'Leicha tea shared dining market in Ruijin Jiangxi China, rows of Hakka food stalls with steaming beef soup and golden yellow rice cakes, shared wooden tables, lively crowded old street food court, food travel photography',
+    intro: '23 个档口集齐瑞金所有乡镇的客家味道——在街区中心一站式“吃遍瑞金”。',
+    info: [
+      { k: '共享空间模式', v: '擂茶牛市位于街区中心，采取共享空间的创新模式：中间集中设置共享桌椅，两边共设有 23 个档口，集齐瑞金所有乡镇最具特色的客家美食和小吃，游客可以一站式“吃遍瑞金”，无需再为品尝不同乡镇的小吃四处赶圩。' }
+    ],
+    exp: [
+      { t: '客家擂茶 · 必体验的核心', chips: ['国家级非遗（2014 年列入）', '店主陈丽华'],
+        d: '店主陈丽华从小看着奶奶做擂茶长大，如今把这份传统手艺变成了事业，她的擂茶馆已经成为街区里的网红打卡点。2014 年，赣南客家擂茶制作技艺已列入国家级非物质文化遗产名录。' },
+      { t: '瑞金牛肉汤 · 街区“C 位”招牌', chips: ['热气翻涌', '常排长队'],
+        d: '瑞金牛肉汤是擂茶牛市的“C 位”招牌，热气翻涌，游客常常排着长队。' },
+      { t: '黄元米果 · 客家符号', chips: ['黄栀子水染色', '色泽金黄 · 口感软糯'],
+        d: '黄元米果是另一道不能错过的客家符号，糯米泡在黄栀子水中染色，蒸制后色泽金黄、口感软糯。' },
+      { t: '梅菜扣肉饼 · 人气单品', chips: ['开业即排长队'],
+        d: '梅菜扣肉饼也是人气单品，有摊主在开业当天“低估了人气，料备得不够”而提前收摊。' }
+    ],
+    tips: [
+      '擂茶牛市是解决正餐最省心的选择，23 个档口意味着可以一次尝到多个乡镇的风味，适合不想反复换店、想高效体验瑞金客家味道的节奏。',
+      '饭点人流集中，可以稍微错峰。'
+    ]
+  },
+  cafe: {
+    no: '04', name: '红色主题咖啡店', en: 'RED CAFE',
+    route: '瑞金 · 象湖里街区', routeHref: '路线详情.html?stop=ruijin',
+    prompt: 'Red themed rooftop cafe in Ruijin old street Jiangxi China, young people enjoying coffee on a small courtyard terrace overlooking traditional rooftops and warm evening lights, cozy relaxed atmosphere, travel photography',
+    intro: '老街漫步中的另一种节奏——一杯咖啡、一方天台，看老街的屋顶与灯火。',
+    info: [
+      { k: '店铺背景', v: '红色主题咖啡店由返乡青年开设，自带老街小院天台，是象湖里街区里年轻游客集中的打卡点。' }
+    ],
+    exp: [
+      { t: '老街里的另一种节奏', chips: ['咖啡 × 传统客家小吃'],
+        d: '这家店提供的是老街漫步中的另一种节奏。在一众传统客家小吃的包围中，一杯咖啡和一方天台，适合走累了坐下来，看老街的屋顶与灯火。' },
+      { t: '文创与出片场景', chips: ['小院天台出片率最高'],
+        d: '店铺搭配特色文创，空间本身也成了拍照场景——小院天台是出片率最高的位置。' }
+    ],
+    tips: [
+      '适合安排在擂茶牛市之后的“歇脚环节”，或者傍晚亮灯前后上天台，光线和氛围都最好。',
+      '这里也是街区里少数可以安静坐一会儿的地方，适合整理照片、发一条当天的记录。'
+    ]
+  },
+  wall: {
+    no: '05', name: '瑞金方言墙', en: 'DIALECT WALL',
+    route: '瑞金 · 象湖里街区', routeHref: '路线详情.html?stop=ruijin',
+    prompt: 'Dialect wall in Ruijin old street Jiangxi China, wall painted with playful local Hakka dialect words in colorful lettering, young tourist taking photo in front, fun street corner with lanterns, travel photography',
+    intro: '街区里趣味性最强的免费打卡点——用瑞金话完成一次与地方语言的轻互动。',
+    info: [
+      { k: '点位属性', v: '瑞金方言墙是象湖里街区里趣味性最强的免费打卡点，位于街巷之中，与上阳巷、饮水思源壁画、瑞金二字手绘等共同构成了街区的“在地符号拍照矩阵”。' }
+    ],
+    exp: [
+      { t: '在地符号 · 轻互动', chips: ['体验门槛极低'],
+        d: '方言墙的核心体验是“在地符号”——用瑞金话的日常表达作为墙面内容，游客站在墙前拍照，本身就完成了一次与地方语言的轻互动。这种趣味打卡的体验门槛极低，不需要理解方言的完整含义，也能感受到“这个地方只有这里有”的在地感。' },
+      { t: '传统与现代的对照', chips: ['客家传统对联'],
+        d: '周边还有客家民居门前的传统对联，如“承前祖德勤和俭，启后子孙读与学”，与方言墙形成传统与现代的对照。' }
+    ],
+    tips: [
+      '适合作为街区漫步中的轻量停留点，不需要专门安排时间，路过时花几分钟拍照即可。',
+      '建议穿纯色衣服，方言墙的文字本身就是画面重点。'
+    ]
+  }
+};
+const ORDER_SPOTS = ['bayi', 'dashiyuan', 'wanshougong', 'zhoubao', 'craft', 'ipstore', 'leicha', 'cafe', 'wall'];
+
+/* ============ 地标攻略数据（核心游玩地标系列） ============ */
+const LANDMARKS = {
+  plaza: {
+    no: '01', name: '八一广场与八一起义纪念塔', en: 'BAYI SQUARE & MONUMENT',
+    route: '南昌 · 核心游玩地标', routeHref: '路线详情.html?stop=nanchang',
+    prompt: 'Nanchang Bayi Square August 1st uprising monument tower at dusk Jiangxi China, red star reliefs, musical fountain lights, blue hour city skyline, travel photography',
+    intro: '南昌的城市原点——白天庄严肃穆的城市地标，入夜后是灯光与音乐喷泉交织的公共客厅。',
+    info: [
+      { k: '广场概况', v: '八一广场始建于 1952 年，是南昌的城市原点与市民活动中心。广场全天免费开放，地铁 1/2 号线八一广场站直达。' },
+      { k: '升旗仪式', v: '每月 1 日清晨举行（夏季约 6:30，冬季约 7:00），现场有仪仗队表演，建议提前 30 分钟到场占位。' }
+    ],
+    exp: [
+      { t: '八一南昌起义纪念塔', chips: ['塔高 53.6 米', '8 块军史浮雕环绕'],
+        d: '广场中央的八一南昌起义纪念塔高 53.6 米，塔身 8 块军史浮雕环绕，是广场的绝对视觉核心；塔前“军旗升起的地方”汉白玉碑是必拍点位。' },
+      { t: '昼夜两种气质', chips: ['音乐喷泉 19:30—22:30'],
+        d: '白天是庄严肃穆的城市地标，傍晚之后则变为灯光与音乐喷泉交织的公共空间，音乐喷泉通常在 19:30—22:30 开放，喷泉边的纪念塔倒影很适合拍照。' },
+      { t: '拍照机位', chips: ['地铁 3 号口护栏', '武商 MALL 7 楼平台', '负一楼南昌花墙'],
+        d: '地铁 3 号口护栏处可拍红五星建筑与纪念塔同框；武商 MALL 7 楼平台可免费俯瞰广场全景，傍晚蓝调时刻（18:00 左右）效果最佳；广场负一楼也有南昌花墙打卡点。' }
+    ],
+    tips: [
+      '广场本身是开放的公共空间，但周边几个核心场馆周一闭馆，如果计划串联参观，尽量避开周一。',
+      '傍晚到夜间是广场体验感最强的时间段，可以把广场安排在一天行程的收尾。'
+    ]
+  },
+  artmuseum: {
+    no: '02', name: '江西省美术馆', en: 'JIANGXI ART MUSEUM',
+    route: '南昌 · 核心游玩地标', routeHref: '路线详情.html?stop=nanchang',
+    prompt: 'Jiangxi art museum soviet style building with cream facade and red brick in Nanchang China, arched columns and relief decorations, warm afternoon light on rotunda staircase, travel photography',
+    intro: '由原省展览馆改造而来的苏式建筑——红砖立面与八一广场对话，穹顶与旋转楼梯是南昌最出片的室内打卡点之一。',
+    info: [
+      { k: '位置与沿革', v: '位于八一大道 266 号，就在八一广场西侧，由原省展览馆改造而成，2020 年正式开馆。' },
+      { k: '开放与预约', v: '周二至周日 9:00—17:00 开放（16:30 停止入馆），周一闭馆（法定节假日除外）。免费参观，可在“江西省美术馆”公众号提前预约，现场也可扫码登记。' },
+      { k: '交通', v: '地铁 1/2 号线八一广场站 5 号口出站步行约 200 米即到。' }
+    ],
+    exp: [
+      { t: '苏式建筑本体', chips: ['拱门立柱 · 浮雕装饰', '米黄外墙 · 红砖立面'],
+        d: '美术馆的建筑本身就是最大的看点：苏式建筑群保留了拱门立柱、浮雕装饰和米黄色外墙，红砖立面与八一广场形成一种历史对话的空间关系。' },
+      { t: '透光穹顶与旋转楼梯', chips: ['三层透光穹顶', '顶楼露台俯瞰天际线'],
+        d: '馆内三层的透光穹顶与旋转楼梯是南昌最出片的室内打卡点之一，顶楼露台还可以俯瞰城市天际线。' },
+      { t: '展览与文创', chips: ['漆画 · 版画常设展', '每周公益讲解', '一楼可盖章'],
+        d: '展览以江西本土艺术为脉络，常设漆画、版画等特色展陈，并不定期引进国内外现当代艺术特展（2023 年曾举办敦煌壁画艺术巡礼）。一楼可以盖章，文创商店的赣绣书签是很有在地感的轻量纪念品。' }
+    ],
+    tips: [
+      '建议穿浅色系衣服，在红砖建筑和自然光展厅中更容易出片。',
+      '冬季午后阳光斜射时，建筑光影效果最好。',
+      '建议预留 1.5 小时左右，如果遇到感兴趣的临展可以延长到 2—3 小时。'
+    ]
+  },
+  memorial: {
+    no: '03', name: '八一起义纪念馆', en: 'AUGUST 1ST MEMORIAL HALL',
+    route: '南昌 · 核心游玩地标', routeHref: '路线详情.html?stop=nanchang',
+    prompt: 'August 1st Nanchang Uprising memorial hall and grey republic era hotel building Jiangxi China, dramatic sculpture of giant hand holding rifle breaking stone, exhibition hall lighting, travel photography',
+    intro: '一只巨手紧握步枪破石而出——在新馆与百年旧址之间，完整走一遍人民军队诞生的历史现场。',
+    info: [
+      { k: '位置交通', v: '位于中山路 380 号，地铁 1/3 号线八一馆站 5 号口出站步行约 200 米即达。' },
+      { k: '开放时间', v: '周二至周日 9:00—17:00 开放（16:30 停止入馆），周一闭馆（法定节假日除外）。' },
+      { k: '预约方式', v: '免费参观，但必须提前在官方公众号或小程序实名预约，建议提前 3—7 天操作，旺季现场很可能约满；60 周岁以上老人、现役军人等可凭证件免预约入馆。' }
+    ],
+    exp: [
+      { t: '新馆陈列展厅 ·《石破天惊》', chips: ['360° 环绕式投影剧场'],
+        d: '序厅的《石破天惊》雕塑——一只巨手紧握步枪破石而出——是标志性的视觉起点。展厅通过文物、多媒体投影和场景复原完整呈现起义过程，360 度环绕式投影剧场是沉浸感最强的一环，枪炮声与冲锋声在声光配合中还原战场氛围。' },
+      { t: '总指挥部旧址（江西大旅社）', chips: ['会议室 · 周恩来办公室原貌', '时钟定格凌晨 2 点', '朱德驳壳枪等一级文物'],
+        d: '这是区别于普通展馆的关键：灰色民国建筑内保留了当年的会议室、周恩来办公室等原貌场景，二楼走廊的时钟永远定格在凌晨 2 点——起义打响的时刻。馆藏中，朱德在起义中使用过的驳壳枪、周恩来佩戴过的手表等一级文物值得留意。' },
+      { t: '夜间“光影八一”灯光秀', chips: ['3D Mapping 光影叙事'],
+        d: '如果时间合适，夜间“光影八一”灯光秀利用 3D Mapping 技术在百年建筑上呈现光影叙事，是白天参观之外的另一层体验。' }
+    ],
+    tips: [
+      '<strong>证件与核验：</strong>务必携带身份证原件，预约后刷证核验入馆。',
+      '<strong>讲解与导览：</strong>每天 9:30 和 14:30 有免费公益讲解，场次有限；也可租电子导览器（约 20 元/台）。',
+      '<strong>盖章打卡：</strong>服务台可盖纪念馆纪念章，建议自带本子；馆内提供免费 WiFi，出口处也可盖章。',
+      '<strong>动线建议：</strong>建议预留 2—3 小时，先逛新馆，再走旧址，动线更连贯。'
+    ]
+  },
+  wgland: {
+    no: '04', name: '万寿宫历史文化街区', en: 'WANSHOUGONG HERITAGE BLOCK',
+    route: '南昌 · 核心游玩地标', routeHref: '路线详情.html?stop=nanchang',
+    prompt: 'Wanshougong heritage block Nanchang Jiangxi China at dusk, 117 late Qing Gan style houses, red lanterns lit along old streets and lanes, iron pillar palace ancestral site, warm lights, travel photography',
+    intro: '全球一千多座万寿宫的祖庭所在——117 座赣派民居的“三街五巷”里，非遗、市集与网红墙并行。',
+    info: [
+      { k: '位置交通', v: '位于中山路核心商圈，地铁 1 号线万寿宫站 1 号口直达，步行约 450 米即到。' },
+      { k: '开放时段', v: '街区全天开放、免费进入；但傍晚亮灯后才是最佳体验时段，红灯笼次第点亮，古建筑在暖光下的氛围与白天完全不同。' },
+      { k: '街区规模', v: '占地约 80 亩，117 座建筑为清末赣派民居风格，完整保留了“三街五巷”的街巷肌理——翘步街、棋盘街、广润门街三条主街，与合同巷、醋巷、萝卜巷、箩巷、万寿宫巷五条巷弄交错。' }
+    ],
+    exp: [
+      { t: '铁柱万寿宫 · 全球万寿宫祖庭', chips: ['始建于西晋', '全球 1000+ 座万寿宫的祖庭'],
+        d: '铁柱万寿宫是街区的精神核心，始建于西晋。相传许真君铸铁柱锁蛟于八角井中，井与铁柱的遗迹至今仍在。' },
+      { t: '非遗匠心馆', chips: ['豫章刻瓷现场展演', '赣发绣团扇工作坊', '面塑 · 竹雕亲子手工'],
+        d: '街区里最值得停留的手作空间：可以看老师傅现场表演豫章刻瓷——一刀一笔皆是数十年的手上功夫；也可以在相关工作坊亲手体验赣发绣团扇制作，或参与面塑、竹雕等亲子手工。' },
+      { t: '仙丹市集与年轻化表达', chips: ['吹糖人 · 捏泥人 · 传统曲艺', 'AR 斩蛟龙动画', '脱口秀剧场'],
+        d: '仙丹市集汇集文创零售与民俗演绎，吹糖人、捏泥人、手工编织、传统曲艺等摊位沿街铺开，像一座开放式的“文化大观园”。街区还融入了 AR 互动（如许真君斩蛟龙动画）和脱口秀剧场，传统与年轻化的表达在这里并行。' },
+      { t: '网红墙拍照点位', chips: ['南昌花墙 →“幻师”', '红字“南昌”墙 →“琨茶”', '“钱来”墙 →“山楂与薄荷”'],
+        d: '经典南昌花墙导航至“幻师”附近；红字“南昌”墙导航至“琨茶”；“钱来”墙导航至“山楂与薄荷”。' }
+    ],
+    food: { note: '街区以赣派小吃为底色', items: [
+      { t: '核心风味', chips: ['瓦罐汤', '南昌拌粉', '白糖糕', '糊羹', '辣椒粑'], d: '街区美食以赣派小吃为底色，这五样是核心风味。' },
+      { t: '老三样 · 蟹脚捞粉', chips: ['本地人也光顾'], d: '招牌蟹脚捞粉，是本地人也会光顾的选择。' },
+      { t: '万方圆 · 拌粉瓦罐汤', chips: ['经典组合'], d: '拌粉配瓦罐汤的经典组合，本地人也会光顾。' },
+      { t: '熊记白糖糕', chips: ['约 5 元两个'], d: '本地人也会光顾的选择。' },
+      { t: '瓦罐奶茶', chips: ['近年创意单品'], d: '街区内的瓦罐奶茶是近年兴起的创意单品，适合边走边喝。' }
+    ]},
+    tips: [
+      '街区石板路雨后易滑，建议穿防滑平底鞋。',
+      '南昌小吃普遍偏辣，带娃或不吃辣的话，点单时提前说明“微辣”或“免辣”。',
+      '街区人流量大，傍晚至夜间是高峰时段，看护好随身物品。',
+      '万寿宫与珠宝街步行可达，可以串联成“古街拍照 + 小吃扫街”的半日动线。'
+    ]
+  }
+};
+const ORDER_LAND = ['plaza', 'artmuseum', 'memorial', 'wgland'];
+
+/* ============ 美食街区攻略数据（周边美食街区系列） ============ */
+const FOODS = {
+  dashiyuan: {
+    no: '01', name: '大士院街 · 南昌人的早餐根据地', en: 'DASHIYUAN BREAKFAST',
+    route: '南昌美食', routeHref: '路线详情.html?stop=nanchang',
+    prompt: 'Nanchang breakfast street at dawn Jiangxi China, steaming clay jar soup and rice noodles, fried dough sticks stall, grey tile retro wall paintings 1980s style, warm morning light, food travel photography',
+    intro: '早上 6 点热气升腾的老街——人均十几元实现小吃自由，南昌人的早餐根据地。',
+    info: [
+      { k: '位置与入口', v: '位于东湖区，核心区域由大士院街和半步街十字交错构成；有两个入口，一个靠近胜利路，一个靠近八一桥。' },
+      { k: '开放时段', v: '街道全天开放，但早市体验集中在清晨——早上 6 点整条街就已热气升腾，早餐高峰期在上午 8 点至 10 点，建议错峰前往。' },
+      { k: '交通', v: '地铁 2 号线至阳明公园站（1 号口或 3 号口出，步行约 500 米，或骑共享单车约 8 分钟）；也可从地铁 3 号线墩子塘站出站后骑行前往。' }
+    ],
+    exp: [
+      { t: '① 王牌标配 · 小罗子汤店', chips: ['拌粉 3.5 元', '皮蛋肉饼汤 5 元', '建议去菜场里的总店'],
+        d: '有两家店，建议去菜场里的总店。招牌是拌粉（3.5 元）+ 皮蛋肉饼汤（5 元），劲道米粉裹满秘制辣椒油，搭配炭火煨足数小时的瓦罐汤，鲜醇解辣。' },
+      { t: '② 街头小吃 · 边走边吃', chips: ['白糖糕 1 元/个', '油条 1.5 元/根', '油条包麻糍 5 元/个'],
+        d: '<strong>南昌白糖糕</strong>（转角黄底白字招牌）：1 元/个，糯米外皮酥脆、内里软糯拉丝，裹一层绵白糖。<strong>无矾鸡蛋油条</strong>（黄底白字招牌）：本地人首位推荐，油条 1.5 元/根，糖果 1.5 元/根。<strong>福顺记油条包麻糍</strong>：10 年老店，5 元/个（黑芝麻口味）。<strong>程记脆皮烧饼</strong>：梅干菜扣肉烧饼 2.5 元/个。<strong>罩子</strong>（流动推车）：3 元/个，5 元/2 个。' },
+      { t: '③ 主食与卤味 · 坐下来吃', chips: ['长英绝味水煮 人均 20—25 元', '绿豆饼 1 元/个'],
+        d: '<strong>长英绝味水煮</strong>：萝卜、蘑菇、豆皮、凉拌藕片、心肺、油炸香蕉，人均 20—25 元。<strong>陈记手工绿豆饼</strong>：南昌老字号，1 元/个（5 个以下），14.8 元/斤，香而不腻。' },
+      { t: '④ 饮品 · 本地品牌', chips: ['雪顶幽兰 13 元/杯', '茶决决 22 元/杯'],
+        d: '<strong>洪都大拇指</strong>：雪顶幽兰 13 元/杯。<strong>茶决决</strong>（江西本土品牌）：青花瓷·云雾、茉莉飘雪 22 元/杯。' }
+    ],
+    tips: [
+      '<strong>必拍机位：</strong>大士院保留了八九十年代的复古墙绘与赣派牌楼，烟火人生彩带主街、灰瓦南昌大字墙、花墙、拐角收音机复古墙和爱心打卡墙都值得拍照。',
+      '<strong>辣度沟通：</strong>拌粉、水煮、烤鸭如果不吃辣，务必提前告知商家。',
+      '<strong>趁热吃：</strong>各种饼、油条、罩子建议趁热吃，凉了口感差别明显。',
+      '<strong>行程建议：</strong>人均十几元就能实现小吃自由，适合作为一天行程的起点，吃完可步行前往滕王阁、八一起义纪念馆或蛤蟆街夜市。'
+    ]
+  },
+  zhoubao: {
+    no: '02', name: '珠宝街 · 全天候小吃集合', en: 'ZHOUBAO STREET FOOD',
+    route: '南昌美食', routeHref: '路线详情.html?stop=nanchang',
+    prompt: 'Zhoubao narrow snack street Nanchang China in evening, fried dough with mochi stall, stinky tofu and green bean cake shops, warm lantern light, lively street food atmosphere, travel photography',
+    intro: '从“五金老街”变身全天候小吃集合——400 余米窄巷里藏着南昌最密集的味觉选择。',
+    info: [
+      { k: '位置与街道', v: '位于西湖区，是一条南北走向、全长 400 余米的窄巷，紧邻万寿宫历史文化街区。' },
+      { k: '开放时段', v: '街道全天开放，但店铺营业时间一般为 10:00—23:00，17:00 之后绝大多数店铺开门，是逛吃的黄金时段。' },
+      { k: '交通', v: '地铁 1 号线或 3 号线至八一馆站，从 5 号口出站步行约 300 米即达；也可乘 1 号线至万寿宫站，从 1 号口步行约 3 分钟到北入口。' }
+    ],
+    exp: [
+      { t: '① 街头招牌 · 油条包麻糍', chips: ['全街人气最高单品'],
+        d: '现炸油条裹上手打麻糍，铺肉松、芝麻、花生碎，咸甜交织、外脆内软，是南昌独有的特色小吃。' },
+      { t: '② 经典必吃 · 臭豆腐与绿豆饼', chips: ['小邓臭豆腐 下午 3 点开卖', '陈记绿豆饼 取号限购 2 盒'],
+        d: '<strong>小邓臭豆腐</strong>：外酥里嫩，淋上秘制辣酱，汤汁浓郁，下午 3 点开卖，排队者络绎不绝。<strong>陈记手工绿豆饼</strong>：炭火现烤，饼皮薄如纸，内馅甜而不腻，需取号购买、每人限购两盒，趁热吃外酥里糯。' },
+      { t: '③ 碳水与甜味 · 煎饼、白糖糕与麻糍', chips: ['章记夫妻煎饼', '刘记白糖糕', '熊氏手工麻糍'],
+        d: '<strong>章记夫妻煎饼</strong>：南昌煎饼界的代表，现点现炸、外皮金黄酥脆，推荐韭菜猪肉馅。<strong>刘记白糖糕</strong>：糯米团炸至金黄、裹满白糖，外脆内软，是南昌人童年的甜蜜记忆。<strong>熊氏手工麻糍</strong>：皮薄馅多、口感 Q 弹，芝麻味尤为经典，现做现卖，趁热吃风味更佳。' },
+      { t: '④ 咸辣风味 · 水煮、糊羹与辣味挑战', chips: ['脚板 · 藕丸', '糊羹 · 萝卜干', '配绿豆汤解辣'],
+        d: '<strong>水煮</strong>：南昌版的麻辣烫，脚板（炸得外酥里嫩）和藕丸（浸满汤汁）是许多人的心头好。<strong>万寿宫糊羹</strong>：以藕粉、豆腐、香菇熬制，冬日里热气腾腾，加入脆爽萝卜干，口感层次丰富。<strong>变态辣烤翅</strong>：以辣度闻名，鸡翅油香鲜嫩、裹满辣椒，搭配绿豆汤解辣更佳。' },
+      { t: '⑤ 本土饮品', chips: ['清纯幽兰'],
+        d: '<strong>洪都大拇指</strong>是南昌本土奶茶品牌，推荐清纯幽兰，口感清新不腻，是逛街解渴的常见选择。' }
+    ],
+    tips: [
+      '<strong>当代转型：</strong>珠宝街最大的特点是“五金老街”向“小吃一条街”的当代转型。',
+      '<strong>备少量现金：</strong>大部分小吃店支持手机支付，但部分老摊主只收现金，备少量零钱会更方便。',
+      '<strong>错峰与排队：</strong>午后 14:00 后店铺陆续开门、人流相对平缓；17:00—22:00 是热闹黄金时段，热门摊位排队较长。如果某家网红店队伍太长，不妨转向坐满本地街坊的店铺，往往也有惊喜。',
+      '<strong>穿着建议：</strong>街道不宽，人多时较拥挤，建议穿舒适平底鞋。',
+      '<strong>周边联动：</strong>珠宝街与万寿宫、八一起义纪念馆步行可达，适合安排在同一个下午至晚间。'
+    ]
+  },
+  yangzi: {
+    no: '03', name: '羊子巷 · 赣菜小炒与夜宵', en: 'YANGZI LANE',
+    route: '南昌美食', routeHref: '路线详情.html?stop=nanchang',
+    prompt: 'Yangzi lane Nanchang China at night, Gan cuisine restaurant with steamed fish topped with dried radish in chili oil, water boiled pot and fried skewer stalls, neon shop signs, lively supper atmosphere, food travel photography',
+    intro: '因回民买卖羊肉得名的老巷——坐下来吃一顿正经赣菜，再用夜宵收尾。',
+    info: [
+      { k: '位置与来历', v: '位于西湖区，全长 700 余米，地处老城区繁华商圈，紧邻八一广场、万寿宫和珠宝街。原为回民聚居地，因回民买卖羊肉而得名；多年前已改名为羊子街，但本地人仍习惯叫它羊子巷。' },
+      { k: '开放时段', v: '街道不宽，但小店林立，烟火气从傍晚一直持续到凌晨。' },
+      { k: '交通', v: '地铁 1 号线或 2 号线至八一广场站，5 号口出站后步行约 500 米即达。' }
+    ],
+    exp: [
+      { t: '① 赣菜老字号 · 羊子两室一厅', chips: ['油浸鱼 35 元', '营业 11:00—14:00 / 17:00—21:00', '只能点一次菜'],
+        d: '位于羊子街鸭子塘巷 2 号，开了三十多年的苍蝇小馆，本地人强推。招牌油浸鱼 35 元，蒸鱼铺满萝卜干，辣中带酸甜，吃完还能下米粉；螃蟹脚用醪糟炒制，蟹脚剁碎入味，带着酒香的辣让人停不下来。生意极火，只能点一次菜、不能加菜，建议提前规划好菜单。' },
+      { t: '② 水煮与油炸 · 名店扎堆', chips: ['小欧 · 绝味 · 小吴水煮', '配红豆汤 / 绿豆汤解辣'],
+        d: '羊子巷是体验南昌“水煮”和“油炸”的入门首选。小欧水煮、绝味水煮、小吴水煮等多家名店扎堆，走几步就有一家，可以一路吃过去对比不同风味。油炸串串刷上秘制辣酱，香辣过瘾，搭配红豆汤或绿豆汤解辣又清爽。' },
+      { t: '③ 宝藏小吃 · 本地人的心头好', chips: ['鸡蛋汉堡', '帝煌烤卤鸭脚', '电信猪血粉'],
+        d: '<strong>美康饮品鸡蛋汉堡</strong>：活在本地人记忆里的老吃食。<strong>帝煌烤卤的鸭脚</strong>：卤味浓郁，是羊子巷的经典味道。<strong>电信猪血粉</strong>：汤底鲜辣，猪血嫩滑，是本地人常推的选择。<strong>章氏粽子、小程木炭烧饼</strong>：也都是羊子巷的宝藏小店。' }
+    ],
+    tips: [
+      '<strong>核心体验：</strong>“坐下来吃一顿正经赣菜，再用夜宵收尾”——羊子两室一厅的油浸鱼是每桌必点。',
+      '<strong>夜宵动线：</strong>羊子两室一厅营业时间只到 21:00，想吃夜宵可以转向巷内营业到凌晨的水煮店和油炸摊，烟火气从傍晚持续到深夜。',
+      '<strong>同款推荐：</strong>张六叔·南昌菜馆（羊子巷店）的油浸鱼配萝卜干也值得一试，草鱼现蒸鲜嫩开胃。',
+      '<strong>行程建议：</strong>羊子巷与八一广场、万寿宫、珠宝街距离都很近，适合作为一天行程的晚餐或夜宵收尾站。'
+    ]
+  }
+};
+const ORDER_FOOD = ['dashiyuan', 'zhoubao', 'yangzi'];
+
+/* ============ 渲染 ============ */
+const qs = new URLSearchParams(location.search);
+const kinds = [
+  { p: 'spot', DS: SPOTS, order: ORDER_SPOTS, kind: '站点' },
+  { p: 'land', DS: LANDMARKS, order: ORDER_LAND, kind: '地标' },
+  { p: 'food', DS: FOODS, order: ORDER_FOOD, kind: '美食街区' }
+];
+const cur = kinds.find(k => qs.get(k.p)) || kinds[0];
+const DS = cur.DS, ORDER = cur.order, param = cur.p, kind = cur.kind;
+const rawKey = qs.get(cur.p);
+const key = rawKey && rawKey in DS ? rawKey : ORDER[0];
+const s = DS[key];
+
+document.title = s.name + ' · ' + kind + '攻略 — 元乡·江西';
+document.getElementById('crumb').textContent = '寻迹路线 · ' + kind + '攻略 ' + s.no;
+const hero = document.getElementById('heroImg');
+hero.alt = s.name;
+hero.dataset.prompt = s.prompt;
+hero.dataset.size = 'landscape_16_9';
+document.getElementById('noBadge').textContent = kind + ' ' + s.no + ' · ' + s.route;
+document.getElementById('sTitle').textContent = s.name;
+document.getElementById('sEn').textContent = s.en;
+document.getElementById('sIntro').textContent = s.intro;
+
+const secHead = (icon, title, note) => `<div class="xhead"><span class="xicon">${icon}</span><h3>${title}</h3></div>${note ? `<p class="xdesc">${note}</p>` : ''}`;
+let html = '';
+
+html += `<div class="xsec rv">${secHead('址', '基础信息')}<div class="info-card">${
+  s.info.map(r => `<div class="info-row"><span class="k">${r.k}</span><span class="v">${r.v}</span></div>`).join('')
+}</div></div>`;
+
+html += `<div class="xsec rv">${secHead('览', '核心体验')}${
+  s.exp.map(i => `<div class="xcard"><h4>${i.t}</h4><div class="chips">${i.chips.map(c => `<span class="schip">${c}</span>`).join('')}</div><p>${i.d}</p></div>`).join('')
+}</div>`;
+
+if (s.food) {
+  html += `<div class="xsec rv">${secHead('味', '美食推荐', s.food.note || '')}<div class="food-grid">${
+    s.food.items.map(i => `<div class="fcard"><h4>${i.t}</h4><div class="chips">${i.chips.map(c => `<span class="schip">${c}</span>`).join('')}</div><p>${i.d}</p></div>`).join('')
+  }</div></div>`;
+}
+
+html += `<div class="xsec rv">${secHead('示', '实用贴士')}<div class="tipcard"><ul>${
+  s.tips.map(t => `<li>${t}</li>`).join('')
+}</ul></div></div>`;
+
+document.getElementById('spotWrap').innerHTML = html;
+
+/* 相邻站点导航 */
+const idx = ORDER.indexOf(key);
+const navCards = [];
+if (idx > 0) {
+  const p = DS[ORDER[idx - 1]];
+  navCards.push(`<a class="ocard prev" href="站点详情.html?${param}=${ORDER[idx - 1]}">
+    <span><span class="oname">上一站 · ${p.name}</span><span class="otheme">${kind} ${p.no}</span></span>
+    <span class="oarr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+  </a>`);
+} else {
+  navCards.push(`<a class="ocard prev" href="${s.routeHref}">
+    <span><span class="oname">返回路线详情</span><span class="otheme">${s.route}</span></span>
+    <span class="oarr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+  </a>`);
+}
+if (idx < ORDER.length - 1 && ORDER[idx + 1] in DS) {
+  const n = DS[ORDER[idx + 1]];
+  navCards.push(`<a class="ocard" href="站点详情.html?${param}=${ORDER[idx + 1]}">
+    <span><span class="oname">下一站 · ${n.name}</span><span class="otheme">${kind} ${n.no}</span></span>
+    <span class="oarr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+  </a>`);
+} else {
+  navCards.push(`<a class="ocard" href="${s.routeHref}">
+    <span><span class="oname">返回路线详情</span><span class="otheme">${s.route}</span></span>
+    <span class="oarr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+  </a>`);
+}
+document.getElementById('nav').innerHTML = navCards.join('');
+
+/* ============ AI 生图加载 ============ */
+function imgUrl(prompt, size) {
+  return 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=' + encodeURIComponent(prompt) + '&image_size=' + (size || 'landscape_16_9');
+}
+/* 占位图检测：生成排队时返回固定占位图（1832x1832），需换参重试 */
+const isPh = img => img.naturalWidth === 1832 && img.naturalHeight === 1832;
+let genSeq = 0;
+function setupImg(img) {
+  if (!img || !img.dataset.prompt) return;
+  let tries = 0, timer = null;
+  const attempt = bust => {
+    img.classList.remove('loaded', 'failed');
+    img.src = imgUrl(img.dataset.prompt, img.dataset.size) + (bust ? '&r=' + (++genSeq) : '');
+  };
+  img.addEventListener('load', () => {
+    if (isPh(img)) {
+      if (tries < 5) { tries++; timer = setTimeout(() => attempt(true), 3000 * tries); }
+      else img.classList.add('failed');
+    } else {
+      clearTimeout(timer);
+      img.classList.add('loaded');
+    }
+  });
+  img.addEventListener('error', () => {
+    if (tries < 3) { tries++; timer = setTimeout(() => attempt(tries > 1), 1500 * tries); }
+    else img.classList.add('failed');
+  });
+  setTimeout(() => attempt(false), Math.min((++genSeq) * 320, 4000));
+}
+document.querySelectorAll('img.gen').forEach(setupImg);
+
+/* ============ 滚动显现 ============ */
+const io = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+}), { threshold: .1 });
+document.querySelectorAll('.rv').forEach(el => io.observe(el));
+</script>
+</body>
+</html>

@@ -107,6 +107,30 @@ body{
   color:#8a6a10;background:rgba(255,201,77,.28);border:1px solid rgba(245,179,1,.45);
 }
 .tl-tip::before{content:"✦";flex:none;line-height:1.6}
+/* 可点击站点卡（跳转站点攻略） */
+a.tl-card{display:block;text-decoration:none;cursor:pointer}
+a.tl-card:hover{transform:translateY(-6px);border-color:rgba(245,179,1,.55);box-shadow:0 30px 54px -20px rgba(21,52,90,.45)}
+.tl-more{
+  display:inline-flex;align-items:center;gap:6px;margin-top:14px;margin-left:10px;
+  padding:6px 14px;border-radius:30px;font-size:.8rem;font-weight:700;
+  color:#20315a;background:var(--yellow);box-shadow:0 8px 18px -8px rgba(245,179,1,.7);
+  opacity:0;transform:translateX(-8px);transition:opacity .3s ease,transform .3s ease;
+}
+.tl-more svg{width:14px;height:14px}
+a.tl-card:hover .tl-more{opacity:1;transform:none}
+@media(max-width:680px){.tl-more{opacity:1;transform:none}}
+/* 可点击地标卡（跳转地标攻略） */
+a.xcard{display:block;text-decoration:none;cursor:pointer}
+a.xcard:hover{border-color:rgba(245,179,1,.55);box-shadow:0 26px 46px -18px rgba(21,52,90,.42)}
+.xmore{
+  display:inline-flex;align-items:center;gap:6px;margin-top:12px;
+  padding:6px 14px;border-radius:30px;font-size:.8rem;font-weight:700;
+  color:#20315a;background:var(--yellow);box-shadow:0 8px 18px -8px rgba(245,179,1,.7);
+  opacity:0;transform:translateX(-8px);transition:opacity .3s ease,transform .3s ease;
+}
+.xmore svg{width:14px;height:14px}
+a.xcard:hover .xmore{opacity:1;transform:none}
+@media(max-width:680px){.xmore{opacity:1;transform:none}}
 
 /* 扩展板块：核心地标 / 美食街区 / 漫步节奏 */
 .chips{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 4px}
@@ -237,16 +261,16 @@ const ROUTES = {
     prompt: 'Nanchang Bayi Square city skyline at dusk Jiangxi China, modern city square with monument, warm city lights reflection, wide view travel photography',
     intro: '这一站的重点不是单一纪念馆，而是纪念馆串联起的南昌当代市井生活圈。',
     stops: [
-      { name: '八一广场 & 江西省美术馆', en: 'BAYI SQUARE',
+      { name: '八一广场 & 江西省美术馆', en: 'BAYI SQUARE', href: '站点详情.html?spot=bayi',
         desc: '广场是南昌的城市原点，适合拍开阔的城市天际线。旁边的江西省美术馆建筑本身就很出片。',
         tip: '江西省美术馆记得提前预约' },
-      { name: '大士院街早市', en: 'DASHIYUAN MARKET',
+      { name: '大士院街早市', en: 'DASHIYUAN MARKET', href: '站点详情.html?spot=dashiyuan',
         desc: '南昌本地人的早餐聚集地，推荐打卡小罗子汤店、老南昌白糖糕、无矾鸡蛋油条。这里可以拍到“南昌灰瓦大字”和“大士院花墙”，很有老城生活气息。',
         tip: '建议清晨前往，烟火气最足' },
-      { name: '万寿宫历史文化街区', en: 'WANSHOUGONG BLOCK',
+      { name: '万寿宫历史文化街区', en: 'WANSHOUGONG BLOCK', href: '站点详情.html?spot=wanshougong',
         desc: '保留了清末赣派民居的“三街五巷”肌理。重点逛仙丹市集（汇集文创零售和吹糖人、捏泥人等民俗）和匠心非遗馆（可以看到皮影主题和红色油纸伞等江右好物）。',
         tip: '瓦罐奶茶是爆款，搭配南昌拌粉、白糖糕一起体验' },
-      { name: '珠宝街美食街', en: 'ZHOUBAO STREET',
+      { name: '珠宝街美食街', en: 'ZHOUBAO STREET', href: '站点详情.html?spot=zhoubao',
         desc: '从八一广场步行可达，是南昌人私藏的美食街，藏着最地道的南昌味道。',
         tip: '适合傍晚边逛边吃' }
     ],
@@ -254,24 +278,24 @@ const ROUTES = {
       landmarks: {
         title: '核心游玩地标', icon: '标',
         items: [
-          { n: '01', t: '八一广场与八一起义纪念塔', chips: ['免费开放 · 全天可进入', '地铁 1/2 号线交汇'],
+          { n: '01', t: '八一广场与八一起义纪念塔', href: '站点详情.html?land=plaza', chips: ['免费开放 · 全天可进入', '地铁 1/2 号线交汇'],
             d: '广场始建于 1952 年，是南昌的城市原点与市民活动中心。中央矗立着 53.6 米高的八一南昌起义纪念塔，塔身庄重，广场开阔。适合清晨或傍晚来散步拍照，周边地铁 1/2 号线交汇，交通极为便利。' },
-          { n: '02', t: '江西省美术馆（八一广场西侧）', chips: ['免费 · 公众号提前预约', '周一闭馆 · 建议预留 1.5 小时'],
+          { n: '02', t: '江西省美术馆（八一广场西侧）', href: '站点详情.html?land=artmuseum', chips: ['免费 · 公众号提前预约', '周一闭馆 · 建议预留 1.5 小时'],
             d: '从广场地下通道或步行几分钟即达，建筑带有鲜明的苏式风格，旋转楼梯与穹顶空间很适合拍照。馆内常设江西本土美术与主题书画展。' },
-          { n: '03', t: '八一起义纪念馆', chips: ['免费 · 官方公众号预约', '周一闭馆 · 约 1.5—2.5 小时'],
+          { n: '03', t: '八一起义纪念馆', href: '站点详情.html?land=memorial', chips: ['免费 · 官方公众号预约', '周一闭馆 · 约 1.5—2.5 小时'],
             d: '从广场步行或地铁一站可达（八一馆站 5 号口出）。馆内包含新馆展厅与江西大旅社总指挥部旧址，通过文物与场景复原呈现历史脉络。' },
-          { n: '04', t: '万寿宫历史文化街区', chips: ['傍晚亮灯后氛围最好', '建议安排在行程后半段'],
+          { n: '04', t: '万寿宫历史文化街区', href: '站点详情.html?land=wgland', chips: ['傍晚亮灯后氛围最好', '建议安排在行程后半段'],
             d: '从纪念馆步行约 5 分钟即达。街区保留了“三街五巷”的赣派民居肌理，青砖黛瓦、青石板路。核心体验包括铁柱万寿宫古建筑群、非遗匠心馆（可看豫章刻瓷、赣发绣等现场展示），以及仙丹市集的文创摊位与民俗演绎（吹糖人、捏泥人等）。' }
         ]
       },
       food: {
         title: '周边美食街区', icon: '味',
         items: [
-          { t: '大士院街 · 早餐与市井烟火', chips: ['人均十几元吃到饱', '建议作为一天行程的起点'],
+          { t: '大士院街 · 早餐与市井烟火', href: '站点详情.html?food=dashiyuan', chips: ['人均十几元吃到饱', '建议作为一天行程的起点'],
             d: '南昌本地人真正的早餐根据地，清晨六点整条街就已热气升腾。核心组合是小罗子汤店的拌粉+皮蛋肉饼汤——米粉裹满辣油，萝卜干、花生米增加脆感，瓦罐汤用炭火煨足数小时，鲜醇解辣。街口现炸白糖糕外酥内糯，裹一层绵白糖；油条包麻糍咸甜交织。街区改造后保留了八九十年代的复古墙绘与赣派牌楼，边走边拍也很出片。吃完早餐步行或短途前往广场。' },
-          { t: '珠宝街 · 全天候小吃集合', chips: ['人均二十元以内', '部分老店只收现金，建议备零钱'],
+          { t: '珠宝街 · 全天候小吃集合', href: '站点详情.html?food=zhoubao', chips: ['人均二十元以内', '部分老店只收现金，建议备零钱'],
             d: '紧邻八一广场与万寿宫，不过四百余米的老街聚集了大量经营数十年的本土小店。油条包麻糍是人气最高的单品，现炸油条裹手打麻糍，铺肉松、芝麻、花生碎；小邓臭豆腐下午三点开卖，淋上南昌特色腐乳甜辣酱；陈记手工绿豆饼现烤现卖，饼皮薄酥、馅料绵密。熊氏手工麻糍、章记夫妻煎饼、刘记白糖糕也都是排队常客，适合逛完广场和美术馆后顺路吃一轮。' },
-          { t: '羊子巷 · 赣菜小炒与夜宵', chips: ['步行约 10 分钟', '适合晚餐或夜宵收尾'],
+          { t: '羊子巷 · 赣菜小炒与夜宵', href: '站点详情.html?food=yangzi', chips: ['步行约 10 分钟', '适合晚餐或夜宵收尾'],
             d: '从八一广场步行约 10 分钟可达，700 米长的街巷以水煮、赣菜小炒和夜宵见长。小吴水煮的麻辣鲜香是本地人常推的选择，黄记瓦罐汤的皮蛋肉饼汤+拌粉组合性价比很高。想吃正经赣菜，李师傅家常菜馆（金盘路）的烧菜口碑很好，人均约 45 元；辣小鲜·南昌大排档（八一广场地标店）主打大排档氛围，黄豆烧鸡脚、蟹脚捞粉是招牌。店铺闭店时间较晚。' }
         ]
       },
@@ -291,19 +315,19 @@ const ROUTES = {
     prompt: 'Xianghuli cultural creative street Ruijin Jiangxi China at dusk, Hakka style old street with red lanterns and warm lights, travel photography',
     intro: '这里是“红色旧址 + 非遗技艺”活化的典型样本，核心体验是在手作与美食中感受老街的新生。',
     stops: [
-      { name: '非遗手作店铺', en: 'HERITAGE CRAFTS',
+      { name: '非遗手作店铺', en: 'HERITAGE CRAFTS', href: '站点详情.html?spot=craft',
         desc: '街区聚集了竹编、瑞墨等十余家非遗店铺。在竹编店可以看省级传承人将毛竹破篾、梳丝，制作小红军、红井等题材的竹编工艺品；瑞墨店则能看到将红军标语、红井元素融入墨锭设计的创新作品。',
         tip: '竹编 · 瑞墨等十余家非遗店铺' },
-      { name: '“苏晓”主题文创集合店 &《少年家国梦》IP体验馆', en: 'IP STORE',
+      { name: '“苏晓”主题文创集合店 &《少年家国梦》IP体验馆', en: 'IP STORE', href: '站点详情.html?spot=ipstore',
         desc: '适合挑选兼具日常使用和收藏价值的文创产品，是街区里最年轻化的消费空间。',
         tip: '日常可用、值得收藏的文创好物' },
-      { name: '擂茶牛市 & 客家小吃', en: 'LEICHA TEA',
+      { name: '擂茶牛市 & 客家小吃', en: 'LEICHA TEA', href: '站点详情.html?spot=leicha',
         desc: '必体验手打擂茶，街区里还有黄元米果、梅菜扣肉饼等客家风味。',
         tip: '手打擂茶必体验' },
-      { name: '红色主题咖啡店', en: 'RED CAFE',
+      { name: '红色主题咖啡店', en: 'RED CAFE', href: '站点详情.html?spot=cafe',
         desc: '由返乡青年开设，自带老街小院天台，搭配特色文创，是年轻游客集中的打卡点。',
         tip: '小院天台出片率高' },
-      { name: '瑞金方言墙', en: 'DIALECT WALL',
+      { name: '瑞金方言墙', en: 'DIALECT WALL', href: '站点详情.html?spot=wall',
         desc: '适合拍带有在地符号的打卡照，趣味性强。',
         tip: '在地符号 · 趣味打卡' }
     ],
@@ -423,11 +447,12 @@ document.getElementById('rIntro').textContent = r.intro;
 document.getElementById('timeline').innerHTML = r.stops.map((s, i) => `
   <div class="tl-item" style="transition-delay:${i * 0.08}s">
     <div class="tl-dot">${String(i + 1).padStart(2, '0')}</div>
-    <div class="tl-card">
+    ${s.href ? `<a class="tl-card" href="${s.href}" title="查看「${s.name}」完整攻略">` : '<div class="tl-card">'}
       <h3>${s.name}<small>${s.en}</small></h3>
       <p>${s.desc}</p>
       <span class="tl-tip">${s.tip}</span>
-    </div>
+      ${s.href ? `<span class="tl-more">查看完整攻略<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>` : ''}
+    ${s.href ? '</a>' : '</div>'}
   </div>`).join('');
 
 document.getElementById('others').innerHTML = ORDER.filter(k => k !== key).map(k => {
@@ -481,17 +506,19 @@ if (ex) {
   const xhead = x => `<div class="xhead"><span class="xicon">${x.icon}</span><h3>${x.title}</h3></div>${x.desc ? `<p class="xdesc">${x.desc}</p>` : ''}`;
   let html = '';
   html += `<div class="xsec">${xhead(ex.landmarks)}${ex.landmarks.items.map(i => `
-    <div class="xcard rv">
+    ${i.href ? `<a class="xcard rv" href="${i.href}" title="查看「${i.t}」地标攻略">` : '<div class="xcard rv">'}
       <h4><span class="xno">${i.n}</span>${i.t}</h4>
       <div class="chips">${i.chips.map(c => `<span class="schip">${c}</span>`).join('')}</div>
       <p>${i.d}</p>
-    </div>`).join('')}</div>`;
+      ${i.href ? `<span class="xmore">查看地标攻略<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>` : ''}
+    ${i.href ? '</a>' : '</div>'}`).join('')}</div>`;
   html += `<div class="xsec">${xhead(ex.food)}${ex.food.items.map(i => `
-    <div class="xcard rv">
+    ${i.href ? `<a class="xcard rv" href="${i.href}" title="查看「${i.t}」美食攻略">` : '<div class="xcard rv">'}
       <h4>${i.t}</h4>
       <div class="chips">${i.chips.map(c => `<span class="schip">${c}</span>`).join('')}</div>
       <p>${i.d}</p>
-    </div>`).join('')}</div>`;
+      ${i.href ? `<span class="xmore">查看美食攻略<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>` : ''}
+    ${i.href ? '</a>' : '</div>'}`).join('')}</div>`;
   html += `<div class="xsec">${xhead(ex.rhythm)}<div class="rhythm">${ex.rhythm.items.map(i => `
     <div class="rcard rv">
       <h4>${i.t}</h4>
