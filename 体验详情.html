@@ -116,6 +116,18 @@ body{
 .xcard h4{font-family:var(--font-display);color:var(--navy);font-size:1.12rem;margin-bottom:4px}
 .xcard h4 .xno{color:var(--blue);margin-right:8px;font-family:Georgia,serif}
 .xcard p{color:var(--muted);font-size:.93rem}
+/* 可点击攻略卡 */
+a.xcard{display:block;text-decoration:none;cursor:pointer}
+a.xcard:hover{border-color:rgba(245,179,1,.55);box-shadow:0 26px 46px -18px rgba(21,52,90,.42)}
+.xmore{
+  display:inline-flex;align-items:center;gap:6px;margin-top:12px;
+  padding:6px 14px;border-radius:30px;font-size:.8rem;font-weight:700;
+  color:#20315a;background:var(--yellow);box-shadow:0 8px 18px -8px rgba(245,179,1,.7);
+  opacity:0;transform:translateX(-8px);transition:opacity .3s ease,transform .3s ease;
+}
+.xmore svg{width:14px;height:14px}
+a.xcard:hover .xmore{opacity:1;transform:none}
+@media(max-width:680px){.xmore{opacity:1;transform:none}}
 
 /* 住宿推荐卡 */
 .stay-card{
@@ -295,21 +307,21 @@ const STOPS = {
     slogan: '在客家古建的青砖黛瓦间，亲手触摸焕新的非遗技艺。',
     prompt: 'Xianghuli old street Ruijin Jiangxi at blue hour, Hakka grey brick buildings with tiled roofs, warm lantern light glowing, bamboo weaving shop with crafts, a traveler holding freshly pounded lei tea, cinematic composition, no political symbols',
     explore: { title: '核心打卡', icon: '逛', desc: '“活态非遗”是这条街的关键词——手艺人在店，技艺在手上，可以围观、可以上手。', items: [
-      { n: '01', t: '五坊七铺', chips: ['“活态非遗”街区', '竹编破篾成丝 · 瑞墨古法制墨'],
+      { n: '01', t: '五坊七铺', href: '站点详情.html?spot=wufang', chips: ['“活态非遗”街区', '竹编破篾成丝 · 瑞墨古法制墨'],
         d: '这里是“活态非遗”街区。必去竹编铺看一根毛竹如何破篾成丝；去瑞墨铺看传统制墨如何融入当代审美。' },
-      { n: '02', t: '上阳书院', chips: ['宗祠里的公共文化空间', '常设书法公益活动'],
+      { n: '02', t: '上阳书院', href: '站点详情.html?spot=shuyuan', chips: ['宗祠里的公共文化空间', '常设书法公益活动'],
         d: '隐匿在宗祠里的公共文化空间，常有书法公益活动，环境清幽。' },
-      { n: '03', t: '象湖里老街', chips: ['几十栋历史建筑', '青石板路 · 傍晚出片'],
+      { n: '03', t: '象湖里老街', href: '站点详情.html?spot=laojie', chips: ['几十栋历史建筑', '青石板路 · 傍晚出片'],
         d: '保留了几十栋历史建筑，青石板路与修缮后的老宅立面，适合傍晚漫步拍照。' }
     ] },
     food: { title: '舌尖风味', icon: '味', items: [
-      { t: '擂茶牛市', chips: ['象湖里核心美食场景', '23 个档口'],
+      { t: '擂茶牛市', href: '站点详情.html?spot=niushi', chips: ['象湖里核心美食场景', '23 个档口'],
         d: '象湖里的核心美食场景，23 个档口网罗了客家小吃，一站式吃遍瑞金。' },
-      { t: '瑞金牛肉汤', chips: ['街区“C位”招牌', '现煮鲜醇'],
+      { t: '瑞金牛肉汤', href: '站点详情.html?spot=beef', chips: ['街区“C位”招牌', '现煮鲜醇'],
         d: '街区的“C位”招牌，现煮的鲜醇是瑞金人的日常。' },
-      { t: '客家打茶', chips: ['传承人现擂花生与茶叶', '配黄元米果'],
+      { t: '客家打茶', href: '站点详情.html?spot=leichatea', chips: ['传承人现擂花生与茶叶', '配黄元米果'],
         d: '传承人现擂的花生与茶叶，配上黄元米果，一口吃下客家人的节庆记忆。' },
-      { t: '红色主题咖啡', chips: ['返乡青年开设', '自带老街小院天台'],
+      { t: '红色主题咖啡', href: '站点详情.html?spot=cafe', chips: ['返乡青年开设', '自带老街小院天台'],
         d: '特色打卡：由返乡青年开设的红色主题咖啡店，自带老街小院天台，是传统小吃包围中的另一种节奏。' }
     ] },
     stay: {
@@ -379,18 +391,20 @@ const xhead = (x, small) => `<div class="xhead"><span class="xicon${small ? ' sm
 let html = '';
 /* 核心打卡 */
 html += `<div class="xsec">${xhead(s.explore)}${s.explore.items.map(i => `
-  <div class="xcard rv">
+  ${i.href ? `<a class="xcard rv" href="${i.href}" title="查看「${i.t}」完整攻略">` : '<div class="xcard rv">'}
     <h4><span class="xno">${i.n}</span>${i.t}</h4>
     <div class="chips">${i.chips.map(c => `<span class="schip">${c}</span>`).join('')}</div>
     <p>${i.d}</p>
-  </div>`).join('')}</div>`;
+    ${i.href ? `<span class="xmore">查看完整攻略<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>` : ''}
+  ${i.href ? '</a>' : '</div>'}`).join('')}</div>`;
 /* 舌尖风味 */
 html += `<div class="xsec">${xhead(s.food)}${s.food.items.map(i => `
-  <div class="xcard rv">
+  ${i.href ? `<a class="xcard rv" href="${i.href}" title="查看「${i.t}」风味攻略">` : '<div class="xcard rv">'}
     <h4>${i.t}</h4>
     <div class="chips">${i.chips.map(c => `<span class="schip">${c}</span>`).join('')}</div>
     <p>${i.d}</p>
-  </div>`).join('')}</div>`;
+    ${i.href ? `<span class="xmore">查看风味攻略<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>` : ''}
+  ${i.href ? '</a>' : '</div>'}`).join('')}</div>`;
 /* 宿在 XX */
 html += `<div class="xsec">${xhead(s.stay)}
   <div class="stay-card rv">
