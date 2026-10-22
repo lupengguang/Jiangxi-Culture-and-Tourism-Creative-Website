@@ -202,12 +202,15 @@ const PRODUCTS = [
   { name: '八一红星金属书签', cat: '印刷文创', price: 29,
     desc: '激光雕刻 AIGC 生成的红星纹样，黄铜镀金，附赠同款纹样收纳卡。',
     prompt: 'gold metal bookmark with red star emblem laser engraved, lying on an open book, close-up product photography' },
-  { name: '《少年家国梦》IP 盲盒手办', cat: 'IP周边', price: 69,
-    desc: '瑞金《少年家国梦》IP 形象 × AIGC 造型设计，全套 6 款，隐藏款"星火少年"。',
-    prompt: 'cute designer blind box figurine of a young dreamer character in red scarf, pastel colors, collectible toy, product photography' },
-  { name: '老区方言语音挂件', cat: 'IP周边', price: 45,
-    desc: '内置语音芯片的 AIGC 形象挂件，轻触即播放瑞金话、南昌话方言彩蛋。',
-    prompt: 'cute voice badge keychain with built-in speaker chip, red and gold cartoon design, product photography on soft background' },
+  { name: '南昌「八一红星」IP 手办', cat: 'IP周边', price: 69,
+    desc: '对应景区：南昌八一起义纪念馆。以打响第一枪的红星少年为原型，AIGC 造型设计，军帽红星、臂章"八一"细节满满。',
+    img: 'images/IP人物-南昌.jpg' },
+  { name: '瑞金「苏晓」IP 手办', cat: 'IP周边', price: 69,
+    desc: '对应景区：瑞金共和国摇篮景区。象湖里《少年家国梦》IP 馆同款"苏晓"形象，围裙与草鞋造型，捧着一颗红井星辰。',
+    img: 'images/IP人物-瑞金.jpg' },
+  { name: '永新「三湾星火」IP 手办', cat: 'IP周边', price: 69,
+    desc: '对应景区：永新三湾改编景区。背着斗笠、举着火把的客家小红军，AIGC 重绘贺子珍故乡的星火记忆。',
+    img: 'images/IP人物-永新.jpg' },
   { name: '赣鄱四季 · AI 生成日历', cat: '数字藏品', price: 49,
     desc: '365 天每天一张 AIGC 生成老区风景，扫码可解锁对应数字藏品版本。',
     prompt: 'desk calendar with AI generated four seasons landscape cards of Jiangxi mountains lakes and villages, minimal elegant design, product photography' }
@@ -218,7 +221,9 @@ document.getElementById('pgrid').innerHTML = PRODUCTS.map((p, i) => `
   <article class="pcard reveal" data-cat="${p.cat}" style="transition-delay:${i % 4 * 0.07}s">
     <div class="pimg">
       <span class="ptag">${p.cat}</span>
-      <img class="gen" alt="${p.name}" data-prompt="${p.prompt}" data-size="portrait_4_3">
+      ${p.img
+        ? `<img src="${p.img}" alt="${p.name}">`
+        : `<img class="gen" alt="${p.name}" data-prompt="${p.prompt}" data-size="portrait_4_3">`}
     </div>
     <div class="pbody">
       <h3>${p.name}</h3>
