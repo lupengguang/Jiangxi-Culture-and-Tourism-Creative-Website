@@ -306,6 +306,25 @@ img.gen.loaded{opacity:1;transform:scale(1);filter:blur(0);animation:none}
 @keyframes pop{from{opacity:0;transform:scale(.86)}to{opacity:1;transform:scale(1)}}
 .arr svg{width:16px;height:16px}
 
+/* ========== 视差叠卡模式（目的地三卡 / 路线四卡） ========== */
+.top-cards .container.stack,#dgrid.stack{display:block;position:relative;height:500px;perspective:1400px}
+.stack .tcard,.stack .dcard{
+  position:absolute;left:50%;top:0;width:min(560px,88%);height:430px;margin:0;
+  transform-origin:50% 100%;will-change:transform;animation:none;
+  transition:transform .6s cubic-bezier(.22,.8,.26,1),opacity .45s ease,filter .45s ease,box-shadow .45s ease;
+}
+.stack .dcard{display:flex;flex-direction:column}
+.stack .dcard .ph{height:auto;flex:1;min-height:0}
+.stack .dcard .meta{flex:none;flex-direction:column;align-items:flex-start;gap:2px;padding:14px 20px}
+.stack-dots{display:flex;justify-content:center;gap:8px;margin-top:20px}
+.stack-dots button{width:9px;height:9px;border-radius:50%;border:0;padding:0;cursor:pointer;background:rgba(32,48,74,.22);transition:width .3s,background .3s}
+.stack-dots button.on{width:26px;border-radius:6px;background:linear-gradient(135deg,#ffd76e,var(--yellow))}
+.stack-hint{text-align:center;font-size:.78rem;color:var(--muted);letter-spacing:2px;margin:10px 0 0}
+@media(max-width:860px){
+  .top-cards .container.stack,#dgrid.stack{height:440px}
+  .stack .tcard,.stack .dcard{width:min(480px,92%);height:380px}
+}
+
 /* ========== 01/02/03 特色板块 ========== */
 .features{padding:80px 0 30px}
 .feature{display:grid;grid-template-columns:1.05fr 1fr;gap:70px;align-items:center;padding:60px 0}
@@ -976,6 +995,7 @@ filterBtns.forEach(btn => btn.addEventListener('click', () => {
     }
   });
   toast(`已筛选出 ${shown} 条路线`);
+  if (window.__stackRefresh) window.__stackRefresh();
 }));
 
 /* ================= 按钮涟漪 ================= */
@@ -1013,6 +1033,117 @@ function onScroll() {
 addEventListener('scroll', () => { if (!ticking) { requestAnimationFrame(onScroll); ticking = true; } }, { passive: true });
 onScroll();
 toTop.addEventListener('click', () => scrollTo({ top: 0, behavior: 'smooth' }));
+
+/* ================= 视差叠卡：滑动切换卡片 ================= */
+function initStack(wrap, opts) {
+  if (!wrap) return null;
+  wrap.classList.add('stack');
+  const ui = document.createElement('div');
+  ui.className = 'stack-ui';
+  ui.innerHTML = `<div class="stack-dots" role="tablist" aria-label="切换卡片"></div><p class="stack-hint">左右滑动切换 · 当前展示一张重点卡片</p>`;
+  wrap.insertAdjacentElement('afterend', ui);
+  const dotsBox = ui.querySelector('.stack-dots');
+
+  let items = [], idx = 0;
+  function collect() {
+    items = [...wrap.children].filter(el => el.matches('.tcard, .dcard') && !el.classList.contains('hide'));
+    items.forEach(c => c.classList.add('in'));   /* 叠卡内不受 reveal 初始隐藏影响 */
+    idx = Math.min(idx, Math.max(0, items.length - 1));
+    dotsBox.innerHTML = items.map((_, i) => `<button role="tab" aria-label="第 ${i + 1} 张卡片" data-i="${i}"></button>`).join('');
+    layout();
+  }
+  function layout() {
+    items.forEach((card, i) => {
+      const off = i - idx;
+      if (off < 0) {
+        /* 已划过的卡：整体滑出屏幕左侧（抽屉滑出） */
+        card.style.zIndex = String(50 + off);
+        card.style.transform = 'translateX(-50%) translateX(-68vw) scale(.92)';
+        card.style.opacity = '0';
+        card.style.pointerEvents = 'none';
+        card.style.filter = 'brightness(.9)';
+      } else {
+        /* 当前卡居中，其余像抽屉一样依次向右错位排在其后 */
+        const a = off;
+        card.style.zIndex = String(100 - a);
+        card.style.transform =
+          `translateX(-50%) translateX(${a * 52}px) translateY(${a * 10}px) scale(${Math.max(.86, 1 - a * .05)})`;
+        card.style.opacity = a > 2 ? '.4' : String(1 - a * .14);
+        card.style.filter = a === 0 ? 'none' : `brightness(${1 - a * .06}) saturate(${1 - a * .1})`;
+        card.style.pointerEvents = a === 0 ? 'auto' : 'none';
+      }
+      card.classList.add('in');
+    });
+    [...dotsBox.children].forEach((d, i) => d.classList.toggle('on', i === idx));
+  }
+  function go(n) {
+    idx = Math.max(0, Math.min(items.length - 1, n));
+    layout();
+  }
+  dotsBox.addEventListener('click', e => {
+    const b = e.target.closest('button[data-i]');
+    if (b) go(+b.dataset.i);
+  });
+
+  /* 触摸滑动 */
+  let sx = 0, sy = 0, moved = false;
+  wrap.addEventListener('touchstart', e => { sx = e.touches[0].clientX; sy = e.touches[0].clientY; moved = false; }, { passive: true });
+  wrap.addEventListener('touchmove', e => {
+    if (Math.abs(e.touches[0].clientX - sx) > Math.abs(e.touches[0].clientY - sy) + 12) moved = true;
+  }, { passive: true });
+  wrap.addEventListener('touchend', e => {
+    if (!moved) return;
+    const dx = e.changedTouches[0].clientX - sx;
+    if (Math.abs(dx) > 46) go(idx + (dx < 0 ? 1 : -1));
+  }, { passive: true });
+
+  /* 桌面：鼠标横向拖拽滑动 */
+  let mx = 0, dragging = false, suppress = false;
+  wrap.addEventListener('mousedown', e => { mx = e.clientX; dragging = true; suppress = false; });
+  addEventListener('mousemove', e => {
+    if (!dragging) return;
+    e.preventDefault();
+    if (Math.abs(e.clientX - mx) > 8) suppress = true;
+  });
+  addEventListener('mouseup', e => {
+    if (!dragging) return;
+    dragging = false;
+    const dx = e.clientX - mx;
+    if (Math.abs(dx) > 46) go(idx + (dx < 0 ? 1 : -1));
+  });
+  /* 拖拽后松手不触发卡片跳转 */
+  wrap.addEventListener('click', e => {
+    if (suppress) { e.preventDefault(); e.stopPropagation(); suppress = false; }
+  }, true);
+
+  /* 桌面：悬停区域内滚轮横向切换（节流） */
+  let wl = 0;
+  wrap.addEventListener('wheel', e => {
+    const r = wrap.getBoundingClientRect();
+    if (r.top > innerHeight * .75 || r.bottom < innerHeight * .25) return;
+    if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;   /* 仅横向滚轮/触控板横滑 */
+    e.preventDefault();
+    const now = Date.now();
+    if (now - wl < 420) return;
+    wl = now;
+    go(idx + (e.deltaX > 0 ? 1 : -1));
+  }, { passive: false });
+
+  /* 键盘左右键 */
+  wrap.setAttribute('tabindex', '0');
+  wrap.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight') { e.preventDefault(); go(idx + 1); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); go(idx - 1); }
+  });
+
+  window.__stackRefresh = window.__stackRefresh || (() => {});
+  const prev = window.__stackRefresh;
+  window.__stackRefresh = () => { prev(); collect(); };
+  collect();
+  return { collect };
+}
+initStack(document.querySelector('.top-cards .container'));
+initStack(document.getElementById('dgrid'));
 </script>
 </body>
 </html>
